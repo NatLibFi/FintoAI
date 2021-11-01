@@ -1,0 +1,122 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  annotations:
+  name: matomo-log-analytics
+  namespace: annif
+  labels:
+    app: matomo-log-analytics
+    app.kubernetes.io/component: matomo-log-analytics
+    app.kubernetes.io/instance: matomo-log-analytics
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'matomo-log-analytics:latest'
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'python-38:1-71'
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/NatLibFi/matomo-log-analytics'
+  triggers:
+    - type: GitHub
+      # TODO What to do with secrets?
+      github:
+        secretReference:
+          name: matomo-log-analytics-github-webhook-secret
+        #secret: xxx
+    - type: ConfigChange
+    - type: ImageChange
+      imageChange:
+        lastTriggeredImageID: >-
+          registry.access.redhat.com/ubi8/python-38@sha256:43b037584dac3425f845faab4f3575a9058c431219ffbf735f937b263713f2d9
+  runPolicy: Serial
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"matomo-log-analytics:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"matomo-log-analytics\")].image"}]
+  name: matomo-log-analytics
+  namespace: annif
+  labels:
+    app: matomo-log-analytics
+    app.kubernetes.io/component: matomo-log-analytics
+    app.kubernetes.io/instance: matomo-log-analytics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matomo-log-analytics
+  template:
+    metadata:
+      labels:
+        app: matomo-log-analytics
+    spec:
+      containers:
+        - name: matomo-log-analytics
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/annif/matomo-log-analytics@sha256:d831724ce9d483517bbfcbdb4108e5a5ed265ec57751cdb4043b6d82602802e0
+          command: ["/bin/sh", "-c"]
+          args:
+            - tail -f /logs/nginx-access.log | python /opt/app-root/src/import_logs.py
+              --url=***REMOVED***
+              --idsite=15
+              --token-auth $(MATOMO-TOKEN)
+              --enable-http-errors
+              --enable-http-redirects
+              --enable-static
+              --enable-bots
+              --track-http-method true
+              --recorder-max-payload-size=10 -
+          env:
+            - name: MATOMO-TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: matomo-token
+                  key: matomo-token
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      
+          volumeMounts:
+            - name: logs
+              mountPath: /logs
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: logs
+            readOnly: True
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: ai-finto-fi-nginx
+            topologyKey: failure-domain.beta.kubernetes.io/zone
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+---
