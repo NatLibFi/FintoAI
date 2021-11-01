@@ -32,7 +32,7 @@ metadata:
   name: nginx
 spec:
   selector:
-    app: ai-finto-fi-nginx
+    app: {{ .Values.instance }}-nginx
   ports:
   - port: 8080
 ---
@@ -40,7 +40,7 @@ spec:
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: ai-finto-fi-nginx
+  name: {{ .Values.instance }}-nginx
 spec:
   strategy:
     type: Source
@@ -54,11 +54,11 @@ spec:
     git:
       uri: 'https://github.com/NatLibFi/Annif.git'
       ref: api-instances
-    contextDir: /ai.finto.fi
+    contextDir: {{ .Values.contextDir }}
   output:
     to:
       kind: ImageStreamTag
-      name: 'ai-finto-fi-nginx:latest'
+      name: '{{ .Values.instance }}-nginx:latest'
   # TODO: Currently GitHub webhooks do not work (cluster disallows connections from outside Internet?).
   # For production instance the below triggers should be anyway removed;
   # the builds should be invoked with "oc start-build ai-finto-fi-nginx"
@@ -66,9 +66,10 @@ spec:
     - type: GitHub
       github:
         secretReference:
-          name: ai-finto-fi-github-webhook-secret
+          name: {{ .Values.instance }}-github-webhook-secret
     - type: ImageChange
       imageChange:
+        # Is this needed?
         lastTriggeredImageID: >-
           image-registry.openshift-image-registry.svc:5000/openshift/nginx@sha256:2878cf2a32e2bd86b8b00c9349e38f652a2952b47a2f891303ea96c7998b7d34
     - type: ConfigChange
@@ -77,35 +78,35 @@ spec:
 kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
-  name: ai-finto-fi-nginx
+  name: {{ .Values.instance }}-nginx
   labels:
-    app: ai-finto-fi-nginx
+    app: {{ .Values.instance }}-nginx
 spec:
   triggers:
     - type: ImageChange
       imageChangeParams:
         automatic: true
         containerNames:
-          - ai-finto-fi-nginx
+          - {{ .Values.instance }}-nginx
         from:
           kind: ImageStreamTag
-          name: 'ai-finto-fi-nginx:latest'
+          name: '{{ .Values.instance }}-nginx:latest'
     - type: ConfigChange
   replicas: 1
   selector:
-    app: ai-finto-fi-nginx
-    deploymentconfig: ai-finto-fi-nginx
+    app: {{ .Values.instance }}-nginx
+    deploymentconfig: {{ .Values.instance }}-nginx
   template:
     metadata:
       labels:
-        app: ai-finto-fi-nginx
-        deploymentconfig: ai-finto-fi-nginx
+        app: {{ .Values.instance }}-nginx
+        deploymentconfig: {{ .Values.instance }}-nginx
     spec:
       containers:
-        - name: ai-finto-fi-nginx
+        - name: {{ .Values.instance }}-nginx
           # Should the image below be specified with a hash, or is "latest" enough?
           image: >-
-            image-registry.openshift-image-registry.svc:5000/annif/ai-finto-fi-nginx:latest
+            image-registry.openshift-image-registry.svc:5000/annif/{{ .Values.instance }}-nginx:latest
           readinessProbe:
             httpGet:
               scheme: HTTP
@@ -140,7 +141,7 @@ spec:
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: ai-finto-fi-nginx
+  name: {{ .Values.instance }}-nginx
 ---
 
 apiVersion: route.openshift.io/v1

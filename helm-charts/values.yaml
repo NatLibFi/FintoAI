@@ -81,4 +81,6 @@
 #
 #affinity: {}
 #
+instance: ai-finto-fi
+contextDir: /ai.finto.fi
 host: ai.finto.fi.ext.ocp-kk-test-0.k8s.it.helsinki.fi
