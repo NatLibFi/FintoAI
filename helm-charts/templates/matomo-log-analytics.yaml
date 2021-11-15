@@ -1,3 +1,9 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: matomo-log-analytics
+---
+
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
@@ -20,7 +26,8 @@ spec:
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: 'python-38:1-71'
+        namespace: openshift
+        name: 'python:3.8-ubi7'
   source:
     type: Git
     git:
