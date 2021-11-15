@@ -107,13 +107,17 @@ spec:
           persistentVolumeClaim:
             claimName: logs
             readOnly: True
+      # Matomo script needs to be run on the same node as nginx:
       affinity:
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
-              matchLabels:
-                app: ai-finto-fi-nginx
-            topologyKey: failure-domain.beta.kubernetes.io/zone
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - ai-finto-fi-nginx
+            topologyKey: kubernetes.io/hostname
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
