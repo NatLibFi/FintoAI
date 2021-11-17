@@ -1,0 +1,24 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: {{ .Values.instance }}-nginx
+spec:
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'nginx:{{ .Values.nginxVersion }}'
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/NatLibFi/Annif.git'
+      ref: api-instances
+    contextDir: {{ .Values.contextDir }}
+  output:
+    to:
+      kind: ImageStreamTag
+      name: '{{ .Values.instance }}-nginx:latest'
+  triggers:
+    {{ toYaml .Values.nginxBuildTriggers | nindent 4 }}

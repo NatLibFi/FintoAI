@@ -1,46 +1,3 @@
-apiVersion: image.openshift.io/v1
-kind: ImageStream
-metadata:
-  name: matomo-log-analytics
----
-
-kind: BuildConfig
-apiVersion: build.openshift.io/v1
-metadata:
-  annotations:
-  name: matomo-log-analytics
-  namespace: annif
-  labels:
-    app: matomo-log-analytics
-spec:
-  output:
-    to:
-      kind: ImageStreamTag
-      name: 'matomo-log-analytics:latest'
-  successfulBuildsHistoryLimit: 5
-  failedBuildsHistoryLimit: 5
-  strategy:
-    type: Source
-    sourceStrategy:
-      from:
-        kind: ImageStreamTag
-        namespace: openshift
-        name: 'python:3.8-ubi7'
-  source:
-    type: Git
-    git:
-      uri: 'https://github.com/NatLibFi/matomo-log-analytics'
-  triggers:
-    - type: GitHub
-      github:
-        secretReference:
-          name: matomo-log-analytics-github-webhook-secret
-    - type: ConfigChange
-    - type: ImageChange
-      imageChange: {}
-  runPolicy: Serial
----
-
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -102,4 +59,3 @@ spec:
                 values:
                 - ai-finto-fi-nginx
             topologyKey: kubernetes.io/hostname
----
