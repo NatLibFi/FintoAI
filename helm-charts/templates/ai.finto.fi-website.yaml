@@ -92,7 +92,6 @@ spec:
     spec:
       containers:
         - name: {{ .Values.instance }}-nginx
-          # Should the image below be specified with a hash, or is "latest" enough?
           image: >-
             image-registry.openshift-image-registry.svc:5000/annif/{{ .Values.instance }}-nginx:latest
           readinessProbe:
