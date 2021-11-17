@@ -53,8 +53,8 @@ spec:
       volumes:
         - name: nginx-conf
           configMap:
-            name: nginx-conf
+            name: {{ .Values.instance }}-nginx-conf
         - name: logs
           persistentVolumeClaim:
-            claimName: logs
+            claimName: {{ .Values.instance }}-logs
             readOnly: False

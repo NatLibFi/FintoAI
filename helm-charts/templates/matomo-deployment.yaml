@@ -1,8 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: matomo-log-analytics
-  namespace: annif
+  name: {{ .Values.instance }}-matomo-log-analytics
   labels:
     app: matomo-log-analytics
 spec:
@@ -46,7 +45,7 @@ spec:
       volumes:
         - name: logs
           persistentVolumeClaim:
-            claimName: logs
+            claimName: {{ .Values.instance }}-logs
             readOnly: True
       # Matomo script needs to be run on the same node as nginx:
       affinity:
@@ -57,5 +56,5 @@ spec:
               - key: app
                 operator: In
                 values:
-                - ai-finto-fi-nginx
+                - {{ .Values.instance }}-nginx
             topologyKey: kubernetes.io/hostname

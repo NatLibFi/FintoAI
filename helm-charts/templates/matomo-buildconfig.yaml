@@ -2,8 +2,7 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   annotations:
-  name: matomo-log-analytics
-  namespace: annif
+  name: {{ .Values.instance }}-matomo-log-analytics
   labels:
     app: matomo-log-analytics
 spec:
