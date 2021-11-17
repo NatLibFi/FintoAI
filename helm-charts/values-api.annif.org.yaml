@@ -1,0 +1,32 @@
+# Default values for annif-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+instance: api-annif-org
+contextDir: /api.annif.org
+host: api.annif.org.ext.ocp-kk-test-0.k8s.it.helsinki.fi
+
+# TODO: Unpin version for dev instance by changing to "latest"?
+nginxVersion: "1.18-ubi8"
+# Triggers for automatic builds are not in place for prod instance.
+# To manually start a build: "oc start-build ai-finto-fi-nginx"
+nginxBuildTriggers:
+  #- type: GitHub
+  #  github:
+  #    secretReference:
+  #      name: ai-finto-fi-github-webhook-secret
+  #- type: ImageChange
+  #  imageChange: {}
+  - type: ConfigChange
+
+
+annifVersion: "0.52"
+annifResources:
+  limits:
+    cpu: 1
+    memory: 26Gi
+
+matomoServerUrl: ***REMOVED***
+matomoSiteId: "15"  # TODO Change to prod id when deploying for real
+# TODO Increase storage when project quota allows
+logsStorage : 100Mi
