@@ -48,7 +48,7 @@ spec:
       from:
         kind: ImageStreamTag
         namespace: openshift
-        name: 'nginx:1.16-el7'
+        name: 'nginx:{{ .Values.nginxVersion }}'
   source:
     type: Git
     git:
@@ -59,20 +59,8 @@ spec:
     to:
       kind: ImageStreamTag
       name: '{{ .Values.instance }}-nginx:latest'
-  # TODO: Currently GitHub webhooks do not work (cluster disallows connections from outside Internet?).
-  # For production instance the below triggers should be anyway removed;
-  # the builds should be invoked with "oc start-build ai-finto-fi-nginx"
   triggers:
-    - type: GitHub
-      github:
-        secretReference:
-          name: {{ .Values.instance }}-github-webhook-secret
-    - type: ImageChange
-      imageChange:
-        # Is this needed?
-        lastTriggeredImageID: >-
-          image-registry.openshift-image-registry.svc:5000/openshift/nginx@sha256:2878cf2a32e2bd86b8b00c9349e38f652a2952b47a2f891303ea96c7998b7d34
-    - type: ConfigChange
+    {{ toYaml .Values.nginxBuildTriggers | nindent 4 }}
 ---
 
 kind: DeploymentConfig

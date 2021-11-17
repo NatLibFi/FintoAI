@@ -76,8 +76,8 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - tail -f /logs/nginx-access.log | python /opt/app-root/src/import_logs.py
-              --url=***REMOVED***
-              --idsite=15
+              --url={{ .Values.matomoServerUrl }}
+              --idsite={{ .Values.matomoSiteId}}
               --token-auth $(MATOMO-TOKEN)
               --enable-http-errors
               --enable-http-redirects
