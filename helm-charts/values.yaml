@@ -28,3 +28,5 @@ annifResources:
 
 matomoServerUrl: https://tilasto.lib.helsinki.fi
 matomoSiteId: "15"  # TODO Change to prod id when deploying for real
+# TODO Increase storage when project quota allows
+logsStorage : 100Mi
