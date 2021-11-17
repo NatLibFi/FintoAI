@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: annif-app
-  name: annif-app
+  name: {{ .Values.instance }}-annif-app
 spec:
   selector:
     matchLabels:
@@ -33,6 +33,7 @@ spec:
               # TODO: Switch to readOnly, if model syncing method allows.
               #readOnly: true
       volumes:
+        # TODO: Separate volumes for each instance
         - name: model-data
           persistentVolumeClaim:
             claimName: model-data

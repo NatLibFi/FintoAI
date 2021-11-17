@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: logs
+  name: {{ .Values.instance }}-logs
 spec:
   accessModes:
     - ReadWriteOnce

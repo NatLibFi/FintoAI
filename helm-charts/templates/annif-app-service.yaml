@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: annif-app
+  name: {{ .Values.instance }}-annif-app
 spec:
   selector:
     app: annif-app

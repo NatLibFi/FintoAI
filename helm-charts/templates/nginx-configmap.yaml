@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nginx-conf
+  name: {{ .Values.instance }}-nginx-conf
 data:
   http-context.conf: |-
     client_max_body_size 5M;
@@ -12,7 +12,7 @@ data:
     access_log /logs/nginx-access.log matomo;
 
     upstream annif-app {
-        server annif-app:8000;
+        server {{ .Values.instance }}-annif-app:8000;
     }
   server-context.conf: |-
     location /v1/ {
