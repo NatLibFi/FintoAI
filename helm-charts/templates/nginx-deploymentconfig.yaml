@@ -1,0 +1,60 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: {{ .Values.instance }}-nginx
+  labels:
+    app: {{ .Values.instance }}-nginx
+spec:
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - {{ .Values.instance }}-nginx
+        from:
+          kind: ImageStreamTag
+          name: '{{ .Values.instance }}-nginx:latest'
+    - type: ConfigChange
+  replicas: 1
+  selector:
+    app: {{ .Values.instance }}-nginx
+    deploymentconfig: {{ .Values.instance }}-nginx
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.instance }}-nginx
+        deploymentconfig: {{ .Values.instance }}-nginx
+    spec:
+      containers:
+        - name: {{ .Values.instance }}-nginx
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/annif/{{ .Values.instance }}-nginx:latest
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /index.html
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /opt/app-root/etc/nginx.d/http-context.conf
+              subPath: http-context.conf
+            - name: nginx-conf
+              mountPath: /opt/app-root/etc/nginx.default.d/server-context.conf
+              subPath: server-context.conf
+            - name: logs
+              mountPath: /logs
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+        - name: logs
+          persistentVolumeClaim:
+            claimName: logs
+            readOnly: False

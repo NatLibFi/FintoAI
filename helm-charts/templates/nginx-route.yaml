@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: annif
+  labels:
+    type: external
+spec:
+  host: {{ .Values.host}}
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: nginx
+  wildcardPolicy: None

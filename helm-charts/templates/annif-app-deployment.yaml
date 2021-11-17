@@ -1,14 +1,3 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: annif-app
-spec:
-  selector:
-    app: annif-app
-  ports:
-  - port: 8000
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,16 +37,3 @@ spec:
           persistentVolumeClaim:
             claimName: model-data
             readOnly: true
----
-
-# TODO Include this PVC?
-#kind: PersistentVolumeClaim
-#apiVersion: v1
-#metadata:
-#  name: model-data
-#spec:
-#  accessModes:
-#    - ReadWriteOnce
-#  resources:
-#    requests:
-#      storage: 25Gi
