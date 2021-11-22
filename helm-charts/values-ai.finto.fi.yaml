@@ -1,9 +1,9 @@
-# Default values for annif-helm.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 instance: ai-finto-fi
 contextDir: /ai.finto.fi
+# TODO: Switch host to ai.finto.fi
 host: ai.finto.fi.ext.ocp-kk-test-0.k8s.it.helsinki.fi
 
 # TODO: Unpin version for dev instance by changing to "latest"?

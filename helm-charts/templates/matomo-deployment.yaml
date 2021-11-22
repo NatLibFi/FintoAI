@@ -31,6 +31,7 @@ spec:
               --track-http-method true
               --recorder-max-payload-size=10 -
           env:
+            # Secret is managed in OpenShift webUI
             - name: MATOMO-TOKEN
               valueFrom:
                 secretKeyRef:
