@@ -9,6 +9,7 @@ spec:
     matchLabels:
       app: annif-app
   strategy:
+    # TODO: Switch to type: Rolling if there's enough memory for two simultaneously runnig apps
     type: Recreate
   template:
     metadata:
