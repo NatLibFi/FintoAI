@@ -34,8 +34,7 @@ spec:
               # TODO: Switch to readOnly, if model syncing method allows.
               #readOnly: true
       volumes:
-        # TODO: Separate volumes for each instance
         - name: model-data
           persistentVolumeClaim:
-            claimName: model-data
+            claimName: {{ .Values.instance }}-model-data
             readOnly: true

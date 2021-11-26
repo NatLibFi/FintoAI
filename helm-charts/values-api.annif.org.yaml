@@ -19,12 +19,12 @@ nginxBuildTriggers:
   #  imageChange: {}
   - type: ConfigChange
 
-
 annifVersion: "0.52"
 annifResources:
   limits:
     cpu: 1
     memory: 26Gi
+annifModelDataStorage: 25Gi
 
 matomoServerUrl: ***REMOVED***
 matomoSiteId: "15"  # TODO Change to prod id when deploying for real
