@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.instance }}-matomo-log-analytics
   labels:
     app: matomo-log-analytics
+    app.kubernetes.io/instance: {{ .Values.instance }}
 spec:
   replicas: 1
   selector:
@@ -13,6 +14,7 @@ spec:
     metadata:
       labels:
         app: matomo-log-analytics
+        app.kubernetes.io/instance: {{ .Values.instance }}
     spec:
       containers:
         - name: matomo-log-analytics

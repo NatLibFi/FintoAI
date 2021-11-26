@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: annif-app
+    app.kubernetes.io/instance: {{ .Values.instance }}
   name: {{ .Values.instance }}-annif-app
 spec:
   selector:
@@ -15,6 +16,7 @@ spec:
     metadata:
       labels:
         app: annif-app
+        app.kubernetes.io/instance: {{ .Values.instance }}
     spec:
       containers:
         - image: quay.io/natlibfi/annif:{{ .Values.annifVersion }}

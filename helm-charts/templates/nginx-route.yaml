@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.instance }}
   labels:
     type: external
+    app.kubernetes.io/instance: {{ .Values.instance }}
 spec:
   host: {{ .Values.host}}
   port:
