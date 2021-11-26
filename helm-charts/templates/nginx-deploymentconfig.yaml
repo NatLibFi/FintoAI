@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.instance }}-nginx
   labels:
     app: {{ .Values.instance }}-nginx
+    app.kubernetes.io/instance: {{ .Values.instance }}
 spec:
   triggers:
     - type: ImageChange
@@ -24,6 +25,7 @@ spec:
       labels:
         app: {{ .Values.instance }}-nginx
         deploymentconfig: {{ .Values.instance }}-nginx
+        app.kubernetes.io/instance: {{ .Values.instance }}
     spec:
       containers:
         - name: {{ .Values.instance }}-nginx
