@@ -17,7 +17,7 @@ spec:
       containers:
         - name: matomo-log-analytics
           image: >-
-            image-registry.openshift-image-registry.svc:5000/annif/matomo-log-analytics:latest
+            image-registry.openshift-image-registry.svc:5000/annif/{{ .Values.instance }}-matomo-log-analytics:latest
           command: ["/bin/sh", "-c"]
           args:
             - tail -f /logs/nginx-access.log | python /opt/app-root/src/import_logs.py
