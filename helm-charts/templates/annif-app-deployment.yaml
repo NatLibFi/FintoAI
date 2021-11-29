@@ -19,7 +19,7 @@ spec:
         app.kubernetes.io/instance: {{ .Values.instance }}
     spec:
       containers:
-        - image: quay.io/natlibfi/annif:{{ .Values.annifVersion }}
+        - image: quay.io/natlibfi/annif:{{ .Values.annif.version }}
           command: ["gunicorn", "annif:create_app()", "--bind", "0.0.0.0:8000", "--timeout", "600"]
           livenessProbe:
             exec:
@@ -29,7 +29,7 @@ spec:
             periodSeconds: 15
           name: annif-app
           resources:
-            {{ toYaml .Values.annifResources | nindent 12 }}
+            {{ toYaml .Values.annif.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /annif-projects
               name: model-data

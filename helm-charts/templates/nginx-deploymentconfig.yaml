@@ -1,4 +1,4 @@
-kind: DeploymentConfig
+kind: DeploymentConfig  # TODO Switch to Deployment?
 apiVersion: apps.openshift.io/v1
 metadata:
   name: {{ .Values.instance }}-nginx
