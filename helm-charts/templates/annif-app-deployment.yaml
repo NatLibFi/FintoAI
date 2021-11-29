@@ -4,6 +4,7 @@ metadata:
   labels:
     app: annif-app
     app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/version: {{ .Values.annif.version | quote }}
   name: {{ .Values.instance }}-annif-app
 spec:
   selector:
@@ -17,6 +18,7 @@ spec:
       labels:
         app: annif-app
         app.kubernetes.io/instance: {{ .Values.instance }}
+        app.kubernetes.io/version: {{ .Values.annif.version | quote }}
     spec:
       containers:
         - image: quay.io/natlibfi/annif:{{ .Values.annif.version }}

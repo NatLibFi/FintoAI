@@ -5,6 +5,7 @@ metadata:
   labels:
     app: {{ .Values.instance }}-nginx
     app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/version: {{ .Values.nginx.version | quote }}
 spec:
   triggers:
     - type: ImageChange
@@ -26,6 +27,7 @@ spec:
         app: {{ .Values.instance }}-nginx
         deploymentconfig: {{ .Values.instance }}-nginx
         app.kubernetes.io/instance: {{ .Values.instance }}
+        app.kubernetes.io/version: {{ .Values.nginx.version | quote }}
     spec:
       containers:
         - name: {{ .Values.instance }}-nginx
