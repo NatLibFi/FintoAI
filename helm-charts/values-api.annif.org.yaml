@@ -19,7 +19,7 @@ nginxBuildTriggers:
   #  imageChange: {}
   - type: ConfigChange
 
-annifVersion: "0.52"
+annifVersion: '0.55'
 annifResources:
   limits:
     cpu: 1
