@@ -2,31 +2,37 @@
 # Declare variables to be passed into your templates.
 
 instance: ai-finto-fi
-contextDir: /ai.finto.fi
 # TODO: Switch host to ai.finto.fi
 host: ai.finto.fi.ext.ocp-kk-test-0.k8s.it.helsinki.fi
 
-# TODO: Unpin version for dev instance by changing to "latest"?
-nginxVersion: "1.18-ubi8"
-# Triggers for automatic builds are not in place for prod instance.
-# To manually start a build: "oc start-build ai-finto-fi-nginx"
-nginxBuildTriggers:
-  #- type: GitHub
-  #  github:
-  #    secretReference:
-  #      name: ai-finto-fi-github-webhook-secret
-  #- type: ImageChange
-  #  imageChange: {}
-  - type: ConfigChange
+nginx:
+  version: '1.18'  # TODO Update, but why isn't tag 1.20 found?
+  baseImage: 'ubi8'  # Is this needed at all?
+  git:
+    uri: 'https://github.com/NatLibFi/Annif.git'
+    ref: 'api-instances'
+  contextDir: '/ai.finto.fi'
+  # Triggers for automatic builds are not in place for prod instance.
+  # To manually start a build: "oc start-build ai-finto-fi-nginx"
+  buildTriggers:
+    #- type: GitHub
+    #  github:
+    #    secretReference:
+    #      name: ai-finto-fi-github-webhook-secret
+    #- type: ImageChange
+    #  imageChange: {}
+    - type: ConfigChange
+  # TODO Increase storage when project quota allows
+  logsStorage : 100Mi
 
-annifVersion: '0.55'
-annifResources:
-  limits:
-    cpu: 1
-    memory: 26Gi
-annifModelDataStorage: 25Gi
+annif:
+  version: '0.55'
+  resources:
+    limits:
+      cpu: 1
+      memory: 26Gi
+  modelDataStorage: 25Gi
 
-matomoServerUrl: ***REMOVED***
-matomoSiteId: "15"  # TODO Change to prod id when deploying for real
-# TODO Increase storage when project quota allows
-logsStorage : 100Mi
+matomo:
+  serverUrl: '***REMOVED***'
+  siteId: '15'  # TODO Change to prod id when deploying for real

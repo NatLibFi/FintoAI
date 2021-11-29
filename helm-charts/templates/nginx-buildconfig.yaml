@@ -11,16 +11,15 @@ spec:
       from:
         kind: ImageStreamTag
         namespace: openshift
-        name: 'nginx:{{ .Values.nginxVersion }}'
+        name: 'nginx:{{ .Values.nginx.version }}-{{ .Values.nginx.baseImage }}'
   source:
     type: Git
     git:
-      uri: 'https://github.com/NatLibFi/Annif.git'
-      ref: api-instances
-    contextDir: {{ .Values.contextDir }}
+      {{ toYaml .Values.nginx.git | nindent 6 }}
+    contextDir: {{ .Values.nginx.contextDir }}
   output:
     to:
       kind: ImageStreamTag
       name: '{{ .Values.instance }}-nginx:latest'
   triggers:
-    {{ toYaml .Values.nginxBuildTriggers | nindent 4 }}
+    {{ toYaml .Values.nginx.buildTriggers | nindent 4 }}
