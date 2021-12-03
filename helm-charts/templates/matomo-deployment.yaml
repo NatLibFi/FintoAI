@@ -3,17 +3,18 @@ apiVersion: apps/v1
 metadata:
   name: {{ .Values.instance }}-matomo-log-analytics
   labels:
-    app: matomo-log-analytics
+    app.kubernetes.io/name: matomo-log-analytics
     app.kubernetes.io/instance: {{ .Values.instance }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: matomo-log-analytics
+      app.kubernetes.io/name: matomo-log-analytics
+      app.kubernetes.io/instance: {{ .Values.instance }}
   template:
     metadata:
       labels:
-        app: matomo-log-analytics
+        app.kubernetes.io/name: matomo-log-analytics
         app.kubernetes.io/instance: {{ .Values.instance }}
     spec:
       # TODO Add init-containers to clear logs?

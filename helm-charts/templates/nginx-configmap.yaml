@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.instance }}-nginx-conf
   labels:
+    app.kubernetes.io/name: nginx
     app.kubernetes.io/instance: {{ .Values.instance }}
 data:
   http-context.conf: |-
@@ -13,15 +14,15 @@ data:
                       '"$http_user_agent"';
     access_log /logs/nginx-access.log matomo;
 
-    upstream annif-app {
-        server {{ .Values.instance }}-annif-app:8000;
+    upstream annif {
+        server {{ .Values.instance }}-annif:8000;
     }
   server-context.conf: |-
     location /v1/ {
-        proxy_pass http://annif-app;
+        proxy_pass http://annif;
     }
     location ~ \/v1/projects\/([^/]*)\/analyze$ {
-        proxy_pass http://annif-app/v1/projects/$1/suggest;
+        proxy_pass http://annif/v1/projects/$1/suggest;
     }
     location ~ \/v1/projects\/([^/]*)\/learn$ {
         deny  all;

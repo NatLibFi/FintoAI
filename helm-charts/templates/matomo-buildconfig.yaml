@@ -4,7 +4,7 @@ metadata:
   annotations:
   name: {{ .Values.instance }}-matomo-log-analytics
   labels:
-    app: matomo-log-analytics
+    app.kubernetes.io/name: matomo-log-analytics
     app.kubernetes.io/instance: {{ .Values.instance }}
 spec:
   output:

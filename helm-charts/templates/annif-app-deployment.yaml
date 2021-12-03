@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: annif-app
+    app.kubernetes.io/name: annif
     app.kubernetes.io/instance: {{ .Values.instance }}
     app.kubernetes.io/version: {{ .Values.annif.version | quote }}
-  name: {{ .Values.instance }}-annif-app
+  name: {{ .Values.instance }}-annif
 spec:
   selector:
     matchLabels:
-      app: annif-app
+      app.kubernetes.io/name: annif
+      app.kubernetes.io/instance: {{ .Values.instance }}
   strategy:
     # TODO: Switch to type: Rolling if there's enough memory for two simultaneously runnig apps
     type: Recreate
   template:
     metadata:
       labels:
-        app: annif-app
+        app.kubernetes.io/name: annif
         app.kubernetes.io/instance: {{ .Values.instance }}
-        app.kubernetes.io/version: {{ .Values.annif.version | quote }}
     spec:
       containers:
         - image: quay.io/natlibfi/annif:{{ .Values.annif.version }}
@@ -29,7 +29,7 @@ spec:
             failureThreshold: 3
             initialDelaySeconds: 600
             periodSeconds: 15
-          name: annif-app
+          name: annif
           resources:
             {{ toYaml .Values.annif.resources | nindent 12 }}
           volumeMounts:

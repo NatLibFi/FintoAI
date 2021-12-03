@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Values.instance }}
 spec:
   selector:
-    app: {{ .Values.instance }}-nginx
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/instance: {{ .Values.instance }}
   ports:
   - port: 8080
