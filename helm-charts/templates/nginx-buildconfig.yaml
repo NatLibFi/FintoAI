@@ -3,6 +3,7 @@ apiVersion: build.openshift.io/v1
 metadata:
   name: {{ .Values.instance }}-nginx
   labels:
+    app.kubernetes.io/name: nginx
     app.kubernetes.io/instance: {{ .Values.instance }}
 spec:
   strategy:

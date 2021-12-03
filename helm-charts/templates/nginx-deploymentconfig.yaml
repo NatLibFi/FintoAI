@@ -3,7 +3,7 @@ apiVersion: apps.openshift.io/v1
 metadata:
   name: {{ .Values.instance }}-nginx
   labels:
-    app: {{ .Values.instance }}-nginx
+    app.kubernetes.io/name: nginx
     app.kubernetes.io/instance: {{ .Values.instance }}
     app.kubernetes.io/version: {{ .Values.nginx.version | quote }}
 spec:
@@ -19,13 +19,13 @@ spec:
     - type: ConfigChange
   replicas: 1
   selector:
-    app: {{ .Values.instance }}-nginx
+    app.kubernetes.io/name: nginx
     deploymentconfig: {{ .Values.instance }}-nginx
   template:
     metadata:
       labels:
-        app: {{ .Values.instance }}-nginx
         deploymentconfig: {{ .Values.instance }}-nginx
+        app.kubernetes.io/name: nginx
         app.kubernetes.io/instance: {{ .Values.instance }}
         app.kubernetes.io/version: {{ .Values.nginx.version | quote }}
     spec:
