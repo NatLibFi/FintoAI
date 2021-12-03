@@ -16,6 +16,7 @@ spec:
         app: matomo-log-analytics
         app.kubernetes.io/instance: {{ .Values.instance }}
     spec:
+      # TODO Add init-containers to clear logs?
       containers:
         - name: matomo-log-analytics
           image: >-
@@ -23,8 +24,8 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - tail -f /logs/nginx-access.log | python /opt/app-root/src/import_logs.py
-              --url={{ .Values.matomoServerUrl }}
-              --idsite={{ .Values.matomoSiteId}}
+              --url={{ .Values.matomo.serverUrl }}
+              --idsite={{ .Values.matomo.siteId}}
               --token-auth $(MATOMO-TOKEN)
               --enable-http-errors
               --enable-http-redirects
