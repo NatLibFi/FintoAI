@@ -57,9 +57,7 @@ spec:
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - {{ .Values.instance }}-nginx
+              matchLabels:
+                app.kubernetes.io/name: nginx
+                app.kubernetes.io/instance: {{ .Values.instance }}
             topologyKey: kubernetes.io/hostname
