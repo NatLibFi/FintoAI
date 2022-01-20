@@ -52,3 +52,14 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.instance }}-logs
             readOnly: True
+      # Matomo script needs to be run on the same node as nginx:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ .Values.instance }}-nginx
+            topologyKey: kubernetes.io/hostname
