@@ -9,8 +9,8 @@ nginx:
   version: '1.18'  # TODO Update, but why isn't tag 1.20 found?
   baseImage: 'ubi8'  # Is this needed at all?
   git:
-    uri: 'https://github.com/NatLibFi/Annif.git'
-    ref: 'api-instances'
+    uri: 'https://github.com/NatLibFi/FintoAI.git'
+    ref: 'master'
   contextDir: '/ai.finto.fi'
   # Triggers for automatic builds are not in place for prod instance.
   # To manually start a build: "oc start-build ai-finto-fi-nginx"
