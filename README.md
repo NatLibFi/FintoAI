@@ -1,3 +1,5 @@
+<img src="https://annif.org/static/img/FintoAI-RGB.svg" width="150">
+
 ## This repository contains files used for [Finto AI service](https://ai.finto.fi/)
 
 The components of the service are combined in a Docker Stack, which is set up using Portainer GUI. 
