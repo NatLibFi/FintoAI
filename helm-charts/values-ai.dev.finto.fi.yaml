@@ -1,0 +1,37 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+instance: ai-dev-finto-fi
+# TODO: Switch host to ai.finto.fi
+host: ai.dev.finto.fi.ext.ocp-kk-test-0.k8s.it.helsinki.fi
+timezone: "Europe/Helsinki"
+
+nginx:
+  version: '1.20'
+  baseImage: 'ubi8'
+  git:
+    uri: 'https://github.com/NatLibFi/FintoAI.git'
+    ref: 'master'
+  contextDir: '/ai.finto.fi'
+  buildTriggers:
+    - type: GitHub
+      github:
+       secretReference:
+         name: ai-finto-fi-github-webhook-secret
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  # TODO Increase storage when project quota allows
+  logsStorage : 100Mi
+
+annif:
+  version: '0.55.1-ocp'
+  resources:
+    limits:
+      cpu: 1
+      memory: 26Gi
+  modelDataStorage: 25Gi
+
+matomo:
+  serverUrl: 'https://tilasto.lib.helsinki.fi'
+  siteId: '15'  # TODO Change to prod id when deploying for real
