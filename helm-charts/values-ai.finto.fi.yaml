@@ -4,6 +4,7 @@
 instance: ai-finto-fi
 # TODO: Switch host to ai.finto.fi
 host: ai.finto.fi.ext.ocp-kk-test-0.k8s.it.helsinki.fi
+timezone: "Europe/Helsinki"
 
 nginx:
   version: '1.18'  # TODO Update, but why isn't tag 1.20 found?

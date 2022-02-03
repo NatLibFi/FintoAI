@@ -54,6 +54,9 @@ spec:
               subPath: server-context.conf
             - name: logs
               mountPath: /logs
+          env:
+            - name: TZ
+              value: {{ .Values.timezone }}
       volumes:
         - name: nginx-conf
           configMap:
