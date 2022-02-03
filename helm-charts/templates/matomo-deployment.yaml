@@ -35,6 +35,8 @@ spec:
               --track-http-method true
               --recorder-max-payload-size=10 -
           env:
+            - name: TZ
+              value: {{ .Values.timezone }}
             # Secret is managed in OpenShift webUI
             - name: MATOMO-TOKEN
               valueFrom:
