@@ -4,7 +4,7 @@
 
 Finto AI suggests subjects for a given text. It's based on [Annif](https://annif.org), a tool for automated subject indexing. Finto AI is also an API service that can be integrated to other systems.
 
-This repository contains files used for the service. The service is run on OpenShift Container Platform (OCP) instance.
+This repository contains files used for the service. The service is run on OpenShift Container Platform (OCP) cluster.
 
 # Service components
 
@@ -12,16 +12,19 @@ This repository contains files used for the service. The service is run on OpenS
 - NGINX proxy server also serving the webpage
 - [Matomo log-analytics](https://github.com/natlibfi/matomo-log-analytics) gathering usage statistics
 
+## Logging
+
+Cluster-level log service is Kibana. TODO: Dashboards for components.
+
 # Service deployment
 
 OpenShift CLI and [Helm CLI](https://helm.sh/docs/intro/install/) applications (`oc` and `helm`) are needed.
-You also need to be logged in to the OCP cluster with the `oc`, see the [IT Center instructions](https://wiki.helsinki.fi/display/SO/Tiken+konttialusta).
+You also need to be logged in to the OCP test or production cluster with the `oc`, see the [IT Center instructions](https://wiki.helsinki.fi/display/SO/Tiken+konttialusta).
 
-A service instance is deployed using helm-charts. The `templates/` directory
-contains the common resource definition files, and the values files
-(`values-ai.finto.fi.yaml` and `values-ai.dev.finto.fi.yaml`)
+A service instance is deployed using helm-charts in the `helm-charts/` directory. The `helm-charts/templates/` subdirectory
+contains the common resource definition files, and the files `values-ai.finto.fi.yaml` and `values-ai.dev.finto.fi.yaml`
 contain the configurations that are specific for the test and production
-instances (named `ai-finto-fi` and `ai-dev-finto-fi`).
+instances (named `ai-dev-finto-fi` and `ai-finto-fi`).
 
 The command to install or update the test instance, with all the components, is
 
@@ -54,7 +57,7 @@ This builds and deploys a new nginx image that includes the (updated) content fr
 `ai.finto.fi/` of this repository. For the test instance a webhook trigger starts builds
 automatically for every push to the repository.
 
-# Useful oc commands
+# Useful `oc` commands
 
 Show the status of the project
 
@@ -67,6 +70,10 @@ List the pods of the project
 List the pods of the test instance using a label selector (build/deploy pods are excluded)
 
     oc get pods -l app.kubernetes.io/instance=ai-dev-finto-fi
+
+List all resources of the test instance
+
+    oc get all -l app.kubernetes.io/instance=ai-dev-finto-fi
 
 Follow logs from the pods of the test instance
 
