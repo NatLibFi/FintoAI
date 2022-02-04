@@ -2,7 +2,8 @@
 
 # NOTE: THIS IS WIP
 
-Finto AI suggests subjects for a given text. It's based on [Annif](https://annif.org), a tool for automated subject indexing. Finto AI is also an API service that can be integrated to other systems.
+Finto AI suggests subjects for a given text. It's based on [Annif](https://annif.org), a tool for automated subject indexing.
+Finto AI is also an API service that can be integrated to other systems.
 
 This repository contains files used for the service. The service is run on OpenShift Container Platform (OCP) cluster.
 
@@ -14,7 +15,7 @@ This repository contains files used for the service. The service is run on OpenS
 
 ## Logging
 
-Cluster-level log service is Kibana. TODO: Dashboards for components.
+Cluster-level log service is Kibana. There is a dashboard with a panels for the logs from each component.
 
 # Service deployment
 
@@ -65,7 +66,7 @@ Show the status of the project
 
 List the pods of the project
 
-    oc get pods
+    oc get pods  # --show-labels
 
 List the pods of the test instance using a label selector (build/deploy pods are excluded)
 
