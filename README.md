@@ -1,4 +1,4 @@
-[![name](https://annif.org/static/img/FintoAI-RGB.svg)](https://ai.finto.fi)
+[<img src="https://raw.githubusercontent.com/NatLibFi/FintoAI/master/ai.finto.fi/static/img/finto-ai-social.png" width="200">](https://ai.finto.fi)
 
 # NOTE: THIS IS WIP
 
