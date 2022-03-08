@@ -67,6 +67,19 @@ function showResults(data) {
     });
 }
 
+function readFile(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            $('#text').val(reader.result)
+            getSuggestions();
+            enableButton();
+        };
+        // reader.readAsDataURL(input.files[0]);  // TODO For PDF files?
+        reader.readAsText(input.files[0]);
+    }
+}
+
 function copyUriToClipboard(buttonItem) {
     var uri = buttonItem.parentElement.parentElement.childNodes[1].href;
     navigator.clipboard.writeText(uri);
