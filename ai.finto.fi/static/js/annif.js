@@ -67,17 +67,21 @@ function showResults(data) {
     });
 }
 
-function readFile(input) {
+function readInput(input) {
     if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            $('#text').val(reader.result)
-            getSuggestions();
-            enableButton();
-        };
-        // reader.readAsDataURL(input.files[0]);  // TODO For PDF files?
-        reader.readAsText(input.files[0]);
+        readFile(input.files[0])
     }
+}
+
+function readFile(file) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        $('#text').val(reader.result)
+        getSuggestions();
+        enableButton();
+    };
+    // reader.readAsDataURL(input.files[0]);  // TODO For PDF files?
+    reader.readAsText(file);
 }
 
 function copyUriToClipboard(buttonItem) {
@@ -167,7 +171,31 @@ function enableButton() {
     $('#get-suggestions').prop("disabled", false);
 }
 
+function dragEnter(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function dragOver(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function dragDrop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    readFile(dt.files[0])
+}
+
 $(document).ready(function() {
+
+    let dropzone = document.getElementById("text");
+    dropzone.addEventListener("dragenter", dragEnter, false);
+    dropzone.addEventListener("dragover", dragOver, false);
+    dropzone.addEventListener("drop", dragDrop, false);
+
     $('#no-results').hide();
     $('#results-spinner').hide();
     clearResults();
