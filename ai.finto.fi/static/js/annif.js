@@ -74,6 +74,7 @@ function readInput(input) {
 }
 
 function readFile(file) {
+    clearResults();
     const reader = new FileReader();
     reader.onload = function() {
         $('#text').val(reader.result)
