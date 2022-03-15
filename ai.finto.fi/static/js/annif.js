@@ -74,15 +74,40 @@ function readInput(input) {
 }
 
 function readFile(file) {
-    clearResults();
+    $('#text').val('');
+    $('#suggestions').show();
+    $('#results').empty();
+    $('#results-spinner').show();
     const reader = new FileReader();
-    reader.onload = function() {
-        $('#text').val(reader.result)
-        getSuggestions();
-        enableButton();
-    };
-    // reader.readAsDataURL(input.files[0]);  // TODO For PDF files?
-    reader.readAsText(file);
+    const extension = file.name.split('.').pop().toLowerCase();
+    if (extension === 'txt') {
+        reader.onload = function() {
+            $('#text').val(reader.result);
+            getSuggestions();
+            $('#text').focus();
+            enableButton();
+        }
+        reader.readAsText(file);
+    } else {
+        reader.onload = function() {
+            const base64String = btoa(reader.result);
+            $.ajax({
+                url: 'http://localhost:8080/textract',
+                method: 'POST',
+                data: JSON.stringify({
+                    'content': base64String,
+                    'file_type': extension
+                }),
+                success: function(data) {
+                    $('#text').val(data.text);
+                    getSuggestions();
+                    $('#text').focus();
+                    enableButton();
+                }
+            });
+        }
+        reader.readAsBinaryString(file);
+    }
 }
 
 function copyUriToClipboard(buttonItem) {
