@@ -197,9 +197,22 @@ function enableButton() {
     $('#get-suggestions').prop("disabled", false);
 }
 
+var draggingLevelCounter = 0;
+
 function dragEnter(e) {
     e.stopPropagation();
     e.preventDefault();
+    document.getElementById("file-upload").classList.add('dragging');
+    draggingLevelCounter++;
+}
+
+function dragLeave(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    draggingLevelCounter--;
+    if (draggingLevelCounter == 0) {
+        document.getElementById("file-upload").classList.remove('dragging');
+    }
 }
 
 function dragOver(e) {
@@ -213,6 +226,8 @@ function dragDrop(e) {
     const dt = e.dataTransfer;
     const files = dt.files;
     readFile(dt.files[0])
+    draggingLevelCounter = 0;
+    document.getElementById("file-upload").classList.remove('dragging');
 }
 
 $(document).ready(function() {
@@ -220,6 +235,7 @@ $(document).ready(function() {
     let dropzone = document.getElementById("file-upload");
     dropzone.addEventListener("dragenter", dragEnter, false);
     dropzone.addEventListener("dragover", dragOver, false);
+    dropzone.addEventListener("dragleave", dragLeave, false);
     dropzone.addEventListener("drop", dragDrop, false);
 
     $('#no-results').hide();
