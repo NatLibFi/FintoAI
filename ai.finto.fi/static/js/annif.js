@@ -217,7 +217,7 @@ function dragDrop(e) {
 
 $(document).ready(function() {
 
-    let dropzone = document.getElementById("text");
+    let dropzone = document.getElementById("file-upload");
     dropzone.addEventListener("dragenter", dragEnter, false);
     dropzone.addEventListener("dragover", dragOver, false);
     dropzone.addEventListener("drop", dragDrop, false);

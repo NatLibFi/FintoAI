@@ -84,6 +84,18 @@
       #footer {
         padding: 8px 20px;
       }
+      #file-upload {
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border: 4px dashed #009cca;
+      }
+      #button-file-upload {
+        background-color: #009cca;
+        color: black;
+        border: none;
+        border-radius: 0px;
+      }
       #text-box {
         background-color: white;
         border-top: 2px solid black;
@@ -104,7 +116,7 @@
         padding: 2px 7px;
       }
       
-      #text-box #button-file-upload {
+      #text-box {
           top: 0px;
           bottom: 5px;
           right: 15px;
@@ -280,20 +292,26 @@
 
 <div class="container">
 
-
   <div class="row mb-md-2">
     <div class="col-md-8 pr-md-3">
+
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div id="file-upload">
+            <div>
+              Vedä ja pudota tiedosto tai
+            </div>
+            <button id="button-file-upload" type="button" class="btn btn-primary"
+              onclick="$('.file-upload-input').trigger('click' )">Selaa</button>
+            <input class="file-upload-input" type='file' onchange="readInput(this);" style="display:none"/>
+          </div>
+        </div>
+      </div>
+
       <div id="text-box" class="form-group widget">
         <div class="row">
           <div class="col-md-6">
             <label for="text" data-i18n="text-box-label-text">Kuvailtava teksti</label><br>
-          </div>
-          <div class="col-md-6">
-            <div class="file-upload">
-              <button id="button-file-upload" type="button" class="btn"
-               onclick="$('.file-upload-input').trigger('click' )">Lataa tiedosto ja ehdota</button>
-              <input class="file-upload-input" type='file' onchange="readInput(this);" style="display:none"/>
-            </div>
           </div>
         </div>
 
