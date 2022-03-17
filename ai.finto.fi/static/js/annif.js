@@ -213,7 +213,7 @@ var draggingLevelCounter = 0;
 function dragEnter(e) {
     e.stopPropagation();
     e.preventDefault();
-    document.getElementById("file-upload").classList.add('dragging');
+    document.getElementById("dropzone").classList.add('dragging');
     draggingLevelCounter++;
 }
 
@@ -222,7 +222,7 @@ function dragLeave(e) {
     e.preventDefault();
     draggingLevelCounter--;
     if (draggingLevelCounter == 0) {
-        document.getElementById("file-upload").classList.remove('dragging');
+        document.getElementById("dropzone").classList.remove('dragging');
     }
 }
 
@@ -238,12 +238,12 @@ function dragDrop(e) {
     const files = dt.files;
     readFile(dt.files[0])
     draggingLevelCounter = 0;
-    document.getElementById("file-upload").classList.remove('dragging');
+    document.getElementById("dropzone").classList.remove('dragging');
 }
 
 $(document).ready(function() {
 
-    let dropzone = document.getElementById("file-upload");
+    let dropzone = document.getElementById("dropzone");
     dropzone.addEventListener("dragenter", dragEnter, false);
     dropzone.addEventListener("dragover", dragOver, false);
     dropzone.addEventListener("dragleave", dragLeave, false);
