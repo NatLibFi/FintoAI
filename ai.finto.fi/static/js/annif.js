@@ -74,18 +74,12 @@ function readInput(input) {
 }
 
 function readFile(file) {
-    $('#text').val('');
-    $('#suggestions').show();
-    $('#results').empty();
-    $('#results-spinner').show();
+    prepareUpload();
     const reader = new FileReader();
     const extension = file.name.split('.').pop().toLowerCase();
     if (extension === 'txt') {
         reader.onload = function() {
-            $('#text').val(reader.result);
-            getSuggestions();
-            $('#text').focus();
-            enableButton();
+            finishUpload(file.name, reader.result);
         }
         reader.readAsText(file);
     } else {
@@ -99,15 +93,32 @@ function readFile(file) {
                     'file_type': extension
                 }),
                 success: function(data) {
-                    $('#text').val(data.text);
-                    getSuggestions();
-                    $('#text').focus();
-                    enableButton();
+                    finishUpload(file.name, data.text);
                 }
             });
         }
         reader.readAsBinaryString(file);
     }
+}
+
+function prepareUpload() {
+    $('#uploaded-file').hide();
+    $('#text').val('');
+    $('#suggestions').show();
+    $('#results').empty();
+    $('#upload-spinner').show();
+    $('#results-spinner').show();
+    $('#text').prop('placeholder', 'Ladataan...');
+}
+
+function finishUpload(fileName, text) {
+    $('#uploaded-file').html(fileName);
+    $('#uploaded-file').show();
+    $('#text').val(text);
+    $('#upload-spinner').hide();
+    $('#text').prop('placeholder', 'Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia');
+    getSuggestions();
+    enableButton();
 }
 
 function copyUriToClipboard(buttonItem) {
@@ -238,8 +249,10 @@ $(document).ready(function() {
     dropzone.addEventListener("dragleave", dragLeave, false);
     dropzone.addEventListener("drop", dragDrop, false);
 
+    $('#uploaded-file').hide();
     $('#no-results').hide();
     $('#results-spinner').hide();
+    $('#upload-spinner').hide();
     clearResults();
     if ($.trim($('#text').val()) != "") {
         enableButton();
@@ -254,6 +267,7 @@ $(document).ready(function() {
     });
     $('#button-clear').click(function() {
         $('#text').val('');
+        $('#uploaded-file').hide();
         $('#text').focus();
         clearResults();
         disableButton();
