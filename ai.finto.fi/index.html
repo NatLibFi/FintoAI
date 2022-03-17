@@ -88,18 +88,22 @@
         padding: 15px;
         margin-bottom: 20px;
         background-color: #ffffff;
-        border: 4px dashed #009cca;
-        min-height: 180px;
+        border: 3px dashed #009cca;
+        min-height: 140px;
       }
       .dragging {
         background-color: #dff5f9 !important;
       }
       #button-file-upload {
-        margin-bottom: 15px;
+        margin-left: 5px;
+        margin-bottom: 5px;
         background-color: #009cca;
         color: black;
         border: none;
         border-radius: 0px;
+      }
+      #uploaded-file {
+        margin-top: 15px;
       }
       #text-box {
         background-color: white;
@@ -304,15 +308,15 @@
         <div class="col-md-12 text-center">
           <div id="file-upload">
             <div>
-              Vedä ja pudota tiedosto <br> tai
-            </div>
-            <div>
+              <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+              <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="30"></img>
+              Vedä ja pudota tiedosto tänne tai
               <button id="button-file-upload" type="button" class="btn btn-primary"
-              onclick="$('.file-upload-input').trigger('click' )">Selaa</button>
+              onclick="$('.file-upload-input').trigger('click' )">Valitse tiedosto</button>
               <input class="file-upload-input" type='file' onchange="readInput(this);" style="display:none"/>
             </div>
             <div id="upload-spinner" class="spinner-border m-1" role="status">
-                <span class="sr-only">Loading...</span>
+              <span class="sr-only">Loading...</span>
             </div>
             <div id="uploaded-file">
             </div>
