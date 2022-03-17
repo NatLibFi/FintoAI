@@ -84,12 +84,19 @@
       #footer {
         padding: 8px 20px;
       }
-      #file-upload {
+      #file-upload-box {
+        font-weight: bold;
         padding: 15px;
         margin-bottom: 20px;
         background-color: #ffffff;
+        border-top: 2px solid black;
+        min-height: 220px;
+      }
+      #dropzone {
+        margin-top: 10px;
+        padding: 10px;
         border: 3px dashed #009cca;
-        min-height: 140px;
+        font-weight: normal;
       }
       .dragging {
         background-color: #dff5f9 !important;
@@ -106,7 +113,9 @@
         border-radius: 0px;
       }
       #uploaded-file {
-        margin-top: 15px;
+        font-weight: normal;
+        padding-top: 25px;
+        margin-bottom: -20px;
       }
       #text-box {
         background-color: white;
@@ -307,21 +316,32 @@
   <div class="row mb-md-2">
     <div class="col-md-8 pr-md-3">
 
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <div id="file-upload">
-            <div>
+      <div class="row" style="margin: auto">
+        <div id="file-upload-box" class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              Kuvailtava tiedosto<br>
+            </div>
+          </div>
+          <div class="row" style="margin: auto">
+            <div id="dropzone" class="col-md-12 text-center">
               <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
-              <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="30"></img>
+              <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="40"></img>
               Vedä ja pudota tiedosto tänne tai
               <button id="button-file-upload" type="button" class="btn btn-primary"
               onclick="$('.file-upload-input').trigger('click' )">Valitse tiedosto</button>
+              <!-- TODO: Which formats to support? -->
+              <br>Tuetut tiedostomuodot: .pdf, .doc, etc.
               <input class="file-upload-input" type='file' onchange="readInput(this);" style="display:none"/>
             </div>
-            <div id="upload-spinner" class="spinner-border m-1" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-            <div id="uploaded-file">
+            <div class="row" style="margin: auto">
+              <div class="col-md-12 text-center">
+                <div id="upload-spinner" class="spinner-border mt-3" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <div id="uploaded-file">
+                </div>
+              </div>
             </div>
           </div>
         </div>
