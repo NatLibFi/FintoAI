@@ -74,7 +74,7 @@ function readInput(input) {
 }
 
 function readFile(file) {
-    prepareUpload();
+    prepareUpload(file.name);
     const reader = new FileReader();
     const extension = file.name.split('.').pop().toLowerCase();
     if (extension === 'txt') {
@@ -101,8 +101,8 @@ function readFile(file) {
     }
 }
 
-function prepareUpload() {
-    $('#uploaded-file').hide();
+function prepareUpload(fileName) {
+    $('.custom-file-label').html(fileName);
     $('#text').val('');
     $('#suggestions').show();
     $('#results').empty();
@@ -113,7 +113,6 @@ function prepareUpload() {
 
 function finishUpload(fileName, text) {
     $('#uploaded-file').html(fileName);
-    $('#uploaded-file').show();
     $('#text').val(text);
     $('#upload-spinner').hide();
     $('#text').prop('placeholder', 'Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia');
@@ -249,7 +248,6 @@ $(document).ready(function() {
     dropzone.addEventListener("dragleave", dragLeave, false);
     dropzone.addEventListener("drop", dragDrop, false);
 
-    $('#uploaded-file').hide();
     $('#no-results').hide();
     $('#results-spinner').hide();
     $('#upload-spinner').hide();
@@ -267,7 +265,7 @@ $(document).ready(function() {
     });
     $('#button-clear').click(function() {
         $('#text').val('');
-        $('#uploaded-file').hide();
+        $('.custom-file-label').html('Valitse tiedosto');
         $('#text').focus();
         clearResults();
         disableButton();
