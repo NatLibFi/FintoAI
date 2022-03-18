@@ -103,20 +103,24 @@
         outline-offset: -3px;
         outline: 4px dashed #009cca;
       }
-      #upload-spinner {
-        width: 50px;
-        height: 50px;
-      }
       .custom-file {
         margin: 15px;
       }
       .custom-file-label {
+        margin-left: 5%;
+        width: 80%;
         border-radius: 0;
       }
       .custom-file-label::after {
         content: 'Selaa';
         border-radius: 0;
         background: #009cca;
+      }
+      #upload-icon {
+        margin-right: -20px;
+      }
+      #upload-spinner {
+        margin-left: -20px;
       }
       #text-box {
         background-color: white;
@@ -327,35 +331,27 @@
           <div class="row" style="margin: auto">
             <div id="dropzone" class="col-md-12 text-center">
               <div class="row" style="margin: auto">
-                <div class="col-md-2 d-flex flex-wrap align-items-center">
+                <div class="col-md-3 d-flex align-items-center justify-content-center">
                   <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
-                  <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50"></img>
-                </div>
-                <div class="col-md-8 text-center">
-                  Vedä ja pudota tiedosto tänne tai
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" onchange="readInput(this);" id="button-file-upload">
-                    <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
-                    <!-- TODO: Which formats to support? -->
-                    <input class="file-upload-input" type='file' onchange="readInput(this);" style="display:none"/>
-                  </div>
-                  Tuetut tiedostomuodot: .pdf, .doc, etc.
-                </div>
-                <div class="col-md-2 d-flex flex-wrap align-items-center">
+                  <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon"></img>
                   <div id="upload-spinner" class="spinner-border mt-1" role="status">
                     <span class="sr-only">Loading...</span>
                   </div>
                 </div>
-               </div>
-              </div>
-            <!-- </div> -->
-            <!-- <div class="row" style="margin: auto">
-              <div class="col-md-12 text-center">
-                <div id="upload-spinner" class="spinner-border mt-3" role="status">
-                  <span class="sr-only">Loading...</span>
+                <div class="col-md-9">
+                  Vedä ja pudota tiedosto tänne tai
+                  <div>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" onchange="readInput(this);" id="button-file-upload">
+                      <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
+                      <input class="file-upload-input" type='file' onchange="readInput(this);" style="display:none"/>
+                    </div>
+                  </div>
+                  <!-- TODO: Which formats to support? -->
+                  Tuetut tiedostomuodot: .pdf, .doc, etc.
                 </div>
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>

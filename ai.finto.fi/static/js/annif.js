@@ -106,15 +106,17 @@ function prepareUpload(fileName) {
     $('#text').val('');
     $('#suggestions').show();
     $('#results').empty();
-    $('#upload-spinner').show();
+    $('#upload-spinner').css('visibility', 'visible');
+    $('#upload-icon').css('visibility', 'hidden');
     $('#results-spinner').show();
     $('#text').prop('placeholder', 'Ladataan...');
 }
 
 function finishUpload(fileName, text) {
     $('#uploaded-file').html(fileName);
+    $('#upload-spinner').css('visibility', 'hidden');
+    $('#upload-icon').css('visibility', 'visible');
     $('#text').val(text);
-    $('#upload-spinner').hide();
     $('#text').prop('placeholder', 'Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia');
     getSuggestions();
     enableButton();
@@ -250,7 +252,7 @@ $(document).ready(function() {
 
     $('#no-results').hide();
     $('#results-spinner').hide();
-    $('#upload-spinner').hide();
+    $('#upload-spinner').css('visibility', 'hidden');
     clearResults();
     if ($.trim($('#text').val()) != "") {
         enableButton();
