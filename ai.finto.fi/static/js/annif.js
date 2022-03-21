@@ -89,7 +89,7 @@ function readFile(file) {
                 url: 'http://localhost:8080/textract',
                 method: 'POST',
                 data: JSON.stringify({
-                    'content': base64String,
+                    'file_data': base64String,
                     'file_type': extension
                 }),
                 success: function(data) {
