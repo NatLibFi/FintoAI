@@ -73,10 +73,16 @@ function readInput(input) {
     }
 }
 
+const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'epub', 'pptx'];
+
 function readFile(file) {
-    prepareUpload(file.name);
     const reader = new FileReader();
     const extension = file.name.split('.').pop().toLowerCase();
+    if (!supportedFormats.includes(extension)) {
+        alert('Tiedostomuotoa ei tuettu: ' + extension);
+        return;
+    }
+    prepareUpload(file.name);
     if (extension === 'txt') {
         reader.onload = function() {
             finishUpload(file.name, reader.result);
@@ -243,6 +249,8 @@ $(document).ready(function() {
     $('#no-results').hide();
     $('#results-spinner').hide();
     $('#upload-spinner').css('visibility', 'hidden');
+    $('#supported-file-formats').append(supportedFormats.map(i => '.' + i).join(', '));
+    $('#button-file-upload').attr('accept', supportedFormats.map(i => '.' + i));
     clearResults();
     if ($.trim($('#text').val()) != "") {
         enableButton();
