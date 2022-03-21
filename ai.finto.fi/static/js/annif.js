@@ -209,46 +209,36 @@ function enableButton() {
     $('#get-suggestions').prop("disabled", false);
 }
 
-var draggingLevelCounter = 0;
-
-function dragEnter(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    document.getElementById("dropzone").classList.add('dragging');
-    draggingLevelCounter++;
-}
-
-function dragLeave(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    draggingLevelCounter--;
-    if (draggingLevelCounter == 0) {
-        document.getElementById("dropzone").classList.remove('dragging');
-    }
-}
-
-function dragOver(e) {
-    e.stopPropagation();
-    e.preventDefault();
-}
-
-function dragDrop(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    const dt = e.dataTransfer;
-    const files = dt.files;
-    readFile(dt.files[0])
-    draggingLevelCounter = 0;
-    document.getElementById("dropzone").classList.remove('dragging');
-}
-
 $(document).ready(function() {
-
-    let dropzone = document.getElementById("dropzone");
-    dropzone.addEventListener("dragenter", dragEnter, false);
-    dropzone.addEventListener("dragover", dragOver, false);
-    dropzone.addEventListener("dragleave", dragLeave, false);
-    dropzone.addEventListener("drop", dragDrop, false);
+    let draggingLevelCounter = 0;
+    $('#dropzone').on({
+        dragenter: function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            draggingLevelCounter++;
+            $("#dropzone").addClass('dragging');
+        },
+        dragleave: function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            draggingLevelCounter--;
+            if (draggingLevelCounter == 0) {
+                $("#dropzone").removeClass('dragging');
+            }
+        },
+        dragover: function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        drop: function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            draggingLevelCounter = 0;
+            $("#dropzone").removeClass('dragging');
+            const files = e.originalEvent.dataTransfer.files;
+            readFile(files[0]);
+        }
+    });
 
     $('#no-results').hide();
     $('#results-spinner').hide();
