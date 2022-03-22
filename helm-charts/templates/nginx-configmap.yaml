@@ -31,5 +31,6 @@ data:
         deny  all;
     }
     location /textract {
+        client_max_body_size 50M;
         proxy_pass http://textract;
     }
