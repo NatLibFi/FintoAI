@@ -78,6 +78,10 @@ function readInput(input) {
 const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'epub', 'pptx'];
 
 function readFile(file) {
+    if (file.size > 50000000) {
+        alert('Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB.');
+        return;
+    }
     const reader = new FileReader();
     const extension = file.name.split('.').pop().toLowerCase();
     if (!supportedFormats.includes(extension)) {
