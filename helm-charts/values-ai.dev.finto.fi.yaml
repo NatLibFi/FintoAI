@@ -11,7 +11,7 @@ nginx:
   baseImage: 'ubi8'
   git:
     uri: 'https://github.com/NatLibFi/FintoAI.git'
-    ref: 'master'
+    ref: 'file-upload'  # TODO Switch to master
   contextDir: '/ai.finto.fi'
   buildTriggers:
     - type: GitHub
