@@ -23,7 +23,7 @@ spec:
             image-registry.openshift-image-registry.svc:5000/annif/{{ .Values.instance }}-textract:latest
           livenessProbe:
             exec:
-              command: ["curl", "--fail", "localhost:8001/{{ .Values.textract.port }}"]
+              command: ["curl", "--fail", "localhost:{{ .Values.textract.port }}/status"]
             failureThreshold: 3
             initialDelaySeconds: 5
             periodSeconds: 15
