@@ -1,7 +1,7 @@
 cluster: 'test'  # TODO Drop this when hostname is transferred
 nginx:
   git:
-    ref: 'update-2022'
+    ref: 'url-extraction'  # TODO Switch to main
     uri: 'https://github.com/NatLibFi/FintoAI.git'
   contextDir: '/ai.finto.fi'
 
