@@ -1,10 +1,12 @@
 
 if (window.location.protocol.startsWith('http')) {
-    // http or https - use API of current Annif instance
-    var base_url = '/v1/'; 
+    // http or https - use APIs of current Annif and textract instances
+    var annif_base_url = '/v1/';
+    var textract_url = '/textract';
 } else {
-    // local development case - use Finto AI dev API
-    var base_url = 'https://ai.dev.finto.fi/v1/';
+    // local development case - use Finto AI dev API and textract running on localhost via port 8001
+    var annif_base_url = 'https://ai.dev.finto.fi/v1/';
+    var textract_url = 'http://localhost:8001/textract';
 }
 var projects = {};
 
@@ -15,7 +17,7 @@ function clearResults() {
 
 function fetchProjects() {
     $.ajax({
-        url: base_url + "projects",
+        url: annif_base_url + "projects",
         method: 'GET',
         success: function(data) {
             $('#project').empty();
@@ -92,7 +94,7 @@ function readFile(file) {
         reader.onload = function() {
             const base64String = btoa(reader.result);
             $.ajax({
-                url: 'http://localhost:8080/textract',
+                url: textract_url,
                 method: 'POST',
                 data: JSON.stringify({
                     'file_data': base64String,
@@ -160,7 +162,7 @@ function getSuggestions() {
     $('#suggestions').show();
     $('#results-spinner').show();
     $.ajax({
-        url: base_url + "projects/" + $('#project').val() + "/suggest",
+        url: annif_base_url + "projects/" + $('#project').val() + "/suggest",
         method: 'POST',
         data: {
           text: $('#text').val(),

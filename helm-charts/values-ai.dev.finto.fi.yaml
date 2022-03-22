@@ -6,4 +6,7 @@ nginx:
   contextDir: '/ai.finto.fi'
 
 matomo:
-  siteId: '15'
+  siteId: '15'  # TODO Change to prod id when deploying for real
+
+textract:
+  port: 8001
