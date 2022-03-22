@@ -1,0 +1,31 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  annotations:
+    name: {{ .Values.instance }}-textract
+  labels:
+    app.kubernetes.io/name: textract
+    app.kubernetes.io/instance: {{ .Values.instance }}
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: '{{ .Values.instance }}-textract:latest'
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/NatLibFi/textract-docker.git'
+      ref: 'update-for-fintoai'  # TODO Switch to main
+  strategy:
+    type: Docker                      
+  triggers:
+    - type: GitHub
+      github:
+        secretReference:
+          name: textract-github-webhook-secret
+    - type: ConfigChange
+    - type: ImageChange
+      imageChange: {}
+  runPolicy: Serial

@@ -17,6 +17,9 @@ data:
     upstream annif {
         server {{ .Values.instance }}-annif:8000;
     }
+    upstream textract {
+        server {{ .Values.instance }}-textract:{{ .Values.textract.port }};
+    }
   server-context.conf: |-
     location /v1/ {
         proxy_pass http://annif;
@@ -26,4 +29,7 @@ data:
     }
     location ~ \/v1/projects\/([^/]*)\/learn$ {
         deny  all;
+    }
+    location /textract {
+        proxy_pass http://textract;
     }
