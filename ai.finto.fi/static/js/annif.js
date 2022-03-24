@@ -82,7 +82,6 @@ function readFile(file) {
         alert('Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB.');
         return;
     }
-    const reader = new FileReader();
     const extension = file.name.split('.').pop().toLowerCase();
     if (!supportedFormats.includes(extension)) {
         alert('Tiedostomuotoa ei tuettu: ' + extension);
@@ -90,26 +89,24 @@ function readFile(file) {
     }
     prepareUpload(file.name);
     if (extension === 'txt') {
+        const reader = new FileReader();
         reader.onload = function() {
             finishUpload(file.name, reader.result);
         }
         reader.readAsText(file);
     } else {
-        reader.onload = function() {
-            const base64String = btoa(reader.result);
-            $.ajax({
-                url: textract_url,
-                method: 'POST',
-                data: JSON.stringify({
-                    'file_data': base64String,
-                    'file_type': extension
-                }),
-                success: function(data) {
-                    finishUpload(file.name, data.text);
-                }
-            });
-        }
-        reader.readAsBinaryString(file);
+        let uploadFileFormData = new FormData();
+        uploadFileFormData.append('file', file);
+        $.ajax({
+            url: textract_url,
+            method: 'POST',
+            data: uploadFileFormData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                finishUpload(file.name, data.text);
+            }
+        });
     }
 }
 
