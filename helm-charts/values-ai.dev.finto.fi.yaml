@@ -38,3 +38,6 @@ matomo:
 
 textract:
   port: 8001
+  resources:
+    limits:
+      cpu: 1
