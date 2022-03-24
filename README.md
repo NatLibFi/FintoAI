@@ -20,7 +20,9 @@ Cluster-level log service is Kibana. There is a dashboard with a panels for the 
 # Service deployment
 
 OpenShift CLI and [Helm CLI](https://helm.sh/docs/intro/install/) applications (`oc` and `helm`) are needed.
-You also need to be logged in to the OCP test or production cluster with the `oc`, see the [IT Center instructions](https://wiki.helsinki.fi/display/SO/Tiken+konttialusta).
+You also need to be logged in to the OCP test or production cluster with the `oc`:
+
+    oc login -u <username> https://api.<OCP_cluster_domain>:6443
 
 A service instance is deployed using helm-charts in the `helm-charts/` directory. The `helm-charts/templates/` subdirectory
 contains the common resource definition files, and the files `values-ai.finto.fi.yaml` and `values-ai.dev.finto.fi.yaml`
@@ -45,8 +47,6 @@ After the data transfer the updated models are put in use by restarting the
 Annif pod:
 
     oc rollout restart deployment/ai-dev-finto-fi-annif
-
-TODO: Dedicated Docker image with rsync?
 
 ## Webpage updates
 
