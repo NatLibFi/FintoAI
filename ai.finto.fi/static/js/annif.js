@@ -87,11 +87,11 @@ function readFile(file) {
         alert('Tiedostomuotoa ei tuettu: ' + extension);
         return;
     }
-    prepareUpload(file.name);
+    prepareExtraction(file.name);
     if (extension === 'txt') {
         const reader = new FileReader();
         reader.onload = function() {
-            finishUpload(file.name, reader.result);
+            finishExtraction(file.name, reader.result);
         }
         reader.readAsText(file);
     } else {
@@ -104,13 +104,13 @@ function readFile(file) {
             contentType: false,
             processData: false,
             success: function(data) {
-                finishUpload(file.name, data.text);
+                finishExtraction(file.name, data.text);
             }
         });
     }
 }
 
-function prepareUpload(fileName) {
+function prepareExtraction(fileName) {
     $('.custom-file-label').html(fileName);
     $('#text').val('');
     $('#suggestions').show();
@@ -121,8 +121,7 @@ function prepareUpload(fileName) {
     $('#text').prop('placeholder', 'Ladataan...');
 }
 
-function finishUpload(fileName, text) {
-    $('#uploaded-file').html(fileName);
+function finishExtraction(fileName, text) {
     $('#upload-spinner').css('visibility', 'hidden');
     $('#upload-icon').css('visibility', 'visible');
     $('#text').val(text);
