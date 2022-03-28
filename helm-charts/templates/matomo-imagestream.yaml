@@ -1,6 +1,6 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: {{ .Values.instance }}-matomo-log-analytics
+  name: {{ .Release.Name }}-matomo-log-analytics
   labels:
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

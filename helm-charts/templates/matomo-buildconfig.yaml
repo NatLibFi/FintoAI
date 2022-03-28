@@ -2,15 +2,15 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   annotations:
-  name: {{ .Values.instance }}-matomo-log-analytics
+  name: {{ .Release.Name }}-matomo-log-analytics
   labels:
     app.kubernetes.io/name: matomo-log-analytics
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: '{{ .Values.instance }}-matomo-log-analytics:latest'
+      name: '{{ .Release.Name }}-matomo-log-analytics:latest'
   successfulBuildsHistoryLimit: 5
   failedBuildsHistoryLimit: 5
   strategy:

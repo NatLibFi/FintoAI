@@ -1,10 +1,10 @@
 kind: DeploymentConfig  # TODO Switch to Deployment?
 apiVersion: apps.openshift.io/v1
 metadata:
-  name: {{ .Values.instance }}-nginx
+  name: {{ .Release.Name }}-nginx
   labels:
     app.kubernetes.io/name: nginx
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Values.nginx.version | quote }}
 spec:
   triggers:
@@ -12,27 +12,27 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - {{ .Values.instance }}-nginx
+          - {{ .Release.Name }}-nginx
         from:
           kind: ImageStreamTag
-          name: '{{ .Values.instance }}-nginx:latest'
+          name: '{{ .Release.Name }}-nginx:latest'
     - type: ConfigChange
   replicas: 1
   selector:
     app.kubernetes.io/name: nginx
-    deploymentconfig: {{ .Values.instance }}-nginx
+    deploymentconfig: {{ .Release.Name }}-nginx
   template:
     metadata:
       labels:
-        deploymentconfig: {{ .Values.instance }}-nginx
+        deploymentconfig: {{ .Release.Name }}-nginx
         app.kubernetes.io/name: nginx
-        app.kubernetes.io/instance: {{ .Values.instance }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/version: {{ .Values.nginx.version | quote }}
     spec:
       containers:
-        - name: {{ .Values.instance }}-nginx
+        - name: {{ .Release.Name }}-nginx
           image: >-
-            image-registry.openshift-image-registry.svc:5000/annif/{{ .Values.instance }}-nginx:latest
+            image-registry.openshift-image-registry.svc:5000/annif/{{ .Release.Name }}-nginx:latest
           readinessProbe:
             httpGet:
               scheme: HTTP
@@ -60,8 +60,8 @@ spec:
       volumes:
         - name: nginx-conf
           configMap:
-            name: {{ .Values.instance }}-nginx-conf
+            name: {{ .Release.Name }}-nginx-conf
         - name: logs
           persistentVolumeClaim:
-            claimName: {{ .Values.instance }}-logs
+            claimName: {{ .Release.Name }}-logs
             readOnly: False
