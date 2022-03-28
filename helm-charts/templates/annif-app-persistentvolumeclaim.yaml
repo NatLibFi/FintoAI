@@ -4,6 +4,8 @@ metadata:
   name: {{ .Release.Name }}-model-data
   labels:
     app.kubernetes.io/instance: {{ .Release.Name }}
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
   accessModes:
     - ReadWriteOnce
