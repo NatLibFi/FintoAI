@@ -1,9 +1,9 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ .Values.instance }}-model-data
+  name: {{ .Release.Name }}-model-data
   labels:
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   accessModes:
     - ReadWriteOnce

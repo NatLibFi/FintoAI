@@ -1,9 +1,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-instance: ai-dev-finto-fi
-# TODO: Switch host to ai.finto.fi
-host: ai.dev.finto.fi.ext.ocp-kk-test-0.k8s.it.helsinki.fi
 timezone: "Europe/Helsinki"
 
 nginx:

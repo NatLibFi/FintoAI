@@ -1,10 +1,10 @@
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: {{ .Values.instance }}-nginx
+  name: {{ .Release.Name }}-nginx
   labels:
     app.kubernetes.io/name: nginx
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   strategy:
     type: Source
@@ -21,6 +21,6 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: '{{ .Values.instance }}-nginx:latest'
+      name: '{{ .Release.Name }}-nginx:latest'
   triggers:
     {{ toYaml .Values.nginx.buildTriggers | nindent 4 }}

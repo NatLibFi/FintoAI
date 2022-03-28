@@ -1,15 +1,16 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ .Values.instance }}
+  name: {{ .Release.Name }}
   labels:
     type: external
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Namespace }}
 spec:
-  host: {{ .Values.host}}
+  # TODO: Drop the OCP name part
+  host: {{ .Release.Name | replace "-" "."}}.ext.ocp-kk-test-0.k8s.it.helsinki.fi
   port:
     targetPort: 8080
   to:
     kind: Service
-    name: {{ .Values.instance }}-nginx
+    name: {{ .Release.Name }}-nginx
   wildcardPolicy: None

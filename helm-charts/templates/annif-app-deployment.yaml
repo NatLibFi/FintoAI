@@ -3,14 +3,14 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/name: annif
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Values.annif.version | quote }}
-  name: {{ .Values.instance }}-annif
+  name: {{ .Release.Name }}-annif
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: annif
-      app.kubernetes.io/instance: {{ .Values.instance }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   strategy:
     # TODO: Switch to type: Rolling if there's enough memory for two simultaneously runnig apps
     type: Recreate
@@ -18,7 +18,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: annif
-        app.kubernetes.io/instance: {{ .Values.instance }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
         - name: annif
@@ -43,5 +43,5 @@ spec:
       volumes:
         - name: model-data
           persistentVolumeClaim:
-            claimName: {{ .Values.instance }}-model-data
+            claimName: {{ .Release.Name }}-model-data
             readOnly: true

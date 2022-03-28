@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.instance }}-nginx-conf
+  name: {{ .Release.Name }}-nginx-conf
   labels:
     app.kubernetes.io/name: nginx
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
 data:
   http-context.conf: |-
     client_max_body_size 5M;
@@ -15,7 +15,7 @@ data:
     access_log /logs/nginx-access.log matomo;
 
     upstream annif {
-        server {{ .Values.instance }}-annif:8000;
+        server {{ .Release.Name }}-annif:8000;
     }
   server-context.conf: |-
     location /v1/ {
