@@ -113,11 +113,11 @@ function readFile(file) {
 function prepareExtraction(fileName) {
     $('.custom-file-label').html(fileName);
     $('#text').val('');
-    $('#suggestions').show();
+    $('#suggestions').hide();
     $('#results').empty();
+    disableButton();
     $('#upload-spinner').css('visibility', 'visible');
     $('#upload-icon').css('visibility', 'hidden');
-    $('#results-spinner').show();
     $('#text').prop('placeholder', 'Ladataan...');
 }
 
@@ -126,8 +126,8 @@ function finishExtraction(fileName, text) {
     $('#upload-icon').css('visibility', 'visible');
     $('#text').val(text);
     $('#text').prop('placeholder', 'Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia');
-    getSuggestions();
     enableButton();
+    $('#get-suggestions').focus();
 }
 
 function copyUriToClipboard(buttonItem) {
