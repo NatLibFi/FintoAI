@@ -2,15 +2,15 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   annotations:
-  name: {{ .Values.instance }}-textract
+  name: {{ .Release.Name }}-textract
   labels:
     app.kubernetes.io/name: textract
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: '{{ .Values.instance }}-textract:latest'
+      name: '{{ .Release.Name }}-textract:latest'
   successfulBuildsHistoryLimit: 5
   failedBuildsHistoryLimit: 5
   source:

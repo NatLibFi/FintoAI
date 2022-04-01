@@ -1,6 +1,6 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: {{ .Values.instance }}-textract
+  name: {{ .Release.Name }}-textract
   labels:
-    app.kubernetes.io/instance: {{ .Values.instance }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
