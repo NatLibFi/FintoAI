@@ -17,7 +17,7 @@ spec:
     type: Git
     git:
       uri: 'https://github.com/NatLibFi/textract-docker.git'
-      ref: 'update-for-fintoai'  # TODO Switch to main
+      ref: 'main'
   strategy:
     type: Docker                      
   triggers:

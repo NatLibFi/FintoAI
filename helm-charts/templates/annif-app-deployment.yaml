@@ -35,8 +35,6 @@ spec:
           volumeMounts:
             - mountPath: /annif-projects
               name: model-data
-              # TODO: Switch to readOnly, if model syncing method allows.
-              #readOnly: true
           env:
             - name: TZ
               value: {{ .Values.timezone }}
