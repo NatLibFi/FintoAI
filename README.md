@@ -9,9 +9,10 @@ This repository contains files used for the service. The service is run on OpenS
 
 # Service components
 
-- Annif application
+- [Annif](https://github.com/NatLibFi/Annif) application
 - NGINX proxy server also serving the webpage
-- [Matomo log-analytics](https://github.com/natlibfi/matomo-log-analytics) gathering usage statistics
+- [Textract](https://github.com/NatLibFi/textract-docker) for text extraction from various document formats
+- [Matomo log-analytics](https://github.com/NatLibFi/matomo-log-analytics) for gathering usage statistics
 
 ## Logging
 
@@ -46,17 +47,14 @@ Annif pod:
 
     oc rollout restart deployment/ai-dev-finto-fi-annif
 
-TODO: Dedicated Docker image with rsync?
-
 ## Webpage updates
 
 Webpage content can be updated by running
 
     oc start-build ai-dev-finto-fi-nginx
 
-This builds and deploys a new nginx image that includes the (updated) content from
-`ai.finto.fi/` of this repository. For the test instance a webhook trigger starts builds
-automatically for every push to the repository.
+This builds and deploys a new NGINX image that includes the (updated) content from
+`ai.finto.fi/` of this repository. 
 
 # Useful `oc` commands
 
