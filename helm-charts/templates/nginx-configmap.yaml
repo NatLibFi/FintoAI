@@ -18,7 +18,7 @@ data:
         server {{ .Release.Name }}-annif:8000;
     }
     upstream textract {
-        server {{ .Values.instance }}-textract:{{ .Values.textract.port }};
+        server {{ .Release.Name }}-textract:{{ .Values.textract.port }};
     }
   server-context.conf: |-
     location /v1/ {
