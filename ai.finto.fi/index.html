@@ -104,9 +104,6 @@
         border-radius: 0;
         background: #009cca;
       }
-      #upload-icon {
-        margin-right: -20px;
-      }
       #upload-spinner {
         margin-left: -20px;
       }
@@ -121,19 +118,19 @@
       }
       .dropzone {
         padding: 10px;
+      }
+      .dropzone-border {
         border: 3px dashed #009cca;
+      }
+      .dropzone-border.dragging {
+        border: 3px solid transparent;
+        outline: 4px dashed #009cca;
+        outline-offset: -3px;
       }
       .dropzone.dragging {
         background-color: #dff5f9;
-        border: 3px solid transparent;
-        outline-offset: -3px;
-        outline: 4px dashed #009cca;
       }
-      #text.dropzone {
-        border: 1px solid #EBE9ED;
-        outline: none;
-      }
-      #text.dropzone.dragging {
+      #text.dragging {
         background-color: #dff5f9;
       }
       #text-box button {
@@ -145,6 +142,19 @@
         border: none;
         border-radius: 0px;
         padding: 2px 7px;
+      }
+      #text-background {
+        font-weight: normal;
+        position: absolute;
+        width: 500px;
+        max-width: 80%;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, 0);
+        opacity: 0.35;
+      }
+      #text-background.dragging {
+        opacity: 1.0;
       }
       #sidebar, #sidebar-tab { background-color: #dff5f9; }
       #sidebar-tabs { background-color: #bfeaf4;}
@@ -329,8 +339,6 @@
           <div class="row" style="margin: auto">
             <div class="row" style="margin: auto">
               <div class="col-md-3 d-flex align-items-center justify-content-center">
-                <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
-                <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon"></img>
                 <div id="upload-spinner" class="spinner-border mt-1" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
@@ -343,7 +351,6 @@
                     <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
                   </div>
                 </div>
-                <p id="supported-file-formats">Tuetut tiedostomuodot: </p>
               </div>
             </div>
           </div>
@@ -356,11 +363,16 @@
             <label for="text" data-i18n="text-box-label-text">Kuvailtava teksti</label><br>
           </div>
         </div>
-        <div id="text-box-wrapper" class="dropzone">
+        <div id="text-box-wrapper" class="dropzone dropzone-border">
           <textarea class="form-control dropzone" rows="20" name="text" id="text"
           data-i18n="[placeholder]text-box-placeholder"
           placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'></textarea>
           <button id="button-clear" type="button" class="btn btn-danger">&#x2715;</button>
+          <div id="text-background" class="dropzone">
+            <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+            <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon"></img>
+            <span id="supported-file-formats">Tuetut tiedostomuodot: </span>
+          </div>
         </div>
       </div>
     </div>

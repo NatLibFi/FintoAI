@@ -117,13 +117,12 @@ function prepareExtraction(fileName) {
     $('#results').empty();
     disableButton();
     $('#upload-spinner').css('visibility', 'visible');
-    $('#upload-icon').css('visibility', 'hidden');
     $('#text').prop('placeholder', 'Ladataan...');
+    $('#text-background').css('visibility', 'hidden');
 }
 
 function finishExtraction(fileName, text) {
     $('#upload-spinner').css('visibility', 'hidden');
-    $('#upload-icon').css('visibility', 'visible');
     $('#text').val(text);
     $('#text').prop('placeholder', 'Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia');
     enableButton();
@@ -269,10 +268,13 @@ $(document).ready(function() {
         $('#text').val('');
         $('.custom-file-label').html('Valitse tiedosto');
         $('#text').focus();
+        $('#text-background').css('visibility', 'visible');
         clearResults();
         disableButton();
     });
     $('#text').on("input", function() {
         enableButton();
+        $('#text-background').css('visibility', 'hidden');
+
     });
 });
