@@ -91,18 +91,6 @@
         background-color: #ffffff;
         border-top: 2px solid black;
       }
-      #dropzone {
-        margin-top: 10px;
-        padding: 10px;
-        border: 3px dashed #009cca;
-        font-weight: normal;
-      }
-      #dropzone.dragging {
-        background-color: #dff5f9 !important;
-        border: 3px solid transparent !important;
-        outline-offset: -3px;
-        outline: 4px dashed #009cca;
-      }
       .custom-file {
         margin: 15px;
       }
@@ -131,10 +119,27 @@
       #text-box-wrapper {
         position: relative;
       }
+      .dropzone {
+        padding: 10px;
+        border: 3px dashed #009cca;
+      }
+      .dropzone.dragging {
+        background-color: #dff5f9;
+        border: 3px solid transparent;
+        outline-offset: -3px;
+        outline: 4px dashed #009cca;
+      }
+      #text.dropzone {
+        border: 1px solid #EBE9ED;
+        outline: none;
+      }
+      #text.dropzone.dragging {
+        background-color: #dff5f9;
+      }
       #text-box button {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 20px;
+        right: 20px;
         background-color: #009cca;
         color: black;
         border: none;
@@ -322,25 +327,23 @@
             </div>
           </div>
           <div class="row" style="margin: auto">
-            <div id="dropzone" class="col-md-12 text-center">
-              <div class="row" style="margin: auto">
-                <div class="col-md-3 d-flex align-items-center justify-content-center">
-                  <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
-                  <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon"></img>
-                  <div id="upload-spinner" class="spinner-border mt-1" role="status">
-                    <span class="sr-only">Loading...</span>
+            <div class="row" style="margin: auto">
+              <div class="col-md-3 d-flex align-items-center justify-content-center">
+                <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+                <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon"></img>
+                <div id="upload-spinner" class="spinner-border mt-1" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+              <div class="col-md-9">
+                Vedä ja pudota tiedosto tänne tai
+                <div>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" onchange="readInput(this);" id="button-file-upload">
+                    <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
                   </div>
                 </div>
-                <div class="col-md-9">
-                  Vedä ja pudota tiedosto tänne tai
-                  <div>
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" onchange="readInput(this);" id="button-file-upload">
-                      <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
-                    </div>
-                  </div>
-                  <p id="supported-file-formats">Tuetut tiedostomuodot: </p>
-                </div>
+                <p id="supported-file-formats">Tuetut tiedostomuodot: </p>
               </div>
             </div>
           </div>
@@ -353,14 +356,13 @@
             <label for="text" data-i18n="text-box-label-text">Kuvailtava teksti</label><br>
           </div>
         </div>
-
-        <div id="text-box-wrapper">
-          <textarea class="form-control" rows="20" name="text" id="text"
+        <div id="text-box-wrapper" class="dropzone">
+          <textarea class="form-control dropzone" rows="20" name="text" id="text"
           data-i18n="[placeholder]text-box-placeholder"
           placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'></textarea>
           <button id="button-clear" type="button" class="btn btn-danger">&#x2715;</button>
         </div>
-     </div>
+      </div>
     </div>
 
     <div class="col-md-4 pl-md-2">

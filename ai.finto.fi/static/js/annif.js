@@ -219,19 +219,19 @@ function enableButton() {
 
 $(document).ready(function() {
     let draggingLevelCounter = 0;
-    $('#dropzone').on({
+    $('.dropzone').on({
         dragenter: function(e) {
             e.stopPropagation();
             e.preventDefault();
             draggingLevelCounter++;
-            $("#dropzone").addClass('dragging');
+            $(".dropzone").addClass('dragging');
         },
         dragleave: function(e) {
             e.stopPropagation();
             e.preventDefault();
             draggingLevelCounter--;
             if (draggingLevelCounter == 0) {
-                $("#dropzone").removeClass('dragging');
+                $(".dropzone").removeClass('dragging');
             }
         },
         dragover: function(e) {
@@ -242,7 +242,7 @@ $(document).ready(function() {
             e.stopPropagation();
             e.preventDefault();
             draggingLevelCounter = 0;
-            $("#dropzone").removeClass('dragging');
+            $(".dropzone").removeClass('dragging');
             const files = e.originalEvent.dataTransfer.files;
             readFile(files[0]);
         }
