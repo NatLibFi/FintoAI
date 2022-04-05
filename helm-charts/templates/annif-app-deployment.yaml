@@ -29,7 +29,7 @@ spec:
               command: ["curl", "--fail", "localhost:8000/v1/projects"]
             failureThreshold: 3
             initialDelaySeconds: 600
-            periodSeconds: 15
+            periodSeconds: 60
           resources:
             {{ toYaml .Values.annif.resources | nindent 12 }}
           volumeMounts:
