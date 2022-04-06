@@ -70,12 +70,23 @@ function showResults(data) {
 }
 
 function readInput(input) {
-    if (input.files && input.files[0]) {
-        readFile(input.files[0])
+    const files = input.files;
+    const url = input.getData('URL');
+    if (files && files[0]) {
+        readFile(files[0]);
+    } else if (url) {
+        readUrl(url);
     }
 }
 
 const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'epub', 'pptx'];
+
+function checkFormatSupport(extension) {
+    if (!supportedFormats.includes(extension)) {
+        alert('Tiedostomuotoa ei tuettu: ' + extension);
+        return;
+    }
+}
 
 function readFile(file) {
     if (file.size > 50000000) {
@@ -83,10 +94,7 @@ function readFile(file) {
         return;
     }
     const extension = file.name.split('.').pop().toLowerCase();
-    if (!supportedFormats.includes(extension)) {
-        alert('Tiedostomuotoa ei tuettu: ' + extension);
-        return;
-    }
+    checkFormatSupport(extension);
     prepareExtraction(file.name);
     if (extension === 'txt') {
         const reader = new FileReader();
@@ -110,8 +118,24 @@ function readFile(file) {
     }
 }
 
-function prepareExtraction(fileName) {
-    $('.custom-file-label').html(fileName);
+function readUrl(url) {
+    const plainUrl = url.split('?')[0];  // Remove possible parameters
+    const extension = plainUrl.split('.').pop().toLowerCase();
+    checkFormatSupport(extension);
+    prepareExtraction(plainUrl);
+    $.ajax({
+        url: textract_url + '-url',
+        method: 'POST',
+        dataType: 'json',
+        data: JSON.stringify({"file_url": plainUrl}),
+        success: function(data) {
+            finishExtraction(plainUrl, data.text);
+        }
+    });
+}
+
+function prepareExtraction(target) {
+    $('.custom-file-label').html(target);
     $('#text').val('');
     $('#suggestions').hide();
     $('#results').empty();
@@ -242,8 +266,7 @@ $(document).ready(function() {
             e.preventDefault();
             draggingLevelCounter = 0;
             $(".dropzone").removeClass('dragging');
-            const files = e.originalEvent.dataTransfer.files;
-            readFile(files[0]);
+            readInput(e.originalEvent.dataTransfer);
         }
     });
 
