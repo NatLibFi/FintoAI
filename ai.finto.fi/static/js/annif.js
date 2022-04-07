@@ -255,6 +255,7 @@ $(document).ready(function() {
     clearResults();
     if ($.trim($('#text').val()) != "") {
         enableButton();
+        $('#text-background').css('visibility', 'hidden');
     } else {
         disableButton();
     }
