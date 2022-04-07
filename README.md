@@ -55,8 +55,9 @@ Webpage content can be updated by running
 
     oc start-build ai-dev-finto-fi-nginx
 
-This builds and deploys a new NGINX image that includes the (updated) content from
-`ai.finto.fi/` of this repository. 
+This builds and deploys a new nginx image that includes the (updated) content from
+`ai.finto.fi/` of this repository (NGINX is deployed using 
+[DeploymentConfig](https://github.com/NatLibFi/FintoAI/blob/master/helm-charts/templates/nginx-deploymentconfig.yaml) with ImageChange trigger).
 
 # Useful `oc` commands
 
@@ -79,6 +80,11 @@ List all resources of the test instance
 Follow logs from the pods of the test instance
 
     oc logs -l app.kubernetes.io/instance=ai-dev-finto-fi -f  #--timestamps
+
+Follow logs from a build
+
+    oc logs build/<build_name> -f
+
 
 Get details of the pods of the test instance
 
