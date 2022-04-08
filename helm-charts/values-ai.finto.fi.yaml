@@ -1,3 +1,4 @@
+cluster: 'prod'  # TODO Drop this when hostname is transferred
 nginx:
   git:
     ref: 'main'

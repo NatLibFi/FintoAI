@@ -1,3 +1,4 @@
+cluster: 'test'  # TODO Drop this when hostname is transferred
 nginx:
   git:
     ref: 'update-2022'
