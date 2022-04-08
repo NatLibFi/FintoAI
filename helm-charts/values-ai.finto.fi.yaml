@@ -11,7 +11,7 @@ nginx:
   baseImage: 'ubi8'
   git:
     uri: 'https://github.com/NatLibFi/FintoAI.git'
-    ref: 'master'
+    ref: 'main'
   contextDir: '/ai.finto.fi'
   # Triggers for automatic builds are not in place for prod instance.
   # To manually start a build: "oc start-build ai-finto-fi-nginx"
