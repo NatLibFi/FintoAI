@@ -18,3 +18,9 @@ annif:
       cpu: 1
       memory: 26Gi
   modelDataStorage: 25Gi
+
+textract:
+  port: 8001
+  resources:
+    limits:
+      cpu: 1
