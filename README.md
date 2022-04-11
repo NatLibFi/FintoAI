@@ -57,7 +57,9 @@ Webpage content can be updated by running
 
 This builds and deploys a new nginx image that includes the (updated) content from
 `ai.finto.fi/` of this repository (NGINX is deployed using 
-[DeploymentConfig](https://github.com/NatLibFi/FintoAI/blob/master/helm-charts/templates/nginx-deploymentconfig.yaml) with ImageChange trigger).
+[DeploymentConfig](https://github.com/NatLibFi/FintoAI/blob/master/helm-charts/templates/nginx-deploymentconfig.yaml) with ImageChange trigger). 
+
+The `start-build` command can be used also to build new Textract and Matomo log-analytics images (source is fetched from GitHub for them too), but as their pods are controlled by Deployment, not DeploymentConfig with a trigger, the newly build images need to  be deployed manually with the `oc rollout restart` command.
 
 # Useful `oc` commands
 
