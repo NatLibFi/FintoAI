@@ -30,11 +30,11 @@ contains the common resource definition files, and the files `values-ai.finto.fi
 contain the configurations that are specific for the test and production
 instances (named `ai-dev-finto-fi` and `ai-finto-fi`).
 
-The command to install or update the test instance, with all the components, is
+The command to upgrade the test instance is
 
-    helm upgrade --install -f values-ai.dev.finto.fi.yaml ai-dev-finto-fi .
+    helm upgrade -f values-ai.dev.finto.fi.yaml ai-dev-finto-fi . 
 
-The necessary secrets are managed in the OCP web console.
+The necessary secrets are managed in the OCP web console. If a project does not exist yet, it (all the components) can be installed similarly with `helm install ...`.
 
 ## Model updates
 
