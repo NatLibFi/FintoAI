@@ -17,8 +17,8 @@ annif:
   resources:
     limits:
       cpu: 1
-      memory: 26Gi
-  modelDataStorage: 25Gi
+      memory: 32Gi
+  modelDataStorage: 30Gi
 
 matomo:
   serverUrl: '***REMOVED***'
