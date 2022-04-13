@@ -19,6 +19,3 @@ annif:
       cpu: 1
       memory: 26Gi
   modelDataStorage: 25Gi
-
-matomo:
-  serverUrl: '***REMOVED***'
