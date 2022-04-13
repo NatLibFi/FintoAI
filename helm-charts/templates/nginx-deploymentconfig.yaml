@@ -12,10 +12,19 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - {{ .Release.Name }}-nginx
+          - nginx
         from:
           kind: ImageStreamTag
           name: '{{ .Release.Name }}-nginx:latest'
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - matomo-log-analytics
+        from:
+          kind: ImageStreamTag
+          namespace: annif
+          name: '{{ .Release.Name }}-matomo-log-analytics:latest'
     - type: ConfigChange
   replicas: 1
   selector:
@@ -30,7 +39,8 @@ spec:
         app.kubernetes.io/version: {{ .Values.nginx.version | quote }}
     spec:
       containers:
-        - name: {{ .Release.Name }}-nginx
+
+        - name: nginx
           image: >-
             image-registry.openshift-image-registry.svc:5000/annif/{{ .Release.Name }}-nginx:latest
           readinessProbe:
@@ -57,11 +67,43 @@ spec:
           env:
             - name: TZ
               value: {{ .Values.timezone }}
+
+        - name: matomo-log-analytics
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/annif/{{ .Release.Name }}-matomo-log-analytics:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - tail -f /logs/nginx-access.log | python /opt/app-root/src/import_logs.py
+              --url=$(MATOMO-SERVER-URL)
+              --idsite={{ .Values.matomo.siteId}}
+              --token-auth $(MATOMO-TOKEN)
+              --enable-http-errors
+              --enable-http-redirects
+              --enable-static
+              --enable-bots
+              --track-http-method true
+              --recorder-max-payload-size=10 -
+          env:
+            - name: TZ
+              value: {{ .Values.timezone }}
+            # Secrets are managed in OpenShift webUI
+            - name: MATOMO-TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: matomo
+                  key: token
+            - name: MATOMO-SERVER-URL
+              valueFrom:
+                secretKeyRef:
+                  name: matomo
+                  key: server-url
+          volumeMounts:
+            - name: logs
+              mountPath: /logs
+
       volumes:
         - name: nginx-conf
           configMap:
             name: {{ .Release.Name }}-nginx-conf
         - name: logs
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-logs
-            readOnly: False
+          emptyDir:
