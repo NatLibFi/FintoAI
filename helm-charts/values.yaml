@@ -6,7 +6,6 @@ nginx:
   version: '1.20'
   baseImage: 'ubi8'
   # TODO Increase storage when project quota allows
-  logsStorage : 100Mi
   buildTriggers:
     - type: ImageChange
       imageChange: {}
