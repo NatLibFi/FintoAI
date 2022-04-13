@@ -25,7 +25,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - tail -f /logs/nginx-access.log | python /opt/app-root/src/import_logs.py
-              --url={{ .Values.matomo.serverUrl }}
+              --url=$(MATOMO-SERVER-URL)
               --idsite={{ .Values.matomo.siteId}}
               --token-auth $(MATOMO-TOKEN)
               --enable-http-errors
@@ -37,12 +37,17 @@ spec:
           env:
             - name: TZ
               value: {{ .Values.timezone }}
-            # Secret is managed in OpenShift webUI
+            # Secrets are managed in OpenShift webUI
             - name: MATOMO-TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: matomo-token
-                  key: matomo-token
+                  name: matomo
+                  key: token
+            - name: MATOMO-SERVER-URL
+              valueFrom:
+                secretKeyRef:
+                  name: matomo
+                  key: server-url
           ports:
             - containerPort: 8080
               protocol: TCP
