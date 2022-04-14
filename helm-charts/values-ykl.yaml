@@ -1,0 +1,9 @@
+cluster: 'test'  # TODO Drop this when hostname is transferred
+
+annif:
+  version: '0.57'
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+  modelDataStorage: 1Gi

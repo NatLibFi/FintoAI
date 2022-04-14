@@ -1,9 +1,0 @@
-cluster: 'prod'  # TODO Drop this when hostname is transferred
-nginx:
-  git:
-    uri: 'https://github.com/NatLibFi/FintoAI.git'
-    ref: 'api-annif-org'
-  contextDir: '/api.annif.org'
-
-matomo:
-  siteId: '14'  # TODO Change to prod id (=13) when deploying for real
