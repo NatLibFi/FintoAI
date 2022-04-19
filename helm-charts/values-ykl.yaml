@@ -1,3 +1,4 @@
+timezone: "Europe/Helsinki"
 cluster: 'test'  # TODO Drop this when hostname is transferred
 
 annif:
