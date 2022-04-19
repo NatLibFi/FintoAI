@@ -17,7 +17,7 @@ spec:
     type: Git
     git:
       uri: 'https://github.com/NatLibFi/textract-docker.git'
-      ref: 'main'
+      ref: 'url-extraction'  # TODO Switch
   strategy:
     type: Docker                      
   triggers:
