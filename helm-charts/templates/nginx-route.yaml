@@ -7,10 +7,16 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Namespace }}
 spec:
   # TODO: Drop the OCP name part
-  host: {{ .Release.Name | replace "-" "."}}.ext.ocp-kk-{{ .Values.cluster }}-0.k8s.it.helsinki.fi
+  host: {{ .Release.Name }}.ext.ocp-kk-{{ .Values.cluster }}-0.k8s.it.helsinki.fi
   port:
     targetPort: 8080
   to:
     kind: Service
     name: {{ .Release.Name }}-nginx
   wildcardPolicy: None
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  # key:  TODO Add secrets
+  # certificate:
+  # caCertificate:
