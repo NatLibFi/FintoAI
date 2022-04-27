@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Namespace }}
 spec:
   # TODO: Drop the OCP name part
-  host: annif-{{ .Release.Name }}.ext.ocp-kk-{{ .Values.cluster }}-0.k8s.it.helsinki.fi
+  host: {{ .Release.Name }}.ext.ocp-kk-{{ .Values.cluster }}-0.k8s.it.helsinki.fi
   port:
     targetPort: 8000
   to:
