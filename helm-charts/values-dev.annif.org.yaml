@@ -6,5 +6,5 @@ annif:
   resources:
     limits:
       cpu: 1
-      memory: 10Gi
+      memory: 20Gi
   modelDataStorage: 8Gi
