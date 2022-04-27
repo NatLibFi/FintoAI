@@ -2,9 +2,9 @@ timezone: "Europe/Helsinki"
 cluster: 'test'  # TODO Drop this when hostname is transferred
 
 annif:
-  version: '0.57'
+  version: 'latest'
   resources:
     limits:
       cpu: 1
       memory: 10Gi
-  modelDataStorage: 4Gi
+  modelDataStorage: 8Gi
