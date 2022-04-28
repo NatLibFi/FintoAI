@@ -6,8 +6,7 @@ metadata:
     type: external
     app.kubernetes.io/instance: {{ .Release.Namespace }}
 spec:
-  # TODO: Drop the OCP name part
-  host: {{ .Release.Name }}.ext.ocp-kk-{{ .Values.cluster }}-0.k8s.it.helsinki.fi
+  host: dev.annif.org
   port:
     targetPort: 8000
   to:
@@ -17,6 +16,3 @@ spec:
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
-  # key:  TODO Add secrets
-  # certificate:
-  # caCertificate:
