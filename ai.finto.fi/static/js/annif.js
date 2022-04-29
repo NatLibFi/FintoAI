@@ -69,6 +69,12 @@ function showResults(data) {
     });
 }
 
+function selectFile(input) {
+    const selectedFile = input.files[0];
+    $('.custom-file-label').html(selectedFile.name);
+    readFile(selectedFile);
+}
+
 function readInput(input) {
     const files = input.files;
     const url = input.getData('URL');
@@ -78,6 +84,10 @@ function readInput(input) {
         readUrl(url);
     }
 }
+
+    // $('#button-extract-text').prop("disabled", false);
+    // $('#button-extract-text').focus();
+
 
 const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'epub', 'pptx'];
 

@@ -84,21 +84,27 @@
       #footer {
         padding: 8px 20px;
       }
-      .custom-file {
-        margin: 15px;
+      .nav-tabs li {
+        border-top: 2px solid black;
       }
-      .custom-file-label {
-        margin-left: 5%;
-        width: 80%;
-        border-radius: 0;
+      .nav-tabs .nav-item .nav-link {
+        background-color: white;
+        color: black;
+        text-decoration: none;
+        border: none;
+      }
+      .nav-tabs .nav-item .nav-link.active {
+        background-color: #dff5f9;
+      }
+      .tab-pane {
+        background-color: #dff5f9;
+        padding: 15px;
+        margin-bottom: 15px;
       }
       .custom-file-label::after {
         content: 'Selaa';
         border-radius: 0;
         background: #009cca;
-      }
-      #upload-spinner {
-        margin-left: -20px;
       }
       #text-box {
         background-color: white;
@@ -128,7 +134,14 @@
       #text.dragging {
         background-color: #dff5f9;
       }
-      #text-box button {
+      .btn-primary, .btn-primary:hover,.btn-primary:focus,.btn-primary:active,
+      .btn-primary:active:focus:not(:disabled):not(.disabled) {
+        background-color: #009cca;
+        color: black;
+        border: none;
+        border-radius: 0px;
+      }
+      #button-clear {
         position: absolute;
         top: 20px;
         right: 20px;
@@ -333,24 +346,36 @@
           </div>
         </div>
 
-        <div class="row" style="margin: auto">
-          <div class="row" style="margin: auto">
-            <div class="col-md-3 d-flex align-items-center justify-content-center">
-              <div id="upload-spinner" class="spinner-border mt-1" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab">Syötä tiedosto</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tab-url-input" aria-controls="tab-url-input" role="tab" data-toggle="tab">Syötä URL</a>
+          </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tab-file-input">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" onchange="selectFile(this);" id="form-file-input">
+              <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
             </div>
-            <div class="col-md-9">
-              Vedä ja pudota tiedosto tänne tai
-              <div>
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" onchange="readInput(this);" id="button-file-upload">
-                  <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="tab-url-input">
+            <div class="flex-fill">
+              <div class="input-group flex-fill">
+                <input type="url" id="form-url-input" placeholder="Syötä URL" class="form-control" aria-label="Syötä URL">
+                <div class="input-group-append">
+                  <input type="submit" value="Hae teksti" class="btn btn-primary"  onclick="uploadInputButtonAction()".trigger('click' )">
                 </div>
               </div>
             </div>
           </div>
         </div>
+
 
         <div id="text-box-wrapper" class="dropzone dropzone-border">
           <textarea class="form-control dropzone" rows="20" name="text" id="text"
@@ -370,7 +395,7 @@
     <div class="col-md-4 pl-md-2">
       <ul id="sidebar-tabs" class="nav nav-tabs">
         <li id="sidebar-tab" class="nav-item">
-          <a class="nav-link" data-i18n="nav-subject-indexing">Sisällönkuvailu</a>
+          <a class="nav-link active" data-i18n="nav-subject-indexing">Sisällönkuvailu</a>
         </li>
       </ul>
       <div id="sidebar" class="widget">
