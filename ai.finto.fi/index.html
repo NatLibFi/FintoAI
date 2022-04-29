@@ -84,13 +84,6 @@
       #footer {
         padding: 8px 20px;
       }
-      #file-upload-box {
-        font-weight: bold;
-        padding: 15px;
-        margin-bottom: 20px;
-        background-color: #ffffff;
-        border-top: 2px solid black;
-      }
       .custom-file {
         margin: 15px;
       }
@@ -329,42 +322,34 @@
 <div class="container">
 
   <div class="row mb-md-2">
-    <div class="col-md-8 pr-md-3">
+    <div class="col-md-8 pr-md-3" id="text-box">
 
-      <div class="row" style="margin: auto">
-        <div id="file-upload-box" class="col-md-12">
-          <div class="row">
-            <div class="col-md-6">
-              Kuvailtava tiedosto<br>
-            </div>
-          </div>
-          <div class="row" style="margin: auto">
-            <div class="row" style="margin: auto">
-              <div class="col-md-3 d-flex align-items-center justify-content-center">
-                <div id="upload-spinner" class="spinner-border mt-1" role="status">
-                  <span class="sr-only">Loading...</span>
-                </div>
-              </div>
-              <div class="col-md-9">
-                Vedä ja pudota tiedosto tänne tai
-                <div>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" onchange="readInput(this);" id="button-file-upload">
-                    <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="text-box" class="form-group widget">
+      <div class="form-group widget">
         <div class="row">
           <div class="col-md-6">
             <label for="text" data-i18n="text-box-label-text">Kuvailtava teksti</label><br>
           </div>
         </div>
+
+        <div class="row" style="margin: auto">
+          <div class="row" style="margin: auto">
+            <div class="col-md-3 d-flex align-items-center justify-content-center">
+              <div id="upload-spinner" class="spinner-border mt-1" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div class="col-md-9">
+              Vedä ja pudota tiedosto tänne tai
+              <div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" onchange="readInput(this);" id="button-file-upload">
+                  <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div id="text-box-wrapper" class="dropzone dropzone-border">
           <textarea class="form-control dropzone" rows="20" name="text" id="text"
           data-i18n="[placeholder]text-box-placeholder"
