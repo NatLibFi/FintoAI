@@ -117,7 +117,7 @@ jQuery(function() {
             "api-more-info": "Lisätietoja",
             "api-desc-link": "OpenAPI-kuvaus",
             "text-box-label-text": "Kuvailtava teksti",
-            "text-box-placeholder": 'Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia',
+            "text-box-placeholder": 'Voit myös kopioida tähän tekstiä, tai tiputtaa tiedoston tai URL:n tiedostoon.\nEhdotukset saat painamalla “Anna aihe-ehdotukset”-nappia',
             "nav-subject-indexing": "Sisällönkuvailu",
             "project": "Sanasto ja tekstin kieli",
             "limit": "Ehdotusten enimmäismäärä",
