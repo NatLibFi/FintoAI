@@ -75,6 +75,10 @@ function selectFile(input) {
     readFile(selectedFile);
 }
 
+function selectUrl() {
+    readUrl($('#input-url').val());
+}
+
 function readInput(input) {
     const files = input.files;
     const url = input.getData('URL');
@@ -84,10 +88,6 @@ function readInput(input) {
         readUrl(url);
     }
 }
-
-    // $('#button-extract-text').prop("disabled", false);
-    // $('#button-extract-text').focus();
-
 
 const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'epub', 'pptx'];
 
@@ -105,7 +105,8 @@ function readFile(file) {
     }
     const extension = file.name.split('.').pop().toLowerCase();
     checkFormatSupport(extension);
-    prepareExtraction(file.name);
+    $('.custom-file-label').html(file.name);
+    prepareExtraction();
     if (extension === 'txt') {
         const reader = new FileReader();
         reader.onload = function() {
@@ -132,7 +133,7 @@ function readUrl(url) {
     const plainUrl = url.split('?')[0];  // Remove possible parameters
     const extension = plainUrl.split('.').pop().toLowerCase();
     checkFormatSupport(extension);
-    prepareExtraction(plainUrl);
+    prepareExtraction();
     $.ajax({
         url: textract_url + '-url',
         method: 'POST',
@@ -144,8 +145,7 @@ function readUrl(url) {
     });
 }
 
-function prepareExtraction(target) {
-    $('.custom-file-label').html(target);
+function prepareExtraction() {
     $('#text').val('');
     $('#suggestions').hide();
     $('#results').empty();
@@ -294,6 +294,16 @@ $(document).ready(function() {
     }
     fetchProjects();
     makeLabelLanguageOptions();
+    if ($.trim($('#input-url').val()) == "") {
+        $('#button-select-url').prop("disabled", true);
+    }
+    $('#input-url').on('input', function() {
+        $('#button-select-url').prop("disabled", false);
+    });
+    $('#form-url').on('submit', function(e) {
+        e.preventDefault();
+        selectUrl();
+     });
     $('#get-suggestions').click(function() {
         clearResults();
         getSuggestions();
@@ -301,6 +311,8 @@ $(document).ready(function() {
     $('#button-clear').click(function() {
         $('#text').val('');
         $('.custom-file-label').html('Valitse tiedosto');
+        $('#input-url').val('');
+        $('#button-select-url').prop("disabled", true);
         $('#text').focus();
         $('#text-background').css('visibility', 'visible');
         clearResults();

@@ -153,6 +153,11 @@
         border: none;
         border-radius: 0px;
       }
+      .btn-primary:disabled {
+        cursor: default;
+        background-color: #6c757d;
+        color: white;
+      }
       #button-clear {
         position: absolute;
         top: 20px;
@@ -222,15 +227,6 @@
       }
       #get-suggestions {
         margin-top: 24px;
-        background-color: #009cca;
-        color: black;
-        border: none;
-        border-radius: 0px;
-      }
-      #get-suggestions:disabled {
-        cursor: default;
-        background-color: #6c757d;
-        color: white;
       }
       #sidebar h2 {
         margin-top: 24px;
@@ -381,14 +377,12 @@
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="tab-url-input">
-              <div class="flex-fill">
-                <div class="input-group flex-fill">
-                  <input type="url" id="form-url-input" placeholder="Syötä URL" class="form-control" aria-label="Syötä URL">
-                  <div class="input-group-append">
-                    <input type="submit" value="Hae teksti" class="btn btn-primary" onclick="uploadInputButtonAction()".trigger("click")>
-                  </div>
+              <form class="input-group flex-fill" id="form-url">
+                <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" aria-label="Syötä URL" autocomplete="off" required>
+                <div class="input-group-append">
+                  <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
                 </div>
-              </div>
+              </form>
             </div>
           </div>
           <div id="tabs-input-footer">
