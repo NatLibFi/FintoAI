@@ -377,7 +377,7 @@
             <div role="tabpanel" class="tab-pane active" id="tab-file-input">
               <div class="custom-file">
                 <input type="file" class="custom-file-input" onchange="selectFile(this);" id="form-file-input">
-                <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
+                <label class="custom-file-label" for="form-file-input">Valitse tiedosto</label>
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="tab-url-input">
@@ -385,7 +385,7 @@
                 <div class="input-group flex-fill">
                   <input type="url" id="form-url-input" placeholder="Syötä URL" class="form-control" aria-label="Syötä URL">
                   <div class="input-group-append">
-                    <input type="submit" value="Hae teksti" class="btn btn-primary"  onclick="uploadInputButtonAction()".trigger('click' )">
+                    <input type="submit" value="Hae teksti" class="btn btn-primary" onclick="uploadInputButtonAction()".trigger("click")>
                   </div>
                 </div>
               </div>
@@ -402,7 +402,7 @@
           <button id="button-clear" type="button" class="btn btn-danger">&#x2715;</button>
           <div id="text-background" class="dropzone">
             <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
-            <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon"></img>
+            <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
             Tai voit pudottaa tiedoston tai URL:n tähän.
           </div>
             <div id="upload-spinner" class="spinner-border mt-1" role="status">
