@@ -84,6 +84,12 @@
       #footer {
         padding: 8px 20px;
       }
+      #text-box-heading {
+        margin-left: 10px;
+      }
+      #tabs-input {
+        margin: -20px 10px 0px;
+      }
       .nav-tabs .nav-item .nav-link {
         background-color: #ecffff;
         text-decoration: none;
@@ -91,6 +97,8 @@
         border: none;
         border-radius: 0;
         margin-bottom: -1px;
+        width: 160px;
+        text-align: center;
       }
       .nav-tabs .nav-item .nav-link.active {
         color: black;
@@ -100,7 +108,6 @@
       .tab-pane {
         background-color: #dff5f9;
         padding: 15px;
-        margin-bottom: 15px;
       }
       .custom-file-label {
         border-radius: 0;
@@ -109,6 +116,11 @@
         content: 'Selaa';
         border-radius: 0;
         background: #009cca;
+      }
+      #tabs-input-footer {
+        background-color: #dff5f9;
+        padding: 0px 20px 10px;
+        margin-bottom: 10px;
       }
       #text-box {
         background-color: white;
@@ -337,45 +349,44 @@
 <div class="container">
 
   <div class="row mb-md-2">
-    <div class="col-md-8 pr-md-3" id="text-box">
+    <div class="col-md-8 pr-md-3">
 
-      <div class="form-group widget">
+      <div class="form-group widget" id="text-box">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6" id="text-box-heading">
             <label for="text" data-i18n="text-box-label-text">Kuvailtava teksti</label><br>
           </div>
         </div>
-
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab">Syötä tiedosto</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#tab-url-input" aria-controls="tab-url-input" role="tab" data-toggle="tab">Syötä URL</a>
-          </li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="tab-file-input">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" onchange="selectFile(this);" id="form-file-input">
-              <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
+        <div id="tabs-input">
+          <ul class="nav nav-tabs justify-content-end" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab">Syötä tiedosto</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tab-url-input" aria-controls="tab-url-input" role="tab" data-toggle="tab">Syötä URL</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="tab-file-input">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" onchange="selectFile(this);" id="form-file-input">
+                <label class="custom-file-label" for="customFile">Valitse tiedosto</label>
+              </div>
             </div>
-          </div>
-
-          <div role="tabpanel" class="tab-pane" id="tab-url-input">
-            <div class="flex-fill">
-              <div class="input-group flex-fill">
-                <input type="url" id="form-url-input" placeholder="Syötä URL" class="form-control" aria-label="Syötä URL">
-                <div class="input-group-append">
-                  <input type="submit" value="Hae teksti" class="btn btn-primary"  onclick="uploadInputButtonAction()".trigger('click' )">
+            <div role="tabpanel" class="tab-pane" id="tab-url-input">
+              <div class="flex-fill">
+                <div class="input-group flex-fill">
+                  <input type="url" id="form-url-input" placeholder="Syötä URL" class="form-control" aria-label="Syötä URL">
+                  <div class="input-group-append">
+                    <input type="submit" value="Hae teksti" class="btn btn-primary"  onclick="uploadInputButtonAction()".trigger('click' )">
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div id="tabs-input-footer">
+            <span id="supported-file-formats">Tuetut tiedostomuodot: </span></div>
         </div>
-
 
         <div id="text-box-wrapper" class="dropzone dropzone-border">
           <textarea class="form-control dropzone" rows="20" name="text" id="text"
@@ -385,8 +396,6 @@
           <div id="text-background" class="dropzone">
             <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
             <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon"></img>
-            <span id="supported-file-formats">Tuetut tiedostomuodot: </span>
-            <p>Max. tiedostokoko 50 MB</p>
           </div>
         </div>
       </div>
