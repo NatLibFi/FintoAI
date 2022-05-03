@@ -178,6 +178,13 @@
       #text-background.dragging {
         opacity: 1.0;
       }
+      #upload-spinner {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        left: 50%;
+        top: 45%;
+      }
       #sidebar, #sidebar-tab { background-color: #dff5f9; }
       #sidebar-tabs { background-color: #bfeaf4;}
       #sidebar-tab { float: left; }
@@ -396,7 +403,11 @@
           <div id="text-background" class="dropzone">
             <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
             <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon"></img>
+            Tai voit pudottaa tiedoston tai URL:n tähän.
           </div>
+            <div id="upload-spinner" class="spinner-border mt-1" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
         </div>
       </div>
     </div>
