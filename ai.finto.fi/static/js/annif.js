@@ -94,7 +94,7 @@ const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'epub', 'pptx'];
 function checkFormatSupport(extension) {
     if (!supportedFormats.includes(extension)) {
         alert('Tiedostomuotoa ei tuettu: ' + extension);
-        return;
+        throw "Unsupported format " + extension;
     }
 }
 
