@@ -98,12 +98,16 @@ function checkFormatSupport(extension) {
     }
 }
 
-function readFile(file) {
+function checkFileSize(file) {
     if (file.size > 50000000) {
         alert('Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB.');
-        return;
+        throw "File size exceeds maximum";
     }
+}
+
+function readFile(file) {
     const extension = file.name.split('.').pop().toLowerCase();
+    checkFileSize(file);
     checkFormatSupport(extension);
     $('.custom-file-label').html(file.name);
     prepareExtraction();
