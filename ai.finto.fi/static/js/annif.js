@@ -89,7 +89,7 @@ function readInput(input) {
     }
 }
 
-const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'epub', 'pptx'];
+const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub'];
 
 function checkFormatSupport(extension) {
     if (!supportedFormats.includes(extension)) {
