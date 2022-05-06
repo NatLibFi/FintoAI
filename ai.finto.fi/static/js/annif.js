@@ -142,6 +142,7 @@ function readUrl(url) {
         url: textract_url + '-url',
         method: 'POST',
         dataType: 'json',
+        contentType: 'application/json',
         data: JSON.stringify({"file_url": plainUrl}),
         success: function(data) {
             finishExtraction(plainUrl, data.text);
