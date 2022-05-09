@@ -89,7 +89,8 @@ function readInput(input) {
     }
 }
 
-const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub'];
+const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx',
+    'epub', 'html', undefined];
 
 function checkFormatSupport(extension) {
     if (!supportedFormats.includes(extension)) {
@@ -133,10 +134,21 @@ function readFile(file) {
     }
 }
 
+
+function getExtension(path) {
+    const parts = path.split('.');
+    if (parts.length >= 2) {
+        return parts[parts.length - 1].toLowerCase();
+    } else {
+        return;
+    }
+}
+
 function readUrl(url) {
-    const plainUrl = url.split('?')[0];  // Remove possible parameters
-    const extension = plainUrl.split('.').pop().toLowerCase();
+    const urlObj = new URL(url);
+    const extension = getExtension(urlObj.pathname);
     checkFormatSupport(extension);
+    const plainUrl = urlObj.origin + urlObj.pathname;  // Remove possible parameters
     prepareExtraction();
     $.ajax({
         url: textract_url + '-url',
