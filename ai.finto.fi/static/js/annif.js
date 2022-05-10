@@ -312,7 +312,7 @@ $(document).ready(function() {
     $('#results-spinner').hide();
     $('#upload-spinner').css('visibility', 'hidden');
     $('#supported-file-formats').append(supportedFormats.map(i => '.' + i).join(', '));
-    $('#button-file-upload').attr('accept', supportedFormats.map(i => '.' + i));
+    $('#form-file-input').attr('accept', supportedFormats.map(i => '.' + i));
     clearResults();
     if ($.trim($('#text').val()) != "") {
         enableButton();
