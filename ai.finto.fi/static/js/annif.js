@@ -70,15 +70,14 @@ function showResults(data) {
 }
 
 function selectFile(input) {
-    const selectedFile = input.files[0];
-    readFile(selectedFile);
+    readFile(input.files[0]);
 }
 
 function selectUrl() {
     readUrl($('#input-url').val());
 }
 
-function readInput(input) {
+function readDropInput(input) {
     const files = input.files;
     const url = input.getData('URL');
     if (files && files[0]) {
@@ -100,16 +99,25 @@ function checkFormatSupport(extension) {
     }
 }
 
-function checkFileSize(file) {
-    if (file.size > 50000000) {
+function checkFileSize(size) {
+    if (size > 50000000) {
         alert('Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB.');
         throw "File size exceeds maximum";
     }
 }
 
+function getExtension(path) {
+    const parts = path.split('.');
+    if (parts.length >= 2) {
+        return parts[parts.length - 1].toLowerCase();
+    } else {
+        return;
+    }
+}
+
 function readFile(file) {
-    const extension = file.name.split('.').pop().toLowerCase();
-    checkFileSize(file);
+    const extension = getExtension(file.name);
+    checkFileSize(file.size);
     checkFormatSupport(extension);
     clearInputs();
     prepareExtraction();
@@ -117,7 +125,7 @@ function readFile(file) {
     if (extension === 'txt') {
         const reader = new FileReader();
         reader.onload = function() {
-            finishExtraction(file.name, reader.result);
+            finishExtraction(reader.result);
         }
         reader.readAsText(file);
     } else {
@@ -130,19 +138,9 @@ function readFile(file) {
             contentType: false,
             processData: false,
             success: function(data) {
-                finishExtraction(file.name, data.text);
+                finishExtraction(data.text);
             }
         });
-    }
-}
-
-
-function getExtension(path) {
-    const parts = path.split('.');
-    if (parts.length >= 2) {
-        return parts[parts.length - 1].toLowerCase();
-    } else {
-        return;
     }
 }
 
@@ -150,11 +148,11 @@ function readUrl(url) {
     const urlObj = new URL(url);
     const extension = getExtension(urlObj.pathname);
     checkFormatSupport(extension);
-    const plainUrl = urlObj.origin + urlObj.pathname;  // Remove possible parameters
     clearInputs();
     prepareExtraction();
     $('#input-url').val(url);
     $('#button-select-url').prop('disabled', false);
+    const plainUrl = urlObj.origin + urlObj.pathname;  // Remove possible parameters
     $.ajax({
         url: textract_url + '-url',
         method: 'POST',
@@ -162,7 +160,7 @@ function readUrl(url) {
         contentType: 'application/json',
         data: JSON.stringify({"file_url": plainUrl}),
         success: function(data) {
-            finishExtraction(plainUrl, data.text);
+            finishExtraction(data.text);
         }
     });
 }
@@ -177,17 +175,17 @@ function clearInputs() {
 function prepareExtraction() {
     $('#suggestions').hide();
     $('#results').empty();
-    disableButton();
-    $('#upload-spinner').css('visibility', 'visible');
+    disableSuggestButton();
+    $('#upload-spinner').show();
     $('#text').prop('placeholder', 'Ladataan...');
-    $('#text-background').css('visibility', 'hidden');
+    $('#text-background').hide();
 }
 
-function finishExtraction(fileName, text) {
-    $('#upload-spinner').css('visibility', 'hidden');
+function finishExtraction(text) {
+    $('#upload-spinner').hide();
     $('#text').val(text);
     $('#text').prop('placeholder', 'Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia');
-    enableButton();
+    enableSuggestButton();
     $('#get-suggestions').focus();
 }
 
@@ -270,11 +268,11 @@ function getSuggestions() {
     });
 }
 
-function disableButton() {
+function disableSuggestButton() {
     $('#get-suggestions').prop("disabled", true);
 }
 
-function enableButton() {
+function enableSuggestButton() {
     $('#get-suggestions').prop("disabled", false);
 }
 
@@ -304,21 +302,21 @@ $(document).ready(function() {
             e.preventDefault();
             draggingLevelCounter = 0;
             $(".dropzone").removeClass('dragging');
-            readInput(e.originalEvent.dataTransfer);
+            readDropInput(e.originalEvent.dataTransfer);
         }
     });
 
     $('#no-results').hide();
     $('#results-spinner').hide();
-    $('#upload-spinner').css('visibility', 'hidden');
+    $('#upload-spinner').hide();
     $('#supported-file-formats').append(supportedFormats.map(i => '.' + i).join(', '));
     $('#form-file-input').attr('accept', supportedFormats.map(i => '.' + i));
     clearResults();
     if ($.trim($('#text').val()) != "") {
-        enableButton();
-        $('#text-background').css('visibility', 'hidden');
+        enableSuggestButton();
+        $('#text-background').hide();
     } else {
-        disableButton();
+        disableSuggestButton();
     }
     fetchProjects();
     makeLabelLanguageOptions();
@@ -339,13 +337,12 @@ $(document).ready(function() {
     $('#button-clear').click(function() {
         clearInputs();
         $('#text').focus();
-        $('#text-background').css('visibility', 'visible');
+        $('#text-background').show();
         clearResults();
-        disableButton();
+        disableSuggestButton();
     });
     $('#text').on("input", function() {
-        enableButton();
-        $('#text-background').css('visibility', 'hidden');
-
+        enableSuggestButton();
+        $('#text-background').hide();
     });
 });
