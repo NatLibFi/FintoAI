@@ -90,10 +90,11 @@ function readDropInput(input) {
 }
 
 const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx',
-    'epub', 'html', undefined];
+    'epub', 'html'];
 
 function checkFormatSupport(extension) {
-    if (!supportedFormats.includes(extension)) {
+    // Allow undefined because url to a typical html page lacks .html suffix
+    if (!supportedFormats.includes(extension) && extension !== undefined) {
         alert('Tiedostomuotoa ei tuettu: ' + extension);
         throw "Unsupported format " + extension;
     }
