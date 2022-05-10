@@ -83,8 +83,10 @@ function readInput(input) {
     const files = input.files;
     const url = input.getData('URL');
     if (files && files[0]) {
+        $('#tabs-input a[href="#tab-file-input"]').tab('show');
         readFile(files[0]);
     } else if (url) {
+        $('#tabs-input a[href="#tab-url-input"]').tab('show');
         readUrl(url);
     }
 }
