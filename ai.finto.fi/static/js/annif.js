@@ -71,7 +71,6 @@ function showResults(data) {
 
 function selectFile(input) {
     const selectedFile = input.files[0];
-    $('.custom-file-label').html(selectedFile.name);
     readFile(selectedFile);
 }
 
@@ -112,8 +111,9 @@ function readFile(file) {
     const extension = file.name.split('.').pop().toLowerCase();
     checkFileSize(file);
     checkFormatSupport(extension);
-    $('.custom-file-label').html(file.name);
+    clearInputs();
     prepareExtraction();
+    $('.custom-file-label').html(file.name);
     if (extension === 'txt') {
         const reader = new FileReader();
         reader.onload = function() {
@@ -151,7 +151,10 @@ function readUrl(url) {
     const extension = getExtension(urlObj.pathname);
     checkFormatSupport(extension);
     const plainUrl = urlObj.origin + urlObj.pathname;  // Remove possible parameters
+    clearInputs();
     prepareExtraction();
+    $('#input-url').val(url);
+    $('#button-select-url').prop('disabled', false);
     $.ajax({
         url: textract_url + '-url',
         method: 'POST',
@@ -164,8 +167,14 @@ function readUrl(url) {
     });
 }
 
-function prepareExtraction() {
+function clearInputs() {
     $('#text').val('');
+    $('.custom-file-label').html('Valitse tiedosto');
+    $('#input-url').val('');
+    $('#button-select-url').prop('disabled', true);
+}
+
+function prepareExtraction() {
     $('#suggestions').hide();
     $('#results').empty();
     disableButton();
@@ -328,10 +337,7 @@ $(document).ready(function() {
         getSuggestions();
     });
     $('#button-clear').click(function() {
-        $('#text').val('');
-        $('.custom-file-label').html('Valitse tiedosto');
-        $('#input-url').val('');
-        $('#button-select-url').prop("disabled", true);
+        clearInputs();
         $('#text').focus();
         $('#text-background').css('visibility', 'visible');
         clearResults();
