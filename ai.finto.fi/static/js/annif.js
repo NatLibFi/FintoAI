@@ -179,7 +179,7 @@ function prepareExtraction() {
     disableSuggestButton();
     $('#upload-spinner').show();
     $('#text').prop('placeholder', 'Ladataan...');
-    $('#text-background').hide();
+    $('#text-box-background').hide();
 }
 
 function finishExtraction(text) {
@@ -315,7 +315,7 @@ $(document).ready(function() {
     clearResults();
     if ($.trim($('#text').val()) != "") {
         enableSuggestButton();
-        $('#text-background').hide();
+        $('#text-box-background').hide();
     } else {
         disableSuggestButton();
     }
@@ -338,12 +338,12 @@ $(document).ready(function() {
     $('#button-clear').click(function() {
         clearInputs();
         $('#text').focus();
-        $('#text-background').show();
+        $('#text-box-background').show();
         clearResults();
         disableSuggestButton();
     });
     $('#text').on("input", function() {
         enableSuggestButton();
-        $('#text-background').hide();
+        $('#text-box-background').hide();
     });
 });

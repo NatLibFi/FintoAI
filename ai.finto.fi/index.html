@@ -113,10 +113,15 @@
         border-radius: 0;
       }
       .custom-file-label::after {
-        content: 'Selaa';
         border-radius: 0;
         background: #009cca;
         color:black;
+      }
+      .custom-file-label:lang(fi)::after {
+          content: "Selaa";
+      }
+      .custom-file-label:lang(sv)::after {
+          content: "Bläddra";
       }
       #tabs-input-footer {
         background-color: #dff5f9;
@@ -169,7 +174,7 @@
         border-radius: 0px;
         padding: 2px 7px;
       }
-      #text-background {
+      #text-box-background {
         font-weight: normal;
         position: absolute;
         width: 500px;
@@ -181,7 +186,7 @@
         text-align: center;
         line-height: 40%;
       }
-      #text-background.dragging {
+      #text-box-background.dragging {
         opacity: 1.0;
       }
       #upload-spinner {
@@ -364,30 +369,31 @@
         <div id="tabs-input">
           <ul class="nav nav-tabs justify-content-end" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab">Syötä tiedosto</a>
+              <a class="nav-link active" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab" data-i18n="nav-tab-file-input">Syötä tiedosto</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#tab-url-input" aria-controls="tab-url-input" role="tab" data-toggle="tab">Syötä URL</a>
+              <a class="nav-link" href="#tab-url-input" aria-controls="tab-url-input" role="tab" data-toggle="tab" data-i18n="nav-tab-url-input">Syötä URL</a>
             </li>
           </ul>
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="tab-file-input">
               <div class="custom-file">
                 <input type="file" class="custom-file-input" onchange="selectFile(this);" id="form-file-input">
-                <label class="custom-file-label" for="form-file-input">Valitse tiedosto</label>
+                <label class="custom-file-label" for="form-file-input" data-i18n="form-file-input">Valitse tiedosto</label>
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="tab-url-input">
               <form class="input-group flex-fill" id="form-url">
-                <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" aria-label="Syötä URL" autocomplete="off" required>
+                <input type="url" class="form-control" id="input-url"data-i18n="[placeholder]form-url-input-placeholder" placeholder="Syötä URL" aria-label="Syötä URL" autocomplete="off" required>
                 <div class="input-group-append">
-                  <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
+                  <input type="submit" id="button-select-url" value="Hae teksti" data-i18n="[value]button-select-url" class="btn btn-primary">
                 </div>
               </form>
             </div>
           </div>
           <div id="tabs-input-footer">
-            <span id="supported-file-formats">Tuetut tiedostomuodot: </span></div>
+            <span data-i18n="supported-file-formats">Tuetut tiedostomuodot: </span><span id="supported-file-formats"></span>
+          </div>
         </div>
 
         <div id="text-box-wrapper" class="dropzone dropzone-border">
@@ -395,10 +401,10 @@
           data-i18n="[placeholder]text-box-placeholder"
           placeholder='Voit myös kopioida tähän tekstiä, tai tiputtaa tiedoston tai URL:n tiedostoon.\nEhdotukset saat painamalla “Anna aihe-ehdotukset”-nappia'></textarea>
           <button id="button-clear" type="button" class="btn btn-danger">&#x2715;</button>
-          <div id="text-background" class="dropzone">
+          <div id="text-box-background" class="dropzone">
             <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
             <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
-            Tai voit pudottaa tiedoston tai URL:n tähän.
+            <span data-i18n="text-box-background">Tai voit pudottaa tiedoston tai URL:n tähän.</span>
           </div>
             <div id="upload-spinner" class="spinner-border mt-1" role="status">
               <span class="sr-only">Loading...</span>
