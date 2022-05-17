@@ -310,7 +310,7 @@ $(document).ready(function() {
     $('#no-results').hide();
     $('#results-spinner').hide();
     $('#upload-spinner').hide();
-    $('#supported-file-formats').append(supportedFormats.map(i => '.' + i).join(', '));
+    $('.supported-file-formats').append(supportedFormats.map(i => '.' + i).join(', '));
     $('#form-file-input').attr('accept', supportedFormats.map(i => '.' + i));
     clearResults();
     if ($.trim($('#text').val()) != "") {

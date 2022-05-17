@@ -87,9 +87,6 @@
       #text-box-heading {
         margin-left: 10px;
       }
-      #tabs-input {
-        margin: -20px 10px 0px;
-      }
       .nav-tabs .nav-item .nav-link {
         background-color: #ecffff;
         text-decoration: none;
@@ -97,8 +94,12 @@
         border: none;
         border-radius: 0;
         margin-bottom: -1px;
-        width: 160px;
         text-align: center;
+        white-space: nowrap;
+      }
+      .nav-middle-tab {
+        border-left: 1px solid gray;
+        border-right: 1px solid gray;
       }
       .nav-tabs .nav-item .nav-link.active {
         color: black;
@@ -107,7 +108,10 @@
       }
       .tab-pane {
         background-color: #dff5f9;
-        padding: 15px;
+        padding: 15px 15px 0px;
+      }
+      #tab-text-input {
+        padding: 0px;
       }
       .custom-file-label {
         border-radius: 0;
@@ -125,8 +129,8 @@
       }
       #tabs-input-footer {
         background-color: #dff5f9;
-        padding: 0px 20px 10px;
-        margin-bottom: 10px;
+        padding: 10px 5px 0px;
+        margin-bottom: -5px;
       }
       #text-box {
         background-color: white;
@@ -137,6 +141,8 @@
         font-weight: bold;
       }
       #text-box-wrapper {
+        background-color: #dff5f9;
+        padding: 15px;
         position: relative;
       }
       .dropzone {
@@ -147,10 +153,10 @@
         outline-offset: -3px;
       }
       .dropzone.dragging {
-        background-color: #dff5f9;
+        background-color: #ecffff;
       }
       #text.dragging {
-        background-color: #dff5f9;
+        background-color: #ecffff;
       }
       .btn-primary, .btn-primary:hover,.btn-primary:focus,.btn-primary:active,
       .btn-primary:active:focus:not(:disabled):not(.disabled) {
@@ -367,19 +373,27 @@
           </div>
         </div>
         <div id="tabs-input">
-          <ul class="nav nav-tabs justify-content-end" role="tablist">
+          <ul class="nav nav-tabs nav-justified" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab" data-i18n="nav-tab-file-input">Syötä tiedosto</a>
+              <a class="nav-link active" href="#tab-text-input" aria-controls="tab-text-input" role="tab" data-toggle="tab" data-i18n="nav-tab-text-input">Syötä teksti</a>
+            </li>
+            <li class="nav-item nav-middle-tab">
+              <a class="nav-link" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab" data-i18n="nav-tab-file-input">Syötä tiedosto</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#tab-url-input" aria-controls="tab-url-input" role="tab" data-toggle="tab" data-i18n="nav-tab-url-input">Syötä URL</a>
             </li>
           </ul>
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="tab-file-input">
+            <div role="tabpanel" class="tab-pane active" id="tab-text-input">
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tab-file-input">
               <div class="custom-file">
                 <input type="file" class="custom-file-input" onchange="selectFile(this);" id="form-file-input">
                 <label class="custom-file-label" for="form-file-input" data-i18n="form-file-input">Valitse tiedosto</label>
+              </div>
+              <div id="tabs-input-footer">
+                <span data-i18n="supported-file-formats">Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="tab-url-input">
@@ -389,22 +403,22 @@
                   <input type="submit" id="button-select-url" value="Hae teksti" data-i18n="[value]button-select-url" class="btn btn-primary">
                 </div>
               </form>
+              <div id="tabs-input-footer">
+                <span data-i18n="supported-file-formats">Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
+              </div>
             </div>
-          </div>
-          <div id="tabs-input-footer">
-            <span data-i18n="supported-file-formats">Tuetut tiedostomuodot: </span><span id="supported-file-formats"></span>
           </div>
         </div>
 
-        <div id="text-box-wrapper" class="dropzone dropzone-border">
-          <textarea class="form-control dropzone" rows="20" name="text" id="text"
+        <div id="text-box-wrapper">
+          <textarea class="form-control dropzone dropzone-border" rows="20" name="text" id="text"
           data-i18n="[placeholder]text-box-placeholder"
-          placeholder='Voit myös kopioida tähän tekstiä, tai tiputtaa tiedoston tai URL:n tiedostoon.\nEhdotukset saat painamalla “Anna aihe-ehdotukset”-nappia'></textarea>
+          placeholder='Kopioi teksti tähän ja paina “Anna aihe-ehdotukset”-nappia'></textarea>
           <button id="button-clear" type="button" class="btn btn-danger">&#x2715;</button>
           <div id="text-box-background" class="dropzone">
             <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
             <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
-            <span data-i18n="text-box-background">Tai voit pudottaa tiedoston tai URL:n tähän.</span>
+            <span data-i18n="text-box-background">Voit myös pudottaa tiedoston tai URL:n tähän</span>
           </div>
             <div id="upload-spinner" class="spinner-border mt-1" role="status">
               <span class="sr-only">Loading...</span>
