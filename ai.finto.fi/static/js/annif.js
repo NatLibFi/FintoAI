@@ -178,7 +178,7 @@ function prepareExtraction() {
     $('#results').empty();
     disableSuggestButton();
     $('#upload-spinner').show();
-    $('#text').prop('placeholder', 'Ladataan...');
+    $('#text').prop({placeholder: $.i18n('loading')})
     $('#text-box-background').hide();
 }
 
