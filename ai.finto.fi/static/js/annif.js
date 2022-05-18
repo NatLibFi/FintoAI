@@ -307,6 +307,17 @@ $(document).ready(function() {
         }
     });
 
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href") // activated tab
+        if (target === '#tab-file-input') {
+            $('#text').prop({placeholder: $.i18n('text-box-placeholder-file-input')});
+        } else if (target === '#tab-url-input') {
+            $('#text').prop({placeholder: $.i18n('text-box-placeholder-url-input')});
+        } else {
+            $('#text').prop({placeholder: $.i18n('text-box-placeholder-text-input')});
+        }
+    });
+
     $('#no-results').hide();
     $('#results-spinner').hide();
     $('#upload-spinner').hide();
