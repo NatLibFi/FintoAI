@@ -168,7 +168,7 @@ function readUrl(url) {
 
 function clearInputs() {
     $('#text').val('');
-    $('.custom-file-label').html('Valitse tiedosto');
+    $('.custom-file-label').html($.i18n('form-file-input'));
     $('#input-url').val('');
     $('#button-select-url').prop('disabled', true);
 }
