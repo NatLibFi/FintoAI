@@ -185,9 +185,20 @@ function prepareExtraction() {
 function finishExtraction(text) {
     $('#upload-spinner').hide();
     $('#text').val(text);
-    $('#text').prop('placeholder', 'Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia');
+    let activeTab = $("#tabs-input .nav-item .active")[0].getAttribute('href');
+    switchTextboxPlaceholder(activeTab)
     enableSuggestButton();
     $('#get-suggestions').focus();
+}
+
+function switchTextboxPlaceholder(activeTab) {
+    if (activeTab === '#tab-file-input') {
+        $('#text').prop({placeholder: $.i18n('text-box-placeholder-file-input')});
+    } else if (activeTab === '#tab-url-input') {
+        $('#text').prop({placeholder: $.i18n('text-box-placeholder-url-input')});
+    } else {
+        $('#text').prop({placeholder: $.i18n('text-box-placeholder-text-input')});
+    }
 }
 
 function copyUriToClipboard(buttonItem) {
@@ -308,14 +319,8 @@ $(document).ready(function() {
     });
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var target = $(e.target).attr("href") // activated tab
-        if (target === '#tab-file-input') {
-            $('#text').prop({placeholder: $.i18n('text-box-placeholder-file-input')});
-        } else if (target === '#tab-url-input') {
-            $('#text').prop({placeholder: $.i18n('text-box-placeholder-url-input')});
-        } else {
-            $('#text').prop({placeholder: $.i18n('text-box-placeholder-text-input')});
-        }
+        let activeTab = $(e.target).attr("href")
+        switchTextboxPlaceholder(activeTab);
     });
 
     $('#no-results').hide();
