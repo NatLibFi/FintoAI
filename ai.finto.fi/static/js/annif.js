@@ -140,6 +140,9 @@ function readFile(file) {
             processData: false,
             success: function(data) {
                 finishExtraction(data.text);
+            },
+            error: function(jqXHR) {
+                handleFailedExtraction(jqXHR);
             }
         });
     }
@@ -162,6 +165,9 @@ function readUrl(url) {
         data: JSON.stringify({"file_url": plainUrl}),
         success: function(data) {
             finishExtraction(data.text);
+        },
+        error: function(jqXHR) {
+            handleFailedExtraction(jqXHR);
         }
     });
 }
@@ -189,6 +195,12 @@ function finishExtraction(text) {
     switchTextboxPlaceholder(activeTab)
     enableSuggestButton();
     $('#get-suggestions').focus();
+}
+
+function handleFailedExtraction(jqXHR) {
+    alert('Textract request failed:\n' + jqXHR.status + ' ' + jqXHR.responseText);
+    finishExtraction();
+    $('#text-box-background').show();
 }
 
 function switchTextboxPlaceholder(activeTab) {
