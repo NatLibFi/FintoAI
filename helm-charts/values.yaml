@@ -12,7 +12,7 @@ nginx:
     - type: ConfigChange
 
 annif:
-  version: '0.55.1-ocp'
+  version: '0.57'
   resources:
     limits:
       cpu: 1
