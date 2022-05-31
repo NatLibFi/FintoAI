@@ -24,20 +24,6 @@ spec:
         - name: annif
           image: quay.io/natlibfi/annif:{{ .Values.annif.version }}
           command: ["gunicorn", "annif:create_app()", "--bind", "0.0.0.0:8000", "--timeout", "600"]
-          readinessProbe:
-            httpGet:
-              path: /v1/projects
-              port: 8000
-            failureThreshold: 3
-            periodSeconds: 60
-            timeoutSeconds: 20
-          startupProbe:
-            httpGet:
-              path: /v1/projects
-              port: 8000
-            failureThreshold: 120
-            periodSeconds: 5
-            timeoutSeconds: 10
           resources:
             {{ toYaml .Values.annif.resources | nindent 12 }}
           volumeMounts:
