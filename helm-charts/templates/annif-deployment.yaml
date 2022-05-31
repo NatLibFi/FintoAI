@@ -30,7 +30,7 @@ spec:
               port: 8000
             failureThreshold: 3
             periodSeconds: 60
-            timeoutSeconds: 10
+            timeoutSeconds: 20
           startupProbe:
             httpGet:
               path: /v1/projects
