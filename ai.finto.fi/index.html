@@ -253,6 +253,7 @@
         min-height: 500px;
       }
       #suggestions {
+        padding-top: 20px;
         padding-right: 2px;
       }
       #results li, #no-results li {border-radius: 0; }
@@ -260,21 +261,20 @@
         display: inline-block;
       }
       #suggestions-heading {
-        display: inline-block;
+        display: inline;
       }
-      #copy-heading {
+      #select-all-wrapper {
         float: right;
-        text-align: center;
-        width: 110px;
-        max-width: 40%;
-        margin-left: -10px;
-        font-weight: normal !important;
+        margin-right: 3px;
+      }
+      #select-all-wrapper label {
+        margin: 0px;
       }
       #copy-buttons {
         float: right;
         margin: 4px;
         padding: 0px;
-     }
+      }
       .copy-button {
         height: 30px;
         width: 30px;
@@ -297,6 +297,9 @@
       }
       #copy-button-label-and-uri {
         background: url("static/img/clipboard-label-http.svg");
+      }
+      #copy-many-terms {
+        margin-top: 10px;
       }
       #annif-logo {
         width: 70px;
@@ -482,7 +485,10 @@
         <div id="suggestions-wrapper">
           <div id="suggestions">
             <h2 id="suggestions-heading" data-i18n="suggestions-heading">Ehdotetut aiheet</h2>
-            <h2 id="copy-heading" data-i18n="copy-heading">Kopioi</h2>
+            <span id="select-all-wrapper">
+              <label for="select-all-suggestions" data-i18n="select-all-suggestions">Valitse kaikki</label>
+              <input name="select-all-suggestions" type="checkbox" autocomplete="off">
+            </span>
           </div>
           <div class="d-flex justify-content-center">
             <div id="results-spinner" class="spinner-border m-2" role="status">
@@ -491,6 +497,8 @@
           </div>
           <ul class="list-group" id="results">
           </ul>
+          <button id="copy-many-terms" data-i18n="copy-many-terms" type="button" class="btn btn-primary btn-block copy-many">Kopioi valitut termit</button>
+          <button id="copy-many-uris" data-i18n="copy-many-uris" type="button" class="btn btn-primary btn-block copy-many">Kopioi valitut URIt</button>
           <ul class="list-group" id="no-results">
             <li class="list-group-item p-0" data-i18n="no-results">Ei tuloksia</li>
           </ul>
