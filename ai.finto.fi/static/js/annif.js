@@ -199,7 +199,10 @@ function finishExtraction(text) {
 }
 
 function handleFailedExtraction(jqXHR) {
-    alert('Textract request failed:\n' + jqXHR.status + ' ' + jqXHR.responseText);
+    var textractStatus = jqXHR.status + ' ' + jqXHR.responseText;
+    $("#textract-status").remove();
+    $("#alert-textract-request-failed").removeClass('d-none').append(
+        '<span id="textract-status">' + textractStatus + '</span>');
     finishExtraction();
     $('#text-box-background').show();
 }
