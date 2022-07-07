@@ -95,7 +95,7 @@ const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx',
 function checkFormatSupport(extension) {
     // Allow undefined because url to a typical html page lacks .html suffix
     if (!supportedFormats.includes(extension) && extension !== undefined) {
-        alert('Tiedostomuotoa ei tuettu: ' + extension);
+        $("#alert-not-supported-format").removeClass('d-none');
         throw "Unsupported format " + extension;
     }
 }
@@ -173,6 +173,7 @@ function readUrl(url) {
 }
 
 function clearInputs() {
+    $(".alert").addClass('d-none');
     $('#text').val('');
     $('.custom-file-label').html($.i18n('form-file-input'));
     $('#input-url').val('');
