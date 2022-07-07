@@ -102,7 +102,7 @@ function checkFormatSupport(extension) {
 
 function checkFileSize(size) {
     if (size > 50000000) {
-        alert('Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB.');
+        $("#alert-too-big-file").removeClass('d-none');
         throw "File size exceeds maximum";
     }
 }
