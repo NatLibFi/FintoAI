@@ -118,9 +118,9 @@ function getExtension(path) {
 
 function readFile(file) {
     const extension = getExtension(file.name);
+    clearInputs();
     checkFileSize(file.size);
     checkFormatSupport(extension);
-    clearInputs();
     prepareExtraction();
     $('.custom-file-label').html(file.name);
     if (extension === 'txt') {
@@ -151,8 +151,8 @@ function readFile(file) {
 function readUrl(url) {
     const urlObj = new URL(url);
     const extension = getExtension(urlObj.pathname);
-    checkFormatSupport(extension);
     clearInputs();
+    checkFormatSupport(extension);
     prepareExtraction();
     $('#input-url').val(url);
     $('#button-select-url').prop('disabled', false);
