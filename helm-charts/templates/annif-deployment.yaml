@@ -24,12 +24,6 @@ spec:
         - name: annif
           image: quay.io/natlibfi/annif:{{ .Values.annif.version }}
           command: ["gunicorn", "annif:create_app()", "--bind", "0.0.0.0:8000", "--timeout", "600"]
-          livenessProbe:
-            exec:
-              command: ["curl", "--fail", "localhost:8000/v1/projects"]
-            failureThreshold: 3
-            initialDelaySeconds: 600
-            periodSeconds: 60
           resources:
             {{ toYaml .Values.annif.resources | nindent 12 }}
           volumeMounts:
