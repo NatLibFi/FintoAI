@@ -16,7 +16,7 @@ annif:
   resources:
     limits:
       cpu: 1
-      memory: 26Gi
+      memory: 28Gi
   modelDataStorage: 25Gi
 
 textract:
