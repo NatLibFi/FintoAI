@@ -1,7 +1,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-cluster
   labels:
     type: external
     app.kubernetes.io/instance: {{ .Release.Namespace }}
