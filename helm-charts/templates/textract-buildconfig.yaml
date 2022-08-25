@@ -17,7 +17,7 @@ spec:
     type: Git
     git:
       uri: 'https://github.com/NatLibFi/textract-docker.git'
-      ref: 'url-extraction'  # TODO Switch
+      ref: 'main'  # Use main branch to not expose url fetch endpoint
   strategy:
     type: Docker                      
   triggers:
