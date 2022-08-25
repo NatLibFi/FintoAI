@@ -15,7 +15,7 @@ This repository contains files used for the service. The service is run on OpenS
 
 ## Logging
 
-Cluster-level log service is Kibana. There is a dashboard with a panels for the logs from each component.
+Cluster-level log service is Kibana. For each instance there is a dashboard with panels showing logs from each component.
 
 # Service deployment
 
@@ -24,7 +24,7 @@ You also need to be logged in to the OCP test or production cluster with the `oc
 
     oc login -u <username> https://api.<OCP_cluster_domain>:6443
 
-A service instance is deployed using helm-charts in the `helm-charts/` directory. The `helm-charts/templates/` subdirectory
+A service instance is deployed using helm-charts in the [`helm-charts/`](helm-charts/) directory. The `helm-charts/templates/` subdirectory
 contains the common resource definition files, and the files `values-ai.finto.fi.yaml` and `values-ai.dev.finto.fi.yaml`
 contain the configurations that are specific for the test and production
 instances (named `ai-dev-finto-fi` and `ai-finto-fi`).
@@ -34,6 +34,8 @@ The command to install or update the test instance, with all the components, is
     helm upgrade --install -f values-ai.dev.finto.fi.yaml ai-dev-finto-fi .
 
 The necessary secrets are managed in the OCP web console.
+
+Use command `helm get all ai-dev-finto-fi` to see what is currently deployed, and `helm diff upgrade -f values-ai.dev.finto.fi.yaml ai-dev-finto-fi .` for what upgrade would change.
 
 ## Model updates
 
