@@ -22,9 +22,10 @@ spec:
           image: >-
             image-registry.openshift-image-registry.svc:5000/annif/{{ .Release.Name }}-textract:latest
           livenessProbe:
-            exec:
-              command: ["curl", "--fail", "localhost:{{ .Values.textract.port }}/status"]
-            failureThreshold: 3
+            httpGet:
+              scheme: HTTP
+              path: /status
+              port: {{ .Values.textract.port }}
             initialDelaySeconds: 5
             periodSeconds: 60
           resources:
