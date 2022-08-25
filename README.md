@@ -66,6 +66,10 @@ Show the status of the project
 
     oc status
 
+List events in the project
+
+    oc get events
+
 List the pods of the project
 
     oc get pods  # --show-labels
