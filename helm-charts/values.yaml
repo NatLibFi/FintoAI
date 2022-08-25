@@ -22,5 +22,7 @@ annif:
 textract:
   port: 8001
   resources:
+    requests:
+      cpu: 200m
     limits:
       cpu: 1
