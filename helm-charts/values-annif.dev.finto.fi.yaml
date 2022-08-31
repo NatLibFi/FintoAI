@@ -1,4 +1,4 @@
-cluster: 'test'  # TODO Drop this when hostname is transferred
+cluster: 'test'
 nginx:
   git:
     uri: 'https://github.com/NatLibFi/FintoAI.git'
