@@ -1,5 +1,5 @@
 timezone: "Europe/Helsinki"
-cluster: 'test'  # TODO Drop this when hostname is transferred
+cluster: 'test'
 
 annif:
   version: 'latest'
@@ -8,3 +8,6 @@ annif:
       cpu: 1
       memory: 20Gi
   modelDataStorage: 8Gi
+
+matomo:
+  siteId: '13'
