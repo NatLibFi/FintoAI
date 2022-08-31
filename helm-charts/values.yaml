@@ -5,7 +5,7 @@ timezone: "Europe/Helsinki"
 nginx:
   version: '1.20'
   baseImage: 'ubi8'
-  # TODO Increase storage when project quota allows
+  # TODO Increase storage if/when project quota allows
   buildTriggers:
     - type: ImageChange
       imageChange: {}

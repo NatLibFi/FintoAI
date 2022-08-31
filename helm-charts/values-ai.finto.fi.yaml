@@ -1,4 +1,4 @@
-cluster: 'prod'  # TODO Drop this when hostname is transferred
+cluster: 'prod'
 nginx:
   git:
     ref: 'main'
@@ -6,4 +6,4 @@ nginx:
   contextDir: '/ai.finto.fi'
 
 matomo:
-  siteId: '15'  # TODO Change to prod id when deploying for real
+  siteId: '12'
