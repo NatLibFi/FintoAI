@@ -1,7 +1,5 @@
 [<img src="https://raw.githubusercontent.com/NatLibFi/FintoAI/master/ai.finto.fi/static/img/finto-ai-social.png" width="200">](https://ai.finto.fi)
 
-# NOTE: THIS IS WIP
-
 Finto AI suggests subjects for a given text. It's based on [Annif](https://annif.org), a tool for automated subject indexing.
 Finto AI is also an API service that can be integrated to other systems.
 
@@ -68,11 +66,11 @@ Show the status of the project
 
 List events in the project
 
-    oc get events
+    oc get events --sort-by='{.lastTimestamp}'  #--watch
 
 List the pods of the project
 
-    oc get pods  # --show-labels
+    oc get pods  #--show-labels
 
 List the pods of the test instance using a label selector (build/deploy pods are excluded)
 
@@ -82,11 +80,11 @@ List all resources of the test instance
 
     oc get all -l app.kubernetes.io/instance=ai-dev-finto-fi
 
-Follow logs from the pods of the test instance
+Follow logs from all pods of the test instance
 
-    oc logs -l app.kubernetes.io/instance=ai-dev-finto-fi -f  #--timestamps
+    oc logs -l app.kubernetes.io/instance=ai-dev-finto-fi -f --all-containers  #--timestamps
 
-Get details of the pods of the test instance
+Get details of all pods of the test instance
 
     oc describe pods -l app.kubernetes.io/instance=ai-dev-finto-fi
 
