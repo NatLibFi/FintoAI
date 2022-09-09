@@ -8,6 +8,3 @@ annif:
       cpu: 1
       memory: 20Gi
   modelDataStorage: 8Gi
-
-matomo:
-  siteId: '13'
