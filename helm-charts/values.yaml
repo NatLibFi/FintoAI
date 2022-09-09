@@ -7,4 +7,8 @@ annif:
     limits:
       cpu: 1
       memory: 20Gi
-  modelDataStorage: 8Gi
+    requests:
+      cpu: 200m
+      memory: 5Gi
+
+  modelDataStorage: 2Gi
