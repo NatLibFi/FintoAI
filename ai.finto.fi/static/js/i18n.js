@@ -55,7 +55,7 @@ jQuery(function() {
             "button-select-url": "Fetch text",
             "supported-file-formats": "Supported formats: ",
             "alert-not-supported-format": "This file format is not supported.",
-            "alert-textract-request-failed": "Text extraction failed: ",
+            "alert-textract-request-failed": "Text extraction failed.",
             "alert-too-big-file": "File is too large; maximum allowed size is 50 MB.",
             "text-box-label-text": "Enter text to be indexed",
             "text-box-placeholder-text-input": 'Copy text here and press the button "Get subject suggestions"',
