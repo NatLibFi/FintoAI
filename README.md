@@ -11,7 +11,7 @@ This repository contains files used for the service. The service is run on OpenS
 
 - [Annif](https://github.com/NatLibFi/Annif) application
 - NGINX proxy server also serving the webpage
-- [Textract](https://github.com/NatLibFi/textract-docker) for text extraction from various document formats
+- [Textract](https://github.com/deanmalmgren/textract) for text extraction from various document formats
 - [Matomo log-analytics](https://github.com/NatLibFi/matomo-log-analytics) for gathering usage statistics
 
 ## Logging
