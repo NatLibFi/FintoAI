@@ -16,8 +16,10 @@ spec:
   source:
     type: Git
     git:
-      uri: 'https://github.com/NatLibFi/textract-docker.git'
+      uri: 'git@github.com:NatLibFi/textract-docker-private.git'
       ref: 'main'  # Use main branch to not expose url fetch endpoint
+    sourceSecret:
+      name: textract-github-repo-{{ .Values.cluster }}
   strategy:
     type: Docker                      
   triggers:
