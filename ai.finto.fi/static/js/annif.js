@@ -174,7 +174,7 @@ function readUrl(url) {
 
 function clearInputs() {
     $(".alert").addClass('d-none');
-    $('#text').val('');
+    finishExtraction('');
     $('.custom-file-label').html($.i18n('form-file-input'));
     $('#input-url').val('');
     $('#button-select-url').prop('disabled', true);
