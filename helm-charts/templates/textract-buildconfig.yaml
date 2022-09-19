@@ -17,7 +17,7 @@ spec:
     type: Git
     git:
       uri: 'git@github.com:NatLibFi/textract-docker-private.git'
-      ref: 'main'  # Use main branch to not expose url fetch endpoint
+      ref: 'url-extraction'  # TODO Switch to main
     sourceSecret:
       name: textract-github-repo-{{ .Values.cluster }}
   strategy:
