@@ -35,6 +35,11 @@ spec:
               value: {{ quote .Values.textract.port }}
             - name: TZ
               value: {{ .Values.timezone }}
+            - name: FILE_FETCHER
+              valueFrom:
+                secretKeyRef:
+                  key: textract-file-fetcher
+                  name: textract-file-fetcher
           ports:
             - containerPort: {{ .Values.textract.port }}
               protocol: TCP
