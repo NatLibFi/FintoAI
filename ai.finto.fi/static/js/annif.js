@@ -2,11 +2,11 @@
 if (window.location.protocol.startsWith('http')) {
     // http or https - use APIs of current Annif and textract instances
     var annif_base_url = '/v1/';
-    var textract_url = '/textract';
+    var textract_base_url = '/textract/';
 } else {
     // local development case - use Finto AI dev API and textract running on localhost via port 8001
     var annif_base_url = 'https://ai.dev.finto.fi/v1/';
-    var textract_url = 'http://localhost:8001/textract';
+    var textract_base_url = 'http://localhost:8001/textract/';
 }
 var projects = {};
 
@@ -133,7 +133,7 @@ function readFile(file) {
         let uploadFileFormData = new FormData();
         uploadFileFormData.append('file', file);
         $.ajax({
-            url: textract_url,
+            url: textract_base_url + 'file',
             method: 'POST',
             data: uploadFileFormData,
             contentType: false,
@@ -158,11 +158,11 @@ function readUrl(url) {
     $('#button-select-url').prop('disabled', false);
     const plainUrl = urlObj.origin + urlObj.pathname;  // Remove possible parameters
     $.ajax({
-        url: textract_url + '-url',
+        url: textract_base_url + 'url',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify({"file_url": plainUrl}),
+        data: JSON.stringify({"url": plainUrl}),
         success: function(data) {
             finishExtraction(data.text);
         },
