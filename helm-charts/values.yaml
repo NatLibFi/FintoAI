@@ -2,7 +2,7 @@ timezone: "Europe/Helsinki"
 cluster: 'test'
 
 annif:
-  version: 'latest'
+  version: '0.58'
   resources:
     limits:
       cpu: 1
