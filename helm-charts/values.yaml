@@ -11,4 +11,4 @@ annif:
       cpu: 200m
       memory: 5Gi
 
-  modelDataStorage: 2Gi
+  modelDataStorage: 8Gi
