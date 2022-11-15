@@ -12,8 +12,7 @@ spec:
       app.kubernetes.io/name: annif
       app.kubernetes.io/instance: {{ .Release.Name }}
   strategy:
-    # TODO: Switch to type: Rolling if there's enough memory for two simultaneously runnig apps
-    type: Recreate
+    type: RollingUpdate
   template:
     metadata:
       labels:
