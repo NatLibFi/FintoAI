@@ -1,9 +1,0 @@
-cluster: 'prod'  # TODO Drop this when hostname is transferred
-nginx:
-  git:
-    ref: 'main'
-    uri: 'https://github.com/NatLibFi/FintoAI.git'
-  contextDir: '/ai.finto.fi'
-
-matomo:
-  siteId: '15'  # TODO Change to prod id when deploying for real
