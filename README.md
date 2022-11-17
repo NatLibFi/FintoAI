@@ -7,4 +7,4 @@ To quickly create a new instance with a new address in cluster domain:
   - Annif image version/tag is set in `values.yaml`
 - log in to the test OCP cluster with `oc` (if not already logged in)
 - while in helm-charts directory run `helm upgrade --install <name-of-the-release> .`
-- the service becomes available in address \<name-of-the-release\>.ext.ocp-kk-test-0.k8s.it.helsinki.fi
+- the service becomes available in address \<name-of-the-release\>.<test-cluste>
