@@ -1,9 +1,0 @@
-cluster: 'prod'
-nginx:
-  git:
-    ref: 'main'
-    uri: 'https://github.com/NatLibFi/FintoAI.git'
-  contextDir: '/ai.finto.fi'
-
-matomo:
-  siteId: '12'

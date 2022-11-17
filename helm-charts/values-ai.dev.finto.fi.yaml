@@ -1,9 +1,0 @@
-cluster: 'test'
-nginx:
-  git:
-    ref: 'update-2022'
-    uri: 'https://github.com/NatLibFi/FintoAI.git'
-  contextDir: '/ai.finto.fi'
-
-matomo:
-  siteId: '15'
