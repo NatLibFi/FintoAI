@@ -1,9 +1,0 @@
-cluster: 'prod'
-nginx:
-  git:
-    uri: 'https://github.com/NatLibFi/FintoAI.git'
-    ref: 'api-annif-org'
-  contextDir: '/api.annif.org'
-
-matomo:
-  siteId: '13'
