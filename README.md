@@ -22,8 +22,7 @@ You also need to be logged in to the OCP test or production cluster with the `oc
 
     oc login -u <username> https://api.<OCP_cluster_domain>:6443
 
-A service instance is deployed using helm-charts in the [`helm-charts/`](helm-charts/) directory. The `helm-charts/templates/` subdirectory
-contains the common resource definition files, and the files `values-ai.finto.fi.yaml` and `values-ai.dev.finto.fi.yaml`
+A service instance is deployed using helm-charts, which contain the common resource definition files, and the values files
 contain the configurations that are specific for the test and production
 instances (named `ai-dev-finto-fi` and `ai-finto-fi`).
 
