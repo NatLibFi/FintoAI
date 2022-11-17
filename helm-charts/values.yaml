@@ -12,7 +12,7 @@ nginx:
     - type: ConfigChange
 
 annif:
-  version: '0.57'
+  version: '0.59'
   resources:
     requests:
       cpu: 200m
