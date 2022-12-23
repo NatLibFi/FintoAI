@@ -29,6 +29,16 @@ function fetchProjects() {
     });
 }
 
+function fetchAnnifVersion() {
+    $.ajax({
+        url: base_url,
+        method: 'GET',
+        success: function(data) {
+            $('#annif-logo').attr('title','version ' + data.version);
+        }
+    })
+}
+
 function makeLabelLanguageOptions() {
     $('#label-language').append(
         $('<option>').attr('value','project-language').attr('data-i18n','label-language-option-project'),
@@ -164,6 +174,7 @@ $(document).ready(function() {
         disableButton();
     }
     fetchProjects();
+    fetchAnnifVersion();
     makeLabelLanguageOptions();
     $('#get-suggestions').click(function() {
         clearResults();
