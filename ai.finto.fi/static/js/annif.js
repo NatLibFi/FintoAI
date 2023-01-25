@@ -40,13 +40,6 @@ function makeLabelLanguageOptions() {
     );
 }
 
-function getLabelPromise(uri, lang) {
-    return $.ajax({
-        url: "https://api.finto.fi/rest/v1/label?uri=" + uri + "&lang=" + lang,
-        method: 'GET'
-    });
-}
-
 function showResults(data) {
     $.each(data.results, function(idx, value) {
         $('#no-results').hide();
@@ -250,6 +243,7 @@ function getSuggestions() {
         method: 'POST',
         data: {
           text: $('#text').val(),
+          language: $('#label-language').val() == 'project-language' ? '' : $('#label-language').val(),
           limit: $('input[name="limit"]:checked').val(),
           threshold: 0.01
         },
@@ -261,34 +255,7 @@ function getSuggestions() {
                 $('#no-results').show();
             }
 
-            if ($('#label-language').val() == 'project-language') {
-                showResults(data);
-            }
-            else {
-                var promises = []
-                $.each(data.results, function(idx, value) {
-                    promises.push(
-                        getLabelPromise(value.uri, $('#label-language').val())
-                    );
-                });
-
-                $.when.apply($, promises).done(function(result) {
-                    $.each(promises, function(idx, promise) {
-                        var newLabel = promise.responseJSON.prefLabel;
-                        if (newLabel === undefined) {
-                            var projectLanguage = projects[$('#project').val()].language;
-                            newLabel = data.results[idx].label + ' (' + projectLanguage + ')';
-                        }
-                        data.results[idx].label = newLabel;
-                    });
-                    showResults(data);
-                }).fail(function (jqXHR) {
-                    alert('URI query on api.finto.fi failed:\n' + jqXHR.responseText);
-                    $('#results').hide();
-                    $('#no-results').show();
-                }
-                );
-            }
+            showResults(data);
         }
     });
 }
