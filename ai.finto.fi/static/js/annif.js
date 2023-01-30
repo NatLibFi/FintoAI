@@ -34,7 +34,7 @@ function fetchAnnifVersion() {
         url: base_url,
         method: 'GET',
         success: function(data) {
-            $('#annif-logo').closest('a').after('<span>version '+data.version+'</span>');
+            $('#annif-version').append(data.version);
         }
     });
 }
