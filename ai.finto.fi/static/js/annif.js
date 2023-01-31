@@ -33,7 +33,7 @@ function fetchProjects() {
 
 function fetchAnnifVersion() {
     $.ajax({
-        url: base_url,
+        url: annif_base_url,
         method: 'GET',
         success: function(data) {
             $('#annif-version').append(data.version);
