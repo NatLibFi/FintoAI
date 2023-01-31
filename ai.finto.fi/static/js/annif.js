@@ -31,6 +31,16 @@ function fetchProjects() {
     });
 }
 
+function fetchAnnifVersion() {
+    $.ajax({
+        url: base_url,
+        method: 'GET',
+        success: function(data) {
+            $('#annif-version').append(data.version);
+        }
+    });
+}
+
 function makeLabelLanguageOptions() {
     $('#label-language').append(
         $('<option>').attr('value','project-language').attr('data-i18n','label-language-option-project'),
@@ -316,6 +326,7 @@ $(document).ready(function() {
         disableSuggestButton();
     }
     fetchProjects();
+    fetchAnnifVersion();
     makeLabelLanguageOptions();
     if ($.trim($('#input-url').val()) == "") {
         $('#button-select-url').prop("disabled", true);
