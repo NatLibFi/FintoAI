@@ -93,7 +93,7 @@ function readDropInput(input) {
 }
 
 const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx',
-    'epub', 'html'];
+    'epub', 'html', 'htm'];
 
 function checkFormatSupport(extension) {
     // Allow undefined because url to a typical html page lacks .html suffix
