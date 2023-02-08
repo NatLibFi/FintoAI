@@ -2,11 +2,11 @@
 if (window.location.protocol.startsWith('http')) {
     // http or https - use APIs of current Annif and textract instances
     var annif_base_url = '/v1/';
-    var textract_url = '/textract';
+    var textract_base_url = '/textract/';
 } else {
     // local development case - use Finto AI dev API and textract running on localhost via port 8001
     var annif_base_url = 'https://ai.dev.finto.fi/v1/';
-    var textract_url = 'http://localhost:8001/textract';
+    var textract_base_url = 'http://localhost:8001/textract/';
 }
 var projects = {};
 
@@ -31,6 +31,16 @@ function fetchProjects() {
     });
 }
 
+function fetchAnnifVersion() {
+    $.ajax({
+        url: annif_base_url,
+        method: 'GET',
+        success: function(data) {
+            $('#annif-version').append(data.version);
+        }
+    });
+}
+
 function makeLabelLanguageOptions() {
     $('#label-language').append(
         $('<option>').attr('value','project-language').attr('data-i18n','label-language-option-project'),
@@ -38,13 +48,6 @@ function makeLabelLanguageOptions() {
         $('<option>').attr('value','sv').attr('data-i18n','label-language-option-sv'),
         $('<option>').attr('value','en').attr('data-i18n','label-language-option-en'),
     );
-}
-
-function getLabelPromise(uri, lang) {
-    return $.ajax({
-        url: "https://api.finto.fi/rest/v1/label?uri=" + uri + "&lang=" + lang,
-        method: 'GET'
-    });
 }
 
 function showResults(data) {
@@ -93,7 +96,7 @@ function readDropInput(input) {
 }
 
 const supportedFormats = ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx',
-    'epub', 'html'];
+    'epub', 'html', 'htm'];
 
 function checkFormatSupport(extension) {
     // Allow undefined because url to a typical html page lacks .html suffix
@@ -136,7 +139,7 @@ function readFile(file) {
         let uploadFileFormData = new FormData();
         uploadFileFormData.append('file', file);
         $.ajax({
-            url: textract_url,
+            url: textract_base_url + 'file',
             method: 'POST',
             data: uploadFileFormData,
             contentType: false,
@@ -161,11 +164,11 @@ function readUrl(url) {
     $('#button-select-url').prop('disabled', false);
     const plainUrl = urlObj.origin + urlObj.pathname;  // Remove possible parameters
     $.ajax({
-        url: textract_url + '-url',
+        url: textract_base_url + 'url',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify({"file_url": plainUrl}),
+        data: JSON.stringify({"url": plainUrl}),
         success: function(data) {
             finishExtraction(data.text);
         },
@@ -177,7 +180,7 @@ function readUrl(url) {
 
 function clearInputs() {
     $(".alert").addClass('d-none');
-    $('#text').val('');
+    finishExtraction('');
     $('.custom-file-label').html($.i18n('form-file-input'));
     $('#input-url').val('');
     $('#button-select-url').prop('disabled', true);
@@ -202,10 +205,7 @@ function finishExtraction(text) {
 }
 
 function handleFailedExtraction(jqXHR) {
-    var textractStatus = jqXHR.status + ' ' + jqXHR.responseText;
-    $("#textract-status").remove();
-    $("#alert-textract-request-failed").removeClass('d-none').append(
-        '<span id="textract-status">' + textractStatus + '</span>');
+    $("#alert-textract-request-failed").removeClass('d-none');
     finishExtraction();
     $('#text-box-background').show();
 }
@@ -256,6 +256,7 @@ function getSuggestions() {
         method: 'POST',
         data: {
           text: $('#text').val(),
+          language: $('#label-language').val() == 'project-language' ? '' : $('#label-language').val(),
           limit: $('input[name="limit"]:checked').val(),
           threshold: 0.01
         },
@@ -267,34 +268,7 @@ function getSuggestions() {
                 $('#no-results').show();
             }
 
-            if ($('#label-language').val() == 'project-language') {
-                showResults(data);
-            }
-            else {
-                var promises = []
-                $.each(data.results, function(idx, value) {
-                    promises.push(
-                        getLabelPromise(value.uri, $('#label-language').val())
-                    );
-                });
-
-                $.when.apply($, promises).done(function(result) {
-                    $.each(promises, function(idx, promise) {
-                        var newLabel = promise.responseJSON.prefLabel;
-                        if (newLabel === undefined) {
-                            var projectLanguage = projects[$('#project').val()].language;
-                            newLabel = data.results[idx].label + ' (' + projectLanguage + ')';
-                        }
-                        data.results[idx].label = newLabel;
-                    });
-                    showResults(data);
-                }).fail(function (jqXHR) {
-                    alert('URI query on api.finto.fi failed:\n' + jqXHR.responseText);
-                    $('#results').hide();
-                    $('#no-results').show();
-                }
-                );
-            }
+            showResults(data);
         }
     });
 }
@@ -356,6 +330,7 @@ $(document).ready(function() {
         disableSuggestButton();
     }
     fetchProjects();
+    fetchAnnifVersion();
     makeLabelLanguageOptions();
     if ($.trim($('#input-url').val()) == "") {
         $('#button-select-url').prop("disabled", true);
