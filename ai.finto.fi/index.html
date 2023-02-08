@@ -84,29 +84,133 @@
       #footer {
         padding: 8px 20px;
       }
+      #text-box-heading {
+        margin-left: 10px;
+      }
+      .nav-tabs .nav-item .nav-link {
+        background-color: #ecffff;
+        text-decoration: none;
+        color: #394554;
+        border: none;
+        border-radius: 0;
+        margin-bottom: -1px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      .nav-middle-tab {
+        border-left: 1px solid darkgray;
+        border-right: 1px solid darkgray;
+      }
+      .nav-tabs .nav-item .nav-link.active {
+        color: black;
+        border-top: 2px solid black;
+        background-color: #dff5f9;
+      }
+      .tab-pane {
+        background-color: #dff5f9;
+        padding: 15px 15px 0px;
+      }
+      .alert {
+        margin: 15px 0px 10px;
+        border-radius: 0;
+        font-weight: bold;
+      }
+      #tab-text-input {
+        padding: 0px;
+      }
+      .custom-file-label {
+        border-radius: 0;
+      }
+      .custom-file-label::after {
+        border-radius: 0;
+        background: #009cca;
+        color:black;
+      }
+      .custom-file-label:lang(fi)::after {
+          content: "Selaa";
+      }
+      .custom-file-label:lang(sv)::after {
+          content: "Bläddra";
+      }
+      #tabs-input-footer {
+        background-color: #dff5f9;
+        padding: 10px 5px 0px;
+        margin-bottom: -5px;
+      }
       #text-box {
         background-color: white;
         border-top: 2px solid black;
-        font-weight: bold;
         margin-bottom: 0;
       }
+      label[for=text] {
+        font-weight: bold;
+      }
       #text-box-wrapper {
+        background-color: #dff5f9;
+        padding: 15px;
         position: relative;
       }
-      #text-box button {
+      .dropzone {
+        padding: 10px;
+      }
+      .dropzone-border.dragging {
+        outline: 3px dashed #009cca;
+        outline-offset: -3px;
+      }
+      .dropzone.dragging {
+        background-color: #ecffff;
+      }
+      #text.dragging {
+        background-color: #ecffff;
+      }
+      .btn-primary, .btn-primary:hover,.btn-primary:focus,.btn-primary:active,
+      .btn-primary:active:focus:not(:disabled):not(.disabled) {
+        background-color: #009cca;
+        color: black;
+        border: none;
+        border-radius: 0px;
+      }
+      .btn-primary:disabled {
+        cursor: default;
+        background-color: #6c757d;
+        color: white;
+      }
+      #button-clear {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 20px;
+        right: 20px;
         background-color: #009cca;
         color: black;
         border: none;
         border-radius: 0px;
         padding: 2px 7px;
       }
-      
+      #text-box-background {
+        font-weight: normal;
+        position: absolute;
+        width: 500px;
+        max-width: 80%;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, 0);
+        opacity: 0.5;
+        text-align: center;
+        line-height: 40%;
+      }
+      #text-box-background.dragging {
+        opacity: 1.0;
+      }
+      #upload-spinner {
+        width: 50px;
+        height: 50px;
+        margin-left: -25px;
+        position: absolute;
+        left: 50%;
+        top: 45%;
+      }
       #sidebar, #sidebar-tab { background-color: #dff5f9; }
       #sidebar-tabs { background-color: #bfeaf4;}
-      #sidebar-tab { float: left; border-top: 2px solid black; }
+      #sidebar-tab { float: left; }
       .form-control { border-radius: 0px; }
       select {
         -moz-appearance: none;
@@ -141,15 +245,6 @@
       }
       #get-suggestions {
         margin-top: 24px;
-        background-color: #009cca;
-        color: black;
-        border: none;
-        border-radius: 0px;
-      }
-      #get-suggestions:disabled {
-        cursor: default;
-        background-color: #6c757d;
-        color: white;
       }
       #sidebar h2 {
         margin-top: 24px;
@@ -202,14 +297,6 @@
       }
       #copy-button-label-and-uri {
         background: url("static/img/clipboard-label-http.svg");
-      }
-      #annif-logo {
-        width: 70px;
-        margin-bottom: 8px;
-        margin-left: -3px;
-      }
-      #annif-logo:hover {
-        opacity: 0.90;
       }
       meter { width: 24px; }
       meter::-webkit-meter-bar {
@@ -274,24 +361,83 @@
 
 <div class="container">
 
-
   <div class="row mb-md-2">
     <div class="col-md-8 pr-md-3">
-      <div id="text-box" class="form-group widget">
-        <label for="text" data-i18n="text-box-label-text">Kuvailtava teksti</label><br>
-        <div id="text-box-wrapper">
-          <textarea class="form-control" rows="20" name="text" id="text"
-          data-i18n="[placeholder]text-box-placeholder"
-          placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'></textarea>
-          <button id="button-clear" type="button" class="btn btn-danger">&#x2715;</button>
+
+      <div class="form-group widget" id="text-box">
+        <div class="row">
+          <div class="col-md-6" id="text-box-heading">
+            <label for="text" data-i18n="text-box-label-text">Kuvailtava teksti</label><br>
+          </div>
         </div>
-     </div>
+        <div id="tabs-input">
+          <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" href="#tab-text-input" aria-controls="tab-text-input" role="tab" data-toggle="tab" data-i18n="nav-tab-text-input">Syötä teksti</a>
+            </li>
+            <li class="nav-item nav-middle-tab">
+              <a class="nav-link" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab" data-i18n="nav-tab-file-input">Syötä tiedosto</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tab-url-input" aria-controls="tab-url-input" role="tab" data-toggle="tab" data-i18n="nav-tab-url-input">Syötä URL</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="tab-text-input">
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tab-file-input">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" onchange="selectFile(this);" id="form-file-input">
+                <label class="custom-file-label" for="form-file-input" data-i18n="form-file-input">Valitse tiedosto</label>
+              </div>
+              <div id="tabs-input-footer">
+                <span data-i18n="supported-file-formats">Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tab-url-input">
+              <form class="input-group flex-fill" id="form-url">
+                <input type="url" class="form-control" id="input-url"data-i18n="[placeholder]form-url-input-placeholder" placeholder="Syötä URL" aria-label="Syötä URL" autocomplete="off" required>
+                <div class="input-group-append">
+                  <input type="submit" id="button-select-url" value="Hae teksti" data-i18n="[value]button-select-url" class="btn btn-primary">
+                </div>
+              </form>
+              <div id="tabs-input-footer">
+                <span data-i18n="supported-file-formats">Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-danger d-none" id="alert-not-supported-format" data-i18n="alert-not-supported-format">
+          Tämä tiedostomuoto ei ole tuettu.
+        </div>
+        <div class="alert alert-danger d-none" id="alert-textract-request-failed" data-i18n="alert-textract-request-failed">
+          Tekstin haku epäonnistui.
+        </div>
+        <div class="alert alert-danger d-none" id="alert-too-big-file" data-i18n="alert-too-big-file">
+          Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
+        </div>
+
+        <div id="text-box-wrapper">
+          <textarea class="form-control dropzone dropzone-border" rows="20" name="text" id="text"
+          data-i18n="[placeholder]text-box-placeholder-text-input"
+          ></textarea>
+          <button id="button-clear" type="button" class="btn btn-danger">&#x2715;</button>
+          <div id="text-box-background" class="dropzone">
+            <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+            <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
+            <span data-i18n="text-box-background">Voit myös pudottaa tiedoston tai URL:n tähän</span>
+          </div>
+            <div id="upload-spinner" class="spinner-border mt-1" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+      </div>
     </div>
 
     <div class="col-md-4 pl-md-2">
       <ul id="sidebar-tabs" class="nav nav-tabs">
         <li id="sidebar-tab" class="nav-item">
-          <a class="nav-link" data-i18n="nav-subject-indexing">Sisällönkuvailu</a>
+          <a class="nav-link active" data-i18n="nav-subject-indexing">Sisällönkuvailu</a>
         </li>
       </ul>
       <div id="sidebar" class="widget">
@@ -353,8 +499,8 @@
           talleteta.  Palvelun käyttöä seurataan ja tilastoidaan palvelun
           kehittämiseksi. </span>
           <a href="#" id="accessibility-statement" data-i18n="accessibility-statement">Tutustu saavutettavuusselosteeseen.</a>.
-          <span data-i18n="powered-by">Voimanlähteenä </span>
-          <a href="https://www.annif.org"><img src="static/img/annif-RGB-white.svg" id="annif-logo" alt="Annif"></a>
+          <span data-i18n="[html]powered-by">Perustuu <a href="https://www.annif.org">Annifin</a> versioon </span>
+          <span id="annif-version"></span>
         </p>
       </div>
     </div>
@@ -362,7 +508,7 @@
 
 </div>
 
-    <script src="static/js/jquery-3.4.1.min.js"></script>
+    <script src="static/js/jquery-3.6.1.min.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
 
     <script src="static/js/jquery.i18n.js"></script>		
