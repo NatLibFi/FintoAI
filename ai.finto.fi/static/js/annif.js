@@ -59,16 +59,19 @@ function showResults(data) {
                 $('<a id="uri-link" class="my-2" target="_blank">').attr('href',value.uri).append(value.label),
                 $('<div class="btn-group" role="group" id="copy-buttons"> \
                     <button type="button" class="btn btn-secondary copy-button" id="copy-button-label" data-i18n="[title]copy-button-label" \
-                        onclick="copyLabelToClipboard(this);"></button><!-- \
-                    --><button type="button" class="btn btn-secondary copy-button" id="copy-button-uri" data-i18n="[title]copy-button-uri" \
-                        onclick="copyUriToClipboard(this);"></button><!-- \
-                    --><button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri" data-i18n="[title]copy-button-label-and-uri" \
+                        onclick="copyLabelToClipboard(this);"></button> \
+                    <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri" data-i18n="[title]copy-button-uri" \
+                        onclick="copyUriToClipboard(this);"></button> \
+                    <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri" data-i18n="[title]copy-button-label-and-uri" \
                         onclick="copyUriAndLabelToClipboard(this);"></button> \
-                </div></li>')
+                    <input type="checkbox" name="suggestion"> \
+                </div> \
+                </li>')
             )
         );
         $('#results').i18n();
         $('#results').show();
+        $('.copy-many').show();
     });
 }
 
@@ -314,6 +317,7 @@ $(document).ready(function() {
     });
 
     $('#no-results').hide();
+    $('.copy-many').hide();
     $('#results-spinner').hide();
     $('#upload-spinner').hide();
     $('.supported-file-formats').append(supportedFormats.map(i => '.' + i).join(', '));
@@ -341,6 +345,23 @@ $(document).ready(function() {
     $('#get-suggestions').click(function() {
         clearResults();
         getSuggestions();
+    });
+    $('#copy-many-terms').click(function() {
+        let terms = [];
+        $.each($("#results input:checked"), function(idx, value) {
+            terms.push(value.parentElement.parentElement.childNodes[1].textContent);
+        });
+        navigator.clipboard.writeText(terms.join(', '));
+    });
+    $('#copy-many-uris').click(function() {
+        let uris = [];
+        $.each($("#results input:checked"), function(idx, value) {
+            uris.push(value.parentElement.parentElement.childNodes[1].href);
+        });
+        navigator.clipboard.writeText(uris.join(', '));
+    });
+    $(':checkbox[name=select-all-suggestions]').click(function() {
+        $(':checkbox[name=suggestion]').prop('checked', this.checked);
     });
     $('#button-clear').click(function() {
         clearInputs();
