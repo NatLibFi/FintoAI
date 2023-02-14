@@ -170,7 +170,7 @@ function readUrl(url) {
             finishExtraction(data.text);
         },
         error: function(jqXHR) {
-            handleFailedExtraction(jqXHR);
+            handleFailedExtractionUrl(jqXHR);
         }
     });
 }
@@ -203,6 +203,12 @@ function finishExtraction(text) {
 
 function handleFailedExtraction(jqXHR) {
     $("#alert-textract-request-failed").removeClass('d-none');
+    finishExtraction();
+    $('#text-box-background').show();
+}
+
+function handleFailedExtractionUrl(jqXHR) {
+    $("#alert-textract-request-failed-url").removeClass('d-none');
     finishExtraction();
     $('#text-box-background').show();
 }

@@ -11,7 +11,7 @@ function defaultLanguage() {
 }
 
 
-var setLocale = function(locale) {
+var setLocale = function (locale) {
 
     if (locale) {
         $.i18n().locale = locale;
@@ -21,7 +21,7 @@ var setLocale = function(locale) {
 
     $('body').i18n();
     $('html').attr('lang', $.i18n().locale);
-    
+
     /* switch link targets */
     $('#nav-feedback').attr("href", $.i18n('url-feedback'));
     $('#nav-about').attr("href", $.i18n('url-read-more'));
@@ -34,7 +34,7 @@ var setLocale = function(locale) {
 
 };
 
-jQuery(function() {
+jQuery(function () {
 
     $.i18n().load({
 
@@ -56,6 +56,7 @@ jQuery(function() {
             "supported-file-formats": "Supported formats: ",
             "alert-not-supported-format": "This file format is not supported.",
             "alert-textract-request-failed": "Text extraction failed.",
+            "alert-textract-request-failed-url": "Text extraction failed. Size of target max. 6 MB. No redirects.",
             "alert-too-big-file": "File is too large; maximum allowed size is 50 MB.",
             "text-box-label-text": "Enter text to be indexed",
             "text-box-placeholder-text-input": 'Copy text here and press the button "Get subject suggestions"',
@@ -104,6 +105,7 @@ jQuery(function() {
             "supported-file-formats": "Följande format stöds: ",
             "alert-not-supported-format": "Det här filformatet stöds inte.",
             "alert-textract-request-failed": "Det gick inte att extrahera text.",
+            "alert-textract-request-failed-url": "Det gick inte att extrahera text. Storlek av objekt max. 6 MB. Inga omdirigeringar.",
             "alert-too-big-file": "För stor fil; den maximala tillåtna filstorleken är 50 MB.",
             "text-box-label-text": "Text för indexering",
             "text-box-placeholder-text-input": 'Kopiera text hit och tryck på knappen "Ge förslag till ämnesord"',
@@ -154,6 +156,7 @@ jQuery(function() {
             "supported-file-formats": "Tuetut tiedostomuodot: ",
             "alert-not-supported-format": "Tämä tiedostomuoto ei ole tuettu.",
             "alert-textract-request-failed": "Tekstin haku epäonnistui.",
+            "alert-textract-request-failed-url": "Tekstin haku epäonnistui. Kohteen koko max. 6 MB. Ei uudelleenohjauksia.",
             "alert-too-big-file": "Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB.",
             "text-box-label-text": "Kuvailtava teksti",
             "text-box-placeholder-text-input": 'Kopioi teksti tähän ja paina “Anna aihe-ehdotukset”-painiketta',
@@ -185,14 +188,14 @@ jQuery(function() {
             "url-accessibility-statement": "https://www.kiwi.fi/x/LQBTCw",
         }
 
-    }).done(function() {
+    }).done(function () {
         setLocale(url('?locale'));
 
-        History.Adapter.bind(window, 'statechange', function() {
+        History.Adapter.bind(window, 'statechange', function () {
             setLocale(url('?locale'));
         });
 
-        $('#switch-locale').on('click', 'a', function(e) {
+        $('#switch-locale').on('click', 'a', function (e) {
             e.preventDefault();
             History.pushState(null, null, "?locale=" + $(this).data('locale'));
         });
