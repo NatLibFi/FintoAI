@@ -1,528 +1,658 @@
 <!doctype html>
 <html>
 
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    
-    <!-- Fira Sans font -->
-    <link rel="stylesheet" href="static/css/fonts.css">
-
-    <!-- favicon -->
-    <link rel="icon" href="favicon.ico">
-
-    <title>Finto AI</title>
-    <meta name="title" content="Finto AI - service for automated subject indexing">
-    <meta name="description" content="Finto AI suggests subjects for a given text. It's based on Annif, a tool for automated subject indexing.">
-    <meta property="og:title" content="Finto AI - service for automated subject indexing">
-    <meta property="twitter:title" content="Finto AI - service for automated subject indexing">
-    <meta property="og:description" content="Finto AI suggests subjects for a given text. It's based on Annif, a tool for automated subject indexing.">
-    <meta property="twitterdescription" content="Finto AI suggests subjects for a given text. It's based on Annif, a tool for automated subject indexing.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://raw.githubusercontent.com/NatLibFi/FintoAI/master/ai.finto.fi/static/img/finto-ai-social.png">
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:image" content="https://raw.githubusercontent.com/NatLibFi/FintoAI/master/ai.finto.fi/static/img/finto-ai-social.png">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="static/css/bootstrap-5.2.2.min.css">
   
-    <style>
-      body {
-        background-color: #80d5e9;
-        font-family: 'Fira Sans', sans-serif;
+  <!-- Public Sans font -->
+  <link rel="stylesheet" href="static/css/fonts.css">
+
+  <!-- favicon -->
+  <link rel="icon" href="favicon.ico">
+
+  <title>Finto AI</title>
+
+  <style>
+    body {
+      font-family: 'Public Sans', sans-serif;
+      color: #002855;
+    }
+    @media screen and (max-width: 575px) { /* For mobile */
+      header {
+        height: 175px !important;
       }
-      a { color: #006288; text-decoration: underline; }
-      a:hover { color: #00acd4; }
-      header, #footer {
-        color: white;
-        background-color: #394554;
+      #header-nav {
+        position: absolute !important;
+        top: 110px !important;
       }
-      h1 {
-        padding: 3px 0;
-        position: relative;
-        width: 130%;
-        left: -38%;
+      #main::before {
+        height: 400px !important;
+        background-position: 0 175px !important;
       }
-      #navlinks, #switch-locale {
-        padding-top: 10px;
-        padding-left: 0;
+      #info {
+        padding: 0 !important;
+        padding-left: 1rem !important;
       }
-      #navlinks a {
-        background-position: left center;
-        background-repeat: no-repeat;
-        padding-left: 26px;
-        padding-top: 10px;
-      }
-      #navlinks a, #switch-locale a {
-        color: white;
-        margin: auto 5px;
-        text-decoration: none;
-      }
-      #navlinks a:hover, #switch-locale a:hover { color: #dff5f9; }
-      #nav-about { background-image: url('static/img/about.png'); }
-      #nav-feedback { background-image: url('static/img/feedback.png'); }
-      #navlinks li, #switch-locale li {
-        display: inline;
-      }
-      .widget { padding: 8px 10px; }
-      #splash { padding: 8px 0; }
-      #splash a, #footer a { color: #83c1cf; }
-      #splash a:hover, #footer a:hover { color: #dff5f9; }
-      #api {
-        color: black;
-        background-color: #dff5f9;
-      }
-      #api h2, #sidebar h2 {
-        font-size: 1rem;
-        font-weight: bold;
-        margin-bottom: 0px;
-      }
-      #splash p, #api p, #footer p {
-        margin-bottom: 0;
-      }
-      #footer {
-        padding: 8px 20px;
-      }
-      #text-box-heading {
-        margin-left: 10px;
-      }
-      .nav-tabs .nav-item .nav-link {
-        background-color: #ecffff;
-        text-decoration: none;
-        color: #394554;
-        border: none;
-        border-radius: 0;
-        margin-bottom: -1px;
-        text-align: center;
-        white-space: nowrap;
-      }
-      .nav-middle-tab {
-        border-left: 1px solid darkgray;
-        border-right: 1px solid darkgray;
-      }
-      .nav-tabs .nav-item .nav-link.active {
-        color: black;
-        border-top: 2px solid black;
-        background-color: #dff5f9;
-      }
-      .tab-pane {
-        background-color: #dff5f9;
-        padding: 15px 15px 0px;
-      }
-      .alert {
-        margin: 15px 0px 10px;
-        border-radius: 0;
-        font-weight: bold;
-      }
-      #tab-text-input {
-        padding: 0px;
-      }
-      .custom-file-label {
-        border-radius: 0;
-      }
-      .custom-file-label::after {
-        border-radius: 0;
-        background: #009cca;
-        color:black;
-      }
-      .custom-file-label:lang(fi)::after {
-          content: "Selaa";
-      }
-      .custom-file-label:lang(sv)::after {
-          content: "Bläddra";
-      }
-      #tabs-input-footer {
-        background-color: #dff5f9;
-        padding: 10px 5px 0px;
-        margin-bottom: -5px;
+      #content {
+        padding: 1rem !important;
       }
       #text-box {
-        background-color: white;
-        border-top: 2px solid black;
-        margin-bottom: 0;
-      }
-      label[for=text] {
-        font-weight: bold;
-      }
-      #text-box-wrapper {
-        background-color: #dff5f9;
-        padding: 15px;
-        position: relative;
-      }
-      .dropzone {
-        padding: 10px;
-      }
-      .dropzone-border.dragging {
-        outline: 3px dashed #009cca;
-        outline-offset: -3px;
-      }
-      .dropzone.dragging {
-        background-color: #ecffff;
-      }
-      #text.dragging {
-        background-color: #ecffff;
-      }
-      .btn-primary, .btn-primary:hover,.btn-primary:focus,.btn-primary:active,
-      .btn-primary:active:focus:not(:disabled):not(.disabled) {
-        background-color: #009cca;
-        color: black;
-        border: none;
-        border-radius: 0px;
-      }
-      .btn-primary:disabled {
-        cursor: default;
-        background-color: #6c757d;
-        color: white;
-      }
-      #button-clear {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background-color: #009cca;
-        color: black;
-        border: none;
-        border-radius: 0px;
-        padding: 2px 7px;
-      }
-      #text-box-background {
-        font-weight: normal;
-        position: absolute;
-        width: 500px;
-        max-width: 80%;
-        left: 50%;
-        top: 45%;
-        transform: translate(-50%, 0);
-        opacity: 0.5;
-        text-align: center;
-        line-height: 40%;
-      }
-      #text-box-background.dragging {
-        opacity: 1.0;
-      }
-      #upload-spinner {
-        width: 50px;
-        height: 50px;
-        margin-left: -25px;
-        position: absolute;
-        left: 50%;
-        top: 45%;
-      }
-      #sidebar, #sidebar-tab { background-color: #dff5f9; }
-      #sidebar-tabs { background-color: #bfeaf4;}
-      #sidebar-tab { float: left; }
-      .form-control { border-radius: 0px; }
-      select {
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        appearance: none;
-      }
-      .select-wrapper { position: relative; }
-      .select-wrapper:after {
-        content: '▼';
-        font-size: 10px;
-        position: absolute;
-        top: 11px;
-        right: 9px;
-        color: black;
-        pointer-events: none;
-      }
-      fieldset.btn-group {
-        width: 100%;
-        display: block;
-      }
-      legend {
-        font-size: 1rem;
-      }
-      #limit-buttons label {
-        border-radius: 0px;
-        border: none;
-      }
-      #limit-buttons .active {
-        background-color: #009cca;
-        color: black;
-        border-width: 0px;
-      }
-      #get-suggestions {
-        margin-top: 24px;
-      }
-      #sidebar h2 {
-        margin-top: 24px;
-      }
-      #sidebar {
-        min-height: 500px;
+        padding: 0 !important;
+        border: none !important;
       }
       #suggestions {
-        padding-right: 2px;
+        padding: 0 !important;
+        padding-top: 1rem !important;
       }
-      #results li, #no-results li {border-radius: 0; }
-      #uri-link {
-        display: inline-block;
+      #footer-main {
+        padding: 0 1rem !important;
+        padding-bottom: 1rem !important;
       }
-      #suggestions-heading {
-        display: inline-block;
-      }
-      #copy-heading {
-        float: right;
-        text-align: center;
-        width: 110px;
-        max-width: 40%;
-        margin-left: -10px;
-        font-weight: normal !important;
-      }
-      #copy-buttons {
-        float: right;
-        margin: 4px;
-        padding: 0px;
-     }
-      .copy-button {
-        height: 30px;
-        width: 30px;
-        background-size: contain !important;
-        padding: 0px;
-        border: hidden;
-        border-radius: 0px;
-        background-repeat: no-repeat !important;
-        background-position: center !important;
-        margin: 0px 4px;
-      }
-      .copy-button:active {
-        box-shadow: none !important;
-      }
-      #copy-button-label {
-        background: url("static/img/clipboard-label.svg");
-      }
-      #copy-button-uri {
-        background: url("static/img/clipboard-http.svg");
-      }
-      #copy-button-label-and-uri {
-        background: url("static/img/clipboard-label-http.svg");
-      }
-      meter { width: 24px; }
-      meter::-webkit-meter-bar {
-        border: none;
-        border-radius: 0;
-        height: 18px;
-      }
-      meter:-moz-meter-optimum::-moz-meter-bar {
-        background: #394554;
-      }
-      meter::-webkit-meter-optimum-value {
-        background: #394554;
-      }
-    </style>
-  </head>
-  <body>
+    }
+    header {
+      background-color:#002855;
+      color: white;
+      padding-bottom: 1rem;
+      height: 100px;
+    }
+    header img {
+      width: 300px;
+      float: left;
+      position: relative;
+      top: -26px;
+      left: -45px;
+    }
+    #header-nav {
+      float: right;
+    }
+    #header-nav a {
+      color: white;
+      text-decoration: none;
+    }
+    #header-nav span {
+      padding-right: 1rem;
+    }
+    .header-nav-link {
+      background-position: left center;
+      background-repeat: no-repeat;
+      background-size: 35%;
+      padding-left: 25px;
+    }
+    header a:hover { /* what to do with hover selectors? */
+      color: #009CC9 !important;
+    }
+    #header-nav-finto { background-image: url("static/img/finto.svg"); }
+    #header-nav-info { background-image: url("static/img/info.svg"); }
+    #header-nav-feedback { background-image: url("static/img/feedback.svg"); }
+    #main {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      min-height: 70%; /* to keep footer at the bottom of the page with a bigger screen */
+      min-height: -webkit-calc(100vh - 100px - 448px); /* screen height - header height - footer height */
+      min-height: -moz-calc(100vh - 100px - 448px);
+      min-height: calc(100vh - 100px - 448px);
+    }
+    #main::before { /* cropped background image */
+      content: '';
+      position: absolute;
+      top: 0;
+      background-image: url(./static/img/taustakuva-pexels-johannes-plenio.jpg);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background-position: 0;
+      height: 600px;
+      width: 100%;
+      z-index: -1;
+    }
+    #info {
+      color: white;
+      margin-bottom: 3rem;
+      padding-left: 4rem;
+    }
+    #content {
+      background-color: #F2F5F7;
+      padding: 4rem;
+      padding-top: 2rem;
+    }
+    #text-box {
+      border-right: 1px solid #DFE5ED;
+      padding-right: 2rem;
+    }
+    .nav {
+      background-color: #DFE5ED;
+    }
+    .nav .active {
+      background-color: white;
+    }
+    .nav-link {
+      color: #002855;
+    }
+    .nav-link:hover { /* what to do with hover selectors? */
+      color: #009CC9;
+    }
+    .tab-content {
+      background-color: white;
+    }
+    .input-group {
+      padding: 1rem;
+    }
+    #input-file {
+      border: 1px solid #DFE5ED;
+      border-radius: 0;
+      color: #002855;
+    }
+    #input-file::file-selector-button {
+      border: none;
+      border-radius: 0;
+      color: #002855;
+      background-color: #B8C9DB;
+    }
+    #input-url {
+      border: 1px solid #DFE5ED;
+      border-radius: 0;
+      color: #002855;
+    }
+    #input-url::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: #5D7999;
+    }
+    #text:-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: #5D7999;
+    }
+    #text::-ms-input-placeholder { /* Microsoft Edge */
+      color: #5D7999;
+    }
+    #button-select-url {
+      border: none;
+      border-radius: 0;
+      color: #002855;
+      background-color: #B8C9DB;
+    }
+    .tabs-input-footer {
+      margin-right: 1rem;
+      margin-left: 1rem;
+    }
+    #text-box-wrapper {
+      background-color: white;
+      position: relative;
+      padding: 1rem;
+    }
+    #text {
+      border: 1px solid #DFE5ED;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+    #text::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: #5D7999;
+    }
+    #text:-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: #5D7999;
+    }
+    #text::-ms-input-placeholder { /* Microsoft Edge */
+      color: #5D7999;
+    }
+    #button-clear {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      color: #5D7999;
+      border: none;
+      font-size: 30px;
+    }
+    .dropzone {
+      padding: 10px;
+    }
+    #text-box-background {
+      color: #5D7999;
+      position: absolute;
+      width: 500px;
+      max-width: 80%;
+      left: 50%;
+      top: 55%;
+      transform: translate(-50%, 0);
+      text-align: center;
+    }
+    #text-box-background.dragging {
+      opacity: 1.0;
+    }
+    #upload-spinner {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      left: 45%;
+      top: 45%;
+    }
+    #suggestions {
+      padding-left: 2rem;
+    }
+    label {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      border-left: 6px solid #009CC9;
+      padding-left: 6px;
+      font-weight: bold;
+    }
+    #suggestions .form-control {
+      margin-bottom: 1rem;
+      border-radius: 0;
+      border: none;
+    }
+    select:valid {
+      color: #002855;
+    }
+    select:valid:focus {
+      color: #002855;
+    }
+    .select-wrapper { position: relative; }
+    .select-wrapper:after {
+      content: '﹀';
+      font-size: 20px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #002855;
+      pointer-events: none;
+    }
+    #limit-buttons label {
+      color: #002855;
+      background-color: #B8C9DB;
+      border: none;
+      border-radius: 0;
+      font-weight: bold;
+    }
+    #limit-buttons .btn-check:checked + .btn {
+      background-color: #002855;
+      color: white;
+    }
+    #get-suggestions {
+      background-color: #FAE196;
+      color: #002855;
+      border: none;
+      border-radius: 0;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+    #suggestions-wrapper {
+      margin-top: 3rem;
+    }
+    #suggestions-header {
+      margin-bottom: 1rem;
+      border-left: 6px solid #009CC9;
+      padding-left: 6px;
+      font-weight: bold;
+    }
+    #copy-heading {
+      float: right;
+      position: relative;
+      width: 50px; /* lining up with copy buttons */
+      right: 110px; /* lining up with copy buttons */
+    }
+    #results li, #no-results li {
+      border-radius: 0;
+      border: none;
+      border-bottom: 1px solid #DFE5ED;
+      background: none;
+      padding-left: 0;
+      padding-right: 0;
+      justify-content: center;
+    }
+    /* meter styling might not be correct for all browsers */
+    #meter-wrapper {
+      float: left;
+    }
+    meter {
+      width: 20px;
+      height: 15px;
+      border: 1px solid #002855;
+      border-radius: 0;
+      background: none;
+    }
+    meter::-webkit-meter-bar {
+      width: 20px;
+      height: 15px;
+      border: 1px solid #002855;
+      border-radius: 0;
+      background: none;
+    }
+    meter:-moz-meter-optimum::-moz-meter-bar {
+      background: #002855;
+    }
+    meter::-webkit-meter-optimum-value {
+      background: #002855;
+    }
+    .uri-link {
+      margin: 0;
+      padding-left: 5px;
+      overflow: hidden;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    .uri-link a {
+      color: #009CC9;
+      text-decoration: underline;
+    }
+    .copy-buttons {
+      float: right;
+      margin: 0px;
+      padding: 0px;
+      margin-right: -5px;
+      margin-left: 0.5rem;
+    }
+    .copy-button {
+      border: none;
+      border-radius: 0;
+      color: #002855;
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 0;
+      margin-right: 5px;
+      height: 30px;
+      width: 50px;
+      background-color: #B8C9DB;
+      /* using text for TERM and URI buttons
+      background-size: 150%;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      */
+    }
+    .copy-button:hover { /* what to do with hover selectors? */
+      background-color: #B8C9DB;
+      color: #002855;
+    }
+    #copy-button-label-and-uri {
+      background-image: url("static/img/melinda.svg");
+      background-size: 90%;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      margin-left: 0px;
+    }
+    /* using text for TERM and URI buttons
+    #copy-button-label {
+      background-image: url("static/img/term.svg");
+      margin-left: 0px;
+    }
+    #copy-button-uri {
+      background-image: url("static/img/uri.svg");
+      margin-left: 0px;
+    }
+    */
+    footer {
+      background-color: #5D7999;
+      color: white;
+    }
+    #footer-main {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+    footer img {
+      width: 75%;
+      margin-bottom: 2rem;
+      position: relative;
+      left: -13px;
+    }
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+    footer h4 {
+      margin-bottom: 1.5rem;
+      font-weight: bold;
+    }
+    footer h5 {
+      margin-bottom: 1.5rem;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    #finto-email {
+      font-weight: bold;
+    }
+    #api-link {
+      text-decoration: underline;
+    }
+    #footer-links li {
+      color: white;
+      border-radius: 0;
+      border: none;
+      background: none;
+      padding-left: 0;
+      padding-top: 0;
+      padding-bottom: 0.75rem;
+      
+    }
+    #footer-links>li::before {
+      content: "🡢";
+      margin-right: 0.5rem;
+    }
+    #twitter {
+      background-position: left center;
+      background-repeat: no-repeat;
+      background-size: 30px;
+      padding-left: 30px;
+      background-image: url("static/img/twitter.svg");
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    #footer-bottom {
+      background-color:#002855;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
 
-<header class="mb-4 mt-0 pb-3">
+<header>
   <div class="container">
-
-    <div class="row align-items-end">
-      <div class="col-md-3">
-        <h1><img src="static/img/finto-ai-logo.png" class="img-fluid" alt="Finto AI"></h1>
-      </div>
-      <div class="col-md-5">
-        <div class="row">
-          <div class="col pl-md-2 pr-md-1">
-            <ul id="navlinks">
-              <li><a id="nav-about" data-i18n="nav-about" href="#">Tietoja</a></li>
-              <li><a id="nav-feedback" data-i18n="nav-feedback" href="#">Palaute</a></li>
-            </ul>
-          </div>
-          <div class="col-md-auto text-right pl-md-1">
-            <ul id="switch-locale">
-              <li><a href="#" data-locale="fi" lang="fi">suomeksi</a></li>
-              <li><a href="#" data-locale="sv" lang="sv">på svenska</a></li>
-              <li><a href="#" data-locale="en" lang="en">in English</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="row align-items-end">
-          <div class="col-md-12 align-items-end">
-            <div id="splash">
-              <p><span data-i18n="splash">Finto AI ehdottaa tekstille sopivia aiheita.
-              Palvelu perustuu Annif-työkaluun.</span>
-              <a id="read-more" data-i18n="read-more" href="#">Lue lisää...</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 pt-md-4 pl-md-2">
-        <div id="api" class="widget mb-md-2">
-          <h2 data-i18n="api-title">API-palvelu</h2>
-          <p data-i18n="api-desc">Finto AI toimii myös rajapintapalveluna, joka voidaan integroida omiin
-          järjestelmiin.</p>
-          <p><a href="#" id="api-more-info" data-i18n="api-more-info">Lisätietoja</a> | <a data-i18n="api-desc-link" href="v1/ui/">OpenAPI-kuvaus</a></p>
-        </div>
-      </div>
+    <img src="static/img/finto-ai-logo-vaaka.svg" class="img" alt="Finto AI">
+    <div id="header-nav">
+      <span><a href="#" class="header-nav-link" id="header-nav-finto">Finto.fi</a></span>
+      <span><a href="#" class="header-nav-link" id="header-nav-info">Tietoja</a></span>
+      <span><a href="#" class="header-nav-link" id="header-nav-feedback">Palaute</a></span>
+      <span> | </span>
+      <span><a href="#">på svenska</a></span>
+      <span><a href="#">in English</a></span>
     </div>
   </div>
 </header>
 
-<div class="container">
+<div id="main">
 
-  <div class="row mb-md-2">
-    <div class="col-md-8 pr-md-3">
+  <div class="container" id="info">
+    <p>Finto AI ehdottaa tekstille sopivia aiheita. Palvelu perustuu Annif-työkaluun.</p>
+  </div>
 
-      <div class="form-group widget" id="text-box">
-        <div class="row">
-          <div class="col-md-6" id="text-box-heading">
-            <label for="text" data-i18n="text-box-label-text">Kuvailtava teksti</label><br>
-          </div>
-        </div>
+  <div class="container" id="content">
+    <div class="row">
+
+      <div class="col-md-7" id="text-box">
+        <h3>Kuvailtava teksti</h3>
+        
         <div id="tabs-input">
-          <ul class="nav nav-tabs nav-justified" role="tablist">
+          <ul class="nav nav-tabs-no-style nav-justified" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" href="#tab-text-input" aria-controls="tab-text-input" role="tab" data-toggle="tab" data-i18n="nav-tab-text-input">Syötä teksti</a>
-            </li>
-            <li class="nav-item nav-middle-tab">
-              <a class="nav-link" href="#tab-file-input" aria-controls="tab-file-input" role="tab" data-toggle="tab" data-i18n="nav-tab-file-input">Syötä tiedosto</a>
+              <a class="nav-link active" href="#tab-text-input" role="tab" data-bs-toggle="tab">Syötä teksti</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#tab-url-input" aria-controls="tab-url-input" role="tab" data-toggle="tab" data-i18n="nav-tab-url-input">Syötä URL</a>
+              <a class="nav-link" href="#tab-file-input" role="tab" data-bs-toggle="tab">Syötä tiedosto</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tab-url-input" role="tab" data-bs-toggle="tab">Syötä URL</a>
             </li>
           </ul>
+
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="tab-text-input">
             </div>
+
             <div role="tabpanel" class="tab-pane" id="tab-file-input">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" onchange="selectFile(this);" id="form-file-input">
-                <label class="custom-file-label" for="form-file-input" data-i18n="form-file-input">Valitse tiedosto</label>
+              <div class="input-group flex-fill">
+                <input class="form-control" type="file" id="input-file">
               </div>
-              <div id="tabs-input-footer">
-                <span data-i18n="supported-file-formats">Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
+              <div class="tabs-input-footer">
+                <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
               </div>
             </div>
+
             <div role="tabpanel" class="tab-pane" id="tab-url-input">
               <form class="input-group flex-fill" id="form-url">
-                <input type="url" class="form-control" id="input-url"data-i18n="[placeholder]form-url-input-placeholder" placeholder="Syötä URL" aria-label="Syötä URL" autocomplete="off" required>
-                <div class="input-group-append">
-                  <input type="submit" id="button-select-url" value="Hae teksti" data-i18n="[value]button-select-url" class="btn btn-primary">
-                </div>
+                <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" autocomplete="off" required>
+                <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
               </form>
-              <div id="tabs-input-footer">
-                <span data-i18n="supported-file-formats">Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
+              <div class="tabs-input-footer">
+                <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
               </div>
             </div>
           </div>
         </div>
-        <div class="alert alert-danger d-none" id="alert-not-supported-format" data-i18n="alert-not-supported-format">
+
+        <div class="alert alert-danger d-none" id="alert-not-supported-format">
           Tämä tiedostomuoto ei ole tuettu.
         </div>
-        <div class="alert alert-danger d-none" id="alert-textract-request-failed" data-i18n="alert-textract-request-failed">
+        <div class="alert alert-danger d-none" id="alert-textract-request-failed">
           Tekstin haku epäonnistui.
         </div>
-        <div class="alert alert-danger d-none" id="alert-too-big-file" data-i18n="alert-too-big-file">
+        <div class="alert alert-danger d-none" id="alert-too-big-file">
           Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
         </div>
 
         <div id="text-box-wrapper">
-          <textarea class="form-control dropzone dropzone-border" rows="20" name="text" id="text"
-          data-i18n="[placeholder]text-box-placeholder-text-input"
-          ></textarea>
-          <button id="button-clear" type="button" class="btn btn-danger">&#x2715;</button>
+          <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
+          placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'></textarea>
+          <button id="button-clear" type="button" class="btn btn-danger">&#x1F7A8;</button>
           <div id="text-box-background" class="dropzone">
-            <!-- Icon license: https://github.com/twbs/icons/blob/main/LICENSE.md -->
-            <img src="static/img/cloud-upload.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
-            <span data-i18n="text-box-background">Voit myös pudottaa tiedoston tai URL:n tähän</span>
+            <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
+            <span>Voit myös pudottaa tiedoston tai URL:n tähän</span>
           </div>
-            <div id="upload-spinner" class="spinner-border mt-1" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
+          <div id="upload-spinner" class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-md-4 pl-md-2">
-      <ul id="sidebar-tabs" class="nav nav-tabs">
-        <li id="sidebar-tab" class="nav-item">
-          <a class="nav-link active" data-i18n="nav-subject-indexing">Sisällönkuvailu</a>
-        </li>
-      </ul>
-      <div id="sidebar" class="widget">
-        <div class="form-group">
-          <label for="project" data-i18n="project">Sanasto ja tekstin kieli</label>
-          <div class="select-wrapper">
-            <select class="form-control" id="project">
-            </select>
-          </div>
+      <div class="col-md-5" id="suggestions">
+
+        <h5>Sisällönkuvailu</h5>
+
+        <label for="project">Sanasto ja tekstin kieli</label>
+        <div class="select-wrapper">
+          <select class="form-control" id="project">
+            <option>YSO NN ensemble Finnish</option>
+            <option>option 2</option>
+          </select>
         </div>
-        <div class="form-group">
-          <fieldset id="limit-buttons" class="btn-group btn-group-toggle" data-toggle="buttons">
-            <legend data-i18n="limit">Ehdotusten enimmäismäärä</legend>
-            <label class="btn btn-secondary">
-              <input type="radio" name="limit" value="10" checked>
-              10
-            </label><label class="btn btn-secondary">
-              <input type="radio" name="limit" value="15">
-              15
-            </label><label class="btn btn-secondary">
-              <input type="radio" name="limit" value="20">
-              20
-            </label>
-          </fieldset>
+
+        <label for="limit-buttons">Ehdotusten enimmäismäärä</label><br>
+        <div id="limit-buttons" role="group" class="btn-group">
+          <input type="radio" class="btn-check" name="limit" value="10" id="l1" checked>
+          <label class="btn btn-secondary" for="l1">10</label>
+          <input type="radio" class="btn-check" name="limit" value="15" id="l2">
+          <label class="btn btn-secondary" for="l2">15</label>
+          <input type="radio" class="btn-check" name="limit" value="20" id="l3">
+          <label class="btn btn-secondary" for="l3">20</label>
+        </div><br>
+
+        <label for="label-language">Aihe-ehdotusten kieli</label>
+        <div class="select-wrapper">
+          <select class="form-control" id="label-language">
+            <option>Sama kuin tekstin kieli</option>
+          </select>
         </div>
-        <div class="form-group">
-          <label for="label-language" data-i18n="label-language">Termien kieli</label>
-          <div class="select-wrapper">
-            <select class="form-control" id="label-language">
-            </select>
-          </div>
+          
+        <div class="d-grid justify-content-end">
+          <button id="get-suggestions" type="button" class="btn btn-primary">Anna aihe-ehdotukset</button>
         </div>
-        <button id="get-suggestions" data-i18n="get-suggestions" type="button" class="btn btn-primary btn-block">Anna aihe-ehdotukset</button>
+
         <div id="suggestions-wrapper">
-          <div id="suggestions">
-            <h2 id="suggestions-heading" data-i18n="suggestions-heading">Ehdotetut aiheet</h2>
-            <h2 id="copy-heading" data-i18n="copy-heading">Kopioi</h2>
-          </div>
+          <span id="suggestions-header">Ehdotukset</span>
+          <span id="copy-heading">Kopioi</span>
+
           <div class="d-flex justify-content-center">
-            <div id="results-spinner" class="spinner-border m-2" role="status">
-              <span class="sr-only">Loading...</span>
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
             </div>
           </div>
+
           <ul class="list-group" id="results">
+            <li class="list-group-item">
+              <div id="meter-wrapper">
+                <meter value="0.7115005254745483" max="1" title="0.7115"></meter>
+              </div>
+              <div class="btn-group copy-buttons" role="group">
+                <button type="button" class="btn btn-secondary copy-button" id="copy-button-label" title="Kopioi termi leikepöydälle">TERMI</button>
+                <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri" title="Kopioi URI leikepöydälle">URI</button>
+                <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri" title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"></button>                 
+              </div>
+              <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sit amet tellus cras adipiscing enim eu turpis egestas</a></p>
+            </li>
+            <li class="list-group-item">
+              <div id="meter-wrapper">
+                <meter value="0.5" max="1" title="0.5"></meter>
+              </div>
+              <div class="btn-group copy-buttons" role="group">
+                <button type="button" class="btn btn-secondary copy-button" id="copy-button-label" title="Kopioi termi leikepöydälle">TERMI</button>
+                <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri" title="Kopioi URI leikepöydälle">URI</button>
+                <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri" title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"></button>                 
+              </div>
+              <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Kissa</a></p>
+            </li>
           </ul>
           <ul class="list-group" id="no-results">
-            <li class="list-group-item p-0" data-i18n="no-results">Ei tuloksia</li>
+            <li class="list-group-item">Ei tuloksia</li>
           </ul>
         </div>
+
       </div>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col-md-12 mb-md-4 mt-md-3">
-      <div id="footer" class="widget">
-        <p><span data-i18n="footer-text">
-          Lomakkeen ja rajapintapalveluiden kautta lähettyjä tietoja ei
-          talleteta.  Palvelun käyttöä seurataan ja tilastoidaan palvelun
-          kehittämiseksi. </span>
-          <a href="#" id="accessibility-statement" data-i18n="accessibility-statement">Tutustu saavutettavuusselosteeseen.</a>.
-          <span data-i18n="[html]powered-by">Perustuu <a href="https://www.annif.org">Annifin</a> versioon </span>
-          <span id="annif-version"></span>
-        </p>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-    <script src="static/js/jquery-3.6.1.min.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
+<footer>
+  <div class="container" id="footer-main">
+    <div class="row">
+      <div class="col-md-3">
+        <img src="static/img/finto-ai-logo-vaaka.svg" class="img-fluid" alt="Finto AI">
+        <p>Sähköposti:<br>
+        <span id="finto-email">finto-posti@helsinki.fi</span><p>
+      </div>
+      <div class="col-md-3 pb-3">
+        <h4>Finto AI</h4>
+        <p>Finto AI on automaattisen sisällönkuvailun palvelu, joka perustuu Annifin versioon 0.60</p>
+        <h5>API-palvelu</h5>
+        <p>Finto AI toimii myös rajapintapalveluna, joka voidaan integroida omiin järjestelmiin.</p>
+        <a href="#" id="api-link">Lisätietoja | OpenAPI-kuvaus</a>
+      </div>
+      <div class="col-md-3">
+        <h4>Linkit</h4>
+        <ul class="list-group" id="footer-links">
+          <li class="list-group-item"><a href="#">Tietoa Fintosta</a></li>
+          <li class="list-group-item"><a href="#">Yhteystiedot</a></li>
+          <li class="list-group-item"><a href="#">Anna palautetta</a></li>
+          <li class="list-group-item"><a href="#">Saavutettavuus</a></li>
+          <li class="list-group-item"><a href="#">Tietosuoja</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h4>Seuraa meitä</h4>
+        <span id="twitter"><a href="#">Twitterissä</span>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid" id="footer-bottom">
+    <div class="row">
+      <div class="col-md-6">
+        logo
+      </div>
+      <div class="col-md-6 text-end">
+        link
+      </div>
+    </div>
+  </div>
+</footer>
 
-    <script src="static/js/jquery.i18n.js"></script>		
-    <script src="static/js/jquery.i18n.messagestore.js"></script>
-    <script src="static/js/jquery.i18n.fallbacks.js"></script>
-    <script src="static/js/jquery.i18n.language.js"></script>
-    <script src="static/js/jquery.i18n.parser.js"></script>
-    <script src="static/js/jquery.i18n.emitter.js"></script>	
-    <script src="static/js/jquery.i18n.emitter.bidi.js"></script>
-    <script src="static/js/jquery.history.js"></script>
-    <script src="static/js/url.min.js"></script> 
+<script src="static/js/bootstrap-5.2.2.min.js"></script>
 
-    <script src="static/js/annif.js"></script>
-    <script src="static/js/i18n.js"></script>
-
-  </body>
-</html>
+</body>

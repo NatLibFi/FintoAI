@@ -1,21 +1,16 @@
-/* Generated using google-webfonts-helper */
-
-/* fira-sans-regular - latin-ext_latin */
+/* Replace with proper font specification */
 @font-face {
-  font-family: 'Fira Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Fira Sans Regular'), local('FiraSans-Regular'),
-       url('../fonts/fira-sans-v10-latin-ext_latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/fira-sans-v10-latin-ext_latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
+    font-family: 'Public Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+         url('../fonts/PublicSans-Regular.ttf') format('truetype');
+  }
 
-/* fira-sans-700 - latin-ext_latin */
-@font-face {
-  font-family: 'Fira Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Fira Sans Bold'), local('FiraSans-Bold'),
-       url('../fonts/fira-sans-v10-latin-ext_latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/fira-sans-v10-latin-ext_latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
+  @font-face {
+    font-family: 'Public Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: local(''),
+         url('../fonts/PublicSans-Bold.ttf') format('truetype');
+  }
