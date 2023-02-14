@@ -8,7 +8,7 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="static/css/bootstrap-5.2.2.min.css">
-  
+
   <!-- Public Sans font -->
   <link rel="stylesheet" href="static/css/fonts.css">
 
@@ -22,44 +22,56 @@
       font-family: 'Public Sans', sans-serif;
       color: #002855;
     }
-    @media screen and (max-width: 575px) { /* For mobile */
+
+    /* For mobile */
+    @media screen and (max-width: 575px) {
+
       header {
         height: 175px !important;
       }
+
       #header-nav {
         position: absolute !important;
         top: 110px !important;
       }
+
       #main::before {
         height: 400px !important;
         background-position: 0 175px !important;
       }
+
       #info {
         padding: 0 !important;
         padding-left: 1rem !important;
       }
+
       #content {
         padding: 1rem !important;
       }
+
       #text-box {
         padding: 0 !important;
         border: none !important;
       }
+
       #suggestions {
         padding: 0 !important;
         padding-top: 1rem !important;
       }
+
       #footer-main {
         padding: 0 1rem !important;
         padding-bottom: 1rem !important;
       }
     }
+
     header {
-      background-color:#002855;
+      background-color: #002855;
       color: white;
       padding-bottom: 1rem;
       height: 100px;
     }
+
     header img {
       width: 300px;
       float: left;
@@ -67,37 +79,57 @@
       top: -26px;
       left: -45px;
     }
+
     #header-nav {
       float: right;
     }
+
     #header-nav a {
       color: white;
       text-decoration: none;
     }
+
     #header-nav span {
       padding-right: 1rem;
     }
+
     .header-nav-link {
       background-position: left center;
       background-repeat: no-repeat;
       background-size: 35%;
       padding-left: 25px;
     }
-    header a:hover { /* what to do with hover selectors? */
+
+    /* what to do with hover selectors? */
+    header a:hover {
       color: #009CC9 !important;
     }
-    #header-nav-finto { background-image: url("static/img/finto.svg"); }
-    #header-nav-info { background-image: url("static/img/info.svg"); }
-    #header-nav-feedback { background-image: url("static/img/feedback.svg"); }
+
+    #header-nav-finto {
+      background-image: url("static/img/finto.svg");
+    }
+
+    #header-nav-info {
+      background-image: url("static/img/info.svg");
+    }
+
+    #header-nav-feedback {
+      background-image: url("static/img/feedback.svg");
+    }
+
     #main {
       padding-top: 3rem;
       padding-bottom: 3rem;
-      min-height: 70%; /* to keep footer at the bottom of the page with a bigger screen */
-      min-height: -webkit-calc(100vh - 100px - 448px); /* screen height - header height - footer height */
+      min-height: 70%;
+      /* to keep footer at the bottom of the page with a bigger screen */
+      min-height: -webkit-calc(100vh - 100px - 448px);
+      /* screen height - header height - footer height */
       min-height: -moz-calc(100vh - 100px - 448px);
       min-height: calc(100vh - 100px - 448px);
     }
-    #main::before { /* cropped background image */
+
+    /* cropped background image */
+    #main::before {
       content: '';
       position: absolute;
       top: 0;
@@ -109,92 +141,122 @@
       width: 100%;
       z-index: -1;
     }
+
     #info {
       color: white;
       margin-bottom: 3rem;
       padding-left: 4rem;
     }
+
     #content {
       background-color: #F2F5F7;
       padding: 4rem;
       padding-top: 2rem;
     }
+
     #text-box {
       border-right: 1px solid #DFE5ED;
       padding-right: 2rem;
     }
+
     .nav {
       background-color: #DFE5ED;
     }
+
     .nav .active {
       background-color: white;
     }
+
     .nav-link {
       color: #002855;
     }
-    .nav-link:hover { /* what to do with hover selectors? */
+
+    /* what to do with hover selectors? */
+    .nav-link:hover {
       color: #009CC9;
     }
+
     .tab-content {
       background-color: white;
     }
+
     .input-group {
       padding: 1rem;
     }
+
     #input-file {
       border: 1px solid #DFE5ED;
       border-radius: 0;
       color: #002855;
     }
+
     #input-file::file-selector-button {
       border: none;
       border-radius: 0;
       color: #002855;
       background-color: #B8C9DB;
     }
+
     #input-url {
       border: 1px solid #DFE5ED;
       border-radius: 0;
       color: #002855;
     }
-    #input-url::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    #input-url::placeholder {
       color: #5D7999;
     }
-    #input-url:-ms-input-placeholder { /* Internet Explorer 10-11 */
+
+    /* Internet Explorer 10-11 */
+    #input-url:-ms-input-placeholder {
       color: #5D7999;
     }
-    #input-url::-ms-input-placeholder { /* Microsoft Edge */
+
+    /* Microsoft Edge */
+    #input-url::-ms-input-placeholder {
       color: #5D7999;
     }
+
     #button-select-url {
       border: none;
       border-radius: 0;
       color: #002855;
       background-color: #B8C9DB;
     }
+
     .tabs-input-footer {
       margin-right: 1rem;
       margin-left: 1rem;
     }
+
     #text-box-wrapper {
       background-color: white;
       position: relative;
       padding: 1rem;
     }
+
     #text {
       border: 1px solid #DFE5ED;
       border-radius: 0;
       margin-bottom: 0;
     }
-    #text::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    #text::placeholder {
       color: #5D7999;
     }
-    #text:-ms-input-placeholder { /* Internet Explorer 10-11 */
+
+    /* Internet Explorer 10-11 */
+    #text:-ms-input-placeholder {
       color: #5D7999;
     }
-    #text::-ms-input-placeholder { /* Microsoft Edge */
+
+    /* Microsoft Edge */
+    #text::-ms-input-placeholder {
       color: #5D7999;
     }
+
     #button-clear {
       position: absolute;
       top: 15px;
@@ -204,9 +266,11 @@
       border: none;
       font-size: 30px;
     }
+
     .dropzone {
       padding: 10px;
     }
+
     #text-box-background {
       color: #5D7999;
       position: absolute;
@@ -217,9 +281,11 @@
       transform: translate(-50%, 0);
       text-align: center;
     }
+
     #text-box-background.dragging {
       opacity: 1.0;
     }
+
     #upload-spinner {
       width: 50px;
       height: 50px;
@@ -227,9 +293,11 @@
       left: 45%;
       top: 45%;
     }
+
     #suggestions {
       padding-left: 2rem;
     }
+
     label {
       margin-top: 1rem;
       margin-bottom: 1rem;
@@ -237,18 +305,25 @@
       padding-left: 6px;
       font-weight: bold;
     }
+
     #suggestions .form-control {
       margin-bottom: 1rem;
       border-radius: 0;
       border: none;
     }
+
     select:valid {
       color: #002855;
     }
+
     select:valid:focus {
       color: #002855;
     }
-    .select-wrapper { position: relative; }
+
+    .select-wrapper {
+      position: relative;
+    }
+
     .select-wrapper:after {
       content: '﹀';
       font-size: 20px;
@@ -258,6 +333,7 @@
       color: #002855;
       pointer-events: none;
     }
+
     #limit-buttons label {
       color: #002855;
       background-color: #B8C9DB;
@@ -265,10 +341,12 @@
       border-radius: 0;
       font-weight: bold;
     }
-    #limit-buttons .btn-check:checked + .btn {
+
+    #limit-buttons .btn-check:checked+.btn {
       background-color: #002855;
       color: white;
     }
+
     #get-suggestions {
       background-color: #FAE196;
       color: #002855;
@@ -277,22 +355,28 @@
       font-weight: bold;
       margin-top: 1rem;
     }
+
     #suggestions-wrapper {
       margin-top: 3rem;
     }
+
     #suggestions-header {
       margin-bottom: 1rem;
       border-left: 6px solid #009CC9;
       padding-left: 6px;
       font-weight: bold;
     }
+
     #copy-heading {
       float: right;
       position: relative;
-      width: 50px; /* lining up with copy buttons */
-      right: 110px; /* lining up with copy buttons */
+      /* lining up with copy buttons */
+      width: 50px;
+      right: 110px;
     }
-    #results li, #no-results li {
+
+    #results li,
+    #no-results li {
       border-radius: 0;
       border: none;
       border-bottom: 1px solid #DFE5ED;
@@ -301,10 +385,12 @@
       padding-right: 0;
       justify-content: center;
     }
+
     /* meter styling might not be correct for all browsers */
     #meter-wrapper {
       float: left;
     }
+
     meter {
       width: 20px;
       height: 15px;
@@ -312,6 +398,7 @@
       border-radius: 0;
       background: none;
     }
+
     meter::-webkit-meter-bar {
       width: 20px;
       height: 15px;
@@ -319,12 +406,15 @@
       border-radius: 0;
       background: none;
     }
+
     meter:-moz-meter-optimum::-moz-meter-bar {
       background: #002855;
     }
+
     meter::-webkit-meter-optimum-value {
       background: #002855;
     }
+
     .uri-link {
       margin: 0;
       padding-left: 5px;
@@ -332,10 +422,12 @@
       font-weight: bold;
       font-size: 0.9rem;
     }
+
     .uri-link a {
       color: #009CC9;
       text-decoration: underline;
     }
+
     .copy-buttons {
       float: right;
       margin: 0px;
@@ -343,6 +435,7 @@
       margin-right: -5px;
       margin-left: 0.5rem;
     }
+
     .copy-button {
       border: none;
       border-radius: 0;
@@ -360,10 +453,13 @@
       background-position: center !important;
       */
     }
-    .copy-button:hover { /* what to do with hover selectors? */
+
+    /* what to do with hover selectors? */
+    .copy-button:hover {
       background-color: #B8C9DB;
       color: #002855;
     }
+
     #copy-button-label-and-uri {
       background-image: url("static/img/melinda.svg");
       background-size: 90%;
@@ -371,6 +467,7 @@
       background-position: center !important;
       margin-left: 0px;
     }
+
     /* using text for TERM and URI buttons
     #copy-button-label {
       background-image: url("static/img/term.svg");
@@ -381,39 +478,48 @@
       margin-left: 0px;
     }
     */
+
     footer {
       background-color: #5D7999;
       color: white;
     }
+
     #footer-main {
       padding-top: 3rem;
       padding-bottom: 3rem;
     }
+
     footer img {
       width: 75%;
       margin-bottom: 2rem;
       position: relative;
       left: -13px;
     }
+
     footer a {
       color: white;
       text-decoration: none;
     }
+
     footer h4 {
       margin-bottom: 1.5rem;
       font-weight: bold;
     }
+
     footer h5 {
       margin-bottom: 1.5rem;
       font-weight: bold;
       font-size: 1rem;
     }
+
     #finto-email {
       font-weight: bold;
     }
+
     #api-link {
       text-decoration: underline;
     }
+
     #footer-links li {
       color: white;
       border-radius: 0;
@@ -422,12 +528,13 @@
       padding-left: 0;
       padding-top: 0;
       padding-bottom: 0.75rem;
-      
     }
+
     #footer-links>li::before {
       content: "🡢";
       margin-right: 0.5rem;
     }
+
     #twitter {
       background-position: left center;
       background-repeat: no-repeat;
@@ -437,222 +544,241 @@
       padding-top: 10px;
       padding-bottom: 10px;
     }
+
     #footer-bottom {
-      background-color:#002855;
+      background-color: #002855;
       padding: 1rem;
     }
   </style>
 </head>
+
 <body>
 
-<header>
-  <div class="container">
-    <img src="static/img/finto-ai-logo-vaaka.svg" class="img" alt="Finto AI">
-    <div id="header-nav">
-      <span><a href="#" class="header-nav-link" id="header-nav-finto">Finto.fi</a></span>
-      <span><a href="#" class="header-nav-link" id="header-nav-info">Tietoja</a></span>
-      <span><a href="#" class="header-nav-link" id="header-nav-feedback">Palaute</a></span>
-      <span> | </span>
-      <span><a href="#">på svenska</a></span>
-      <span><a href="#">in English</a></span>
-    </div>
-  </div>
-</header>
-
-<div id="main">
-
-  <div class="container" id="info">
-    <p>Finto AI ehdottaa tekstille sopivia aiheita. Palvelu perustuu Annif-työkaluun.</p>
-  </div>
-
-  <div class="container" id="content">
-    <div class="row">
-
-      <div class="col-md-7" id="text-box">
-        <h3>Kuvailtava teksti</h3>
-        
-        <div id="tabs-input">
-          <ul class="nav nav-tabs-no-style nav-justified" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" href="#tab-text-input" role="tab" data-bs-toggle="tab">Syötä teksti</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#tab-file-input" role="tab" data-bs-toggle="tab">Syötä tiedosto</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#tab-url-input" role="tab" data-bs-toggle="tab">Syötä URL</a>
-            </li>
-          </ul>
-
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="tab-text-input">
-            </div>
-
-            <div role="tabpanel" class="tab-pane" id="tab-file-input">
-              <div class="input-group flex-fill">
-                <input class="form-control" type="file" id="input-file">
-              </div>
-              <div class="tabs-input-footer">
-                <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
-              </div>
-            </div>
-
-            <div role="tabpanel" class="tab-pane" id="tab-url-input">
-              <form class="input-group flex-fill" id="form-url">
-                <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" autocomplete="off" required>
-                <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
-              </form>
-              <div class="tabs-input-footer">
-                <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="alert alert-danger d-none" id="alert-not-supported-format">
-          Tämä tiedostomuoto ei ole tuettu.
-        </div>
-        <div class="alert alert-danger d-none" id="alert-textract-request-failed">
-          Tekstin haku epäonnistui.
-        </div>
-        <div class="alert alert-danger d-none" id="alert-too-big-file">
-          Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
-        </div>
-
-        <div id="text-box-wrapper">
-          <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
-          placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'></textarea>
-          <button id="button-clear" type="button" class="btn btn-danger">&#x1F7A8;</button>
-          <div id="text-box-background" class="dropzone">
-            <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
-            <span>Voit myös pudottaa tiedoston tai URL:n tähän</span>
-          </div>
-          <div id="upload-spinner" class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+  <header>
+    <div class="container">
+      <img src="static/img/finto-ai-logo-vaaka.svg" class="img" alt="Finto AI">
+      <div id="header-nav">
+        <span><a href="#" class="header-nav-link" id="header-nav-finto">Finto.fi</a></span>
+        <span><a href="#" class="header-nav-link" id="header-nav-info">Tietoja</a></span>
+        <span><a href="#" class="header-nav-link" id="header-nav-feedback">Palaute</a></span>
+        <span> | </span>
+        <span><a href="#">på svenska</a></span>
+        <span><a href="#">in English</a></span>
       </div>
+    </div>
+  </header>
 
-      <div class="col-md-5" id="suggestions">
+  <div id="main">
 
-        <h5>Sisällönkuvailu</h5>
+    <div class="container" id="info">
+      <p>Finto AI ehdottaa tekstille sopivia aiheita. Palvelu perustuu Annif-työkaluun.</p>
+    </div>
 
-        <label for="project">Sanasto ja tekstin kieli</label>
-        <div class="select-wrapper">
-          <select class="form-control" id="project">
-            <option>YSO NN ensemble Finnish</option>
-            <option>option 2</option>
-          </select>
-        </div>
+    <div class="container" id="content">
+      <div class="row">
 
-        <label for="limit-buttons">Ehdotusten enimmäismäärä</label><br>
-        <div id="limit-buttons" role="group" class="btn-group">
-          <input type="radio" class="btn-check" name="limit" value="10" id="l1" checked>
-          <label class="btn btn-secondary" for="l1">10</label>
-          <input type="radio" class="btn-check" name="limit" value="15" id="l2">
-          <label class="btn btn-secondary" for="l2">15</label>
-          <input type="radio" class="btn-check" name="limit" value="20" id="l3">
-          <label class="btn btn-secondary" for="l3">20</label>
-        </div><br>
+        <div class="col-md-7" id="text-box">
+          <h3>Kuvailtava teksti</h3>
 
-        <label for="label-language">Aihe-ehdotusten kieli</label>
-        <div class="select-wrapper">
-          <select class="form-control" id="label-language">
-            <option>Sama kuin tekstin kieli</option>
-          </select>
-        </div>
-          
-        <div class="d-grid justify-content-end">
-          <button id="get-suggestions" type="button" class="btn btn-primary">Anna aihe-ehdotukset</button>
-        </div>
+          <div id="tabs-input">
+            <ul class="nav nav-tabs-no-style nav-justified" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" href="#tab-text-input" role="tab" data-bs-toggle="tab">Syötä teksti</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#tab-file-input" role="tab" data-bs-toggle="tab">Syötä tiedosto</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#tab-url-input" role="tab" data-bs-toggle="tab">Syötä URL</a>
+              </li>
+            </ul>
 
-        <div id="suggestions-wrapper">
-          <span id="suggestions-header">Ehdotukset</span>
-          <span id="copy-heading">Kopioi</span>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="tab-text-input">
+              </div>
 
-          <div class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
+              <div role="tabpanel" class="tab-pane" id="tab-file-input">
+                <div class="input-group flex-fill">
+                  <input class="form-control" type="file" id="input-file">
+                </div>
+                <div class="tabs-input-footer">
+                  <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
+                </div>
+              </div>
+
+              <div role="tabpanel" class="tab-pane" id="tab-url-input">
+                <form class="input-group flex-fill" id="form-url">
+                  <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" autocomplete="off"
+                    required>
+                  <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
+                </form>
+                <div class="tabs-input-footer">
+                  <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-danger d-none" id="alert-not-supported-format">
+            Tämä tiedostomuoto ei ole tuettu.
+          </div>
+          <div class="alert alert-danger d-none" id="alert-textract-request-failed">
+            Tekstin haku epäonnistui.
+          </div>
+          <div class="alert alert-danger d-none" id="alert-too-big-file">
+            Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
+          </div>
+
+          <div id="text-box-wrapper">
+            <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
+              placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'></textarea>
+            <button id="button-clear" type="button" class="btn btn-danger">&#x1F7A8;</button>
+            <div id="text-box-background" class="dropzone">
+              <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
+              <span>Voit myös pudottaa tiedoston tai URL:n tähän</span>
+            </div>
+            <div id="upload-spinner" class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
+        </div>
 
-          <ul class="list-group" id="results">
-            <li class="list-group-item">
-              <div id="meter-wrapper">
-                <meter value="0.7115005254745483" max="1" title="0.7115"></meter>
+        <div class="col-md-5" id="suggestions">
+
+          <h5>Sisällönkuvailu</h5>
+
+          <label for="project">Sanasto ja tekstin kieli</label>
+          <div class="select-wrapper">
+            <select class="form-control" id="project">
+              <option>YSO NN ensemble Finnish</option>
+              <option>option 2</option>
+            </select>
+          </div>
+
+          <label for="limit-buttons">Ehdotusten enimmäismäärä</label><br>
+          <div id="limit-buttons" role="group" class="btn-group">
+            <input type="radio" class="btn-check" name="limit" value="10" id="l1" checked>
+            <label class="btn btn-secondary" for="l1">10</label>
+            <input type="radio" class="btn-check" name="limit" value="15" id="l2">
+            <label class="btn btn-secondary" for="l2">15</label>
+            <input type="radio" class="btn-check" name="limit" value="20" id="l3">
+            <label class="btn btn-secondary" for="l3">20</label>
+          </div><br>
+
+          <label for="label-language">Aihe-ehdotusten kieli</label>
+          <div class="select-wrapper">
+            <select class="form-control" id="label-language">
+              <option>Sama kuin tekstin kieli</option>
+            </select>
+          </div>
+
+          <div class="d-grid justify-content-end">
+            <button id="get-suggestions" type="button" class="btn btn-primary">Anna aihe-ehdotukset</button>
+          </div>
+
+          <div id="suggestions-wrapper">
+            <span id="suggestions-header">Ehdotukset</span>
+            <span id="copy-heading">Kopioi</span>
+
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
               </div>
-              <div class="btn-group copy-buttons" role="group">
-                <button type="button" class="btn btn-secondary copy-button" id="copy-button-label" title="Kopioi termi leikepöydälle">TERMI</button>
-                <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri" title="Kopioi URI leikepöydälle">URI</button>
-                <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri" title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"></button>                 
-              </div>
-              <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sit amet tellus cras adipiscing enim eu turpis egestas</a></p>
-            </li>
-            <li class="list-group-item">
-              <div id="meter-wrapper">
-                <meter value="0.5" max="1" title="0.5"></meter>
-              </div>
-              <div class="btn-group copy-buttons" role="group">
-                <button type="button" class="btn btn-secondary copy-button" id="copy-button-label" title="Kopioi termi leikepöydälle">TERMI</button>
-                <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri" title="Kopioi URI leikepöydälle">URI</button>
-                <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri" title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"></button>                 
-              </div>
-              <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Kissa</a></p>
-            </li>
+            </div>
+
+            <ul class="list-group" id="results">
+              <li class="list-group-item">
+                <div id="meter-wrapper">
+                  <meter value="0.7115005254745483" max="1" title="0.7115"></meter>
+                </div>
+                <div class="btn-group copy-buttons" role="group">
+                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-label"
+                    title="Kopioi termi leikepöydälle">TERMI</button>
+                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri"
+                    title="Kopioi URI leikepöydälle">URI</button>
+                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
+                    title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"></button>
+                </div>
+                <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Lorem ipsum dolor sit
+                    amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Sit amet tellus cras adipiscing enim eu turpis egestas</a></p>
+              </li>
+              <li class="list-group-item">
+                <div id="meter-wrapper">
+                  <meter value="0.5" max="1" title="0.5"></meter>
+                </div>
+                <div class="btn-group copy-buttons" role="group">
+                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-label"
+                    title="Kopioi termi leikepöydälle">TERMI</button>
+                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri"
+                    title="Kopioi URI leikepöydälle">URI</button>
+                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
+                    title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"></button>
+                </div>
+                <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Kissa</a></p>
+              </li>
+            </ul>
+            <ul class="list-group" id="no-results">
+              <li class="list-group-item">Ei tuloksia</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container" id="footer-main">
+      <div class="row">
+
+        <div class="col-md-3">
+          <img src="static/img/finto-ai-logo-vaaka.svg" class="img-fluid" alt="Finto AI">
+          <p>
+            Sähköposti:<br>
+            <span id="finto-email">finto-posti@helsinki.fi</span>
+          <p>
+        </div>
+
+        <div class="col-md-3 pb-3">
+          <h4>Finto AI</h4>
+          <p>Finto AI on automaattisen sisällönkuvailun palvelu, joka perustuu Annifin versioon 0.60</p>
+          <h5>API-palvelu</h5>
+          <p>Finto AI toimii myös rajapintapalveluna, joka voidaan integroida omiin järjestelmiin.</p>
+          <a href="#" id="api-link">Lisätietoja | OpenAPI-kuvaus</a>
+        </div>
+
+        <div class="col-md-3">
+          <h4>Linkit</h4>
+          <ul class="list-group" id="footer-links">
+            <li class="list-group-item"><a href="#">Tietoa Fintosta</a></li>
+            <li class="list-group-item"><a href="#">Yhteystiedot</a></li>
+            <li class="list-group-item"><a href="#">Anna palautetta</a></li>
+            <li class="list-group-item"><a href="#">Saavutettavuus</a></li>
+            <li class="list-group-item"><a href="#">Tietosuoja</a></li>
           </ul>
-          <ul class="list-group" id="no-results">
-            <li class="list-group-item">Ei tuloksia</li>
-          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <h4>Seuraa meitä</h4>
+          <span id="twitter"><a href="#">Twitterissä</span>
         </div>
 
       </div>
     </div>
-  </div>
-</div>
 
-<footer>
-  <div class="container" id="footer-main">
-    <div class="row">
-      <div class="col-md-3">
-        <img src="static/img/finto-ai-logo-vaaka.svg" class="img-fluid" alt="Finto AI">
-        <p>Sähköposti:<br>
-        <span id="finto-email">finto-posti@helsinki.fi</span><p>
-      </div>
-      <div class="col-md-3 pb-3">
-        <h4>Finto AI</h4>
-        <p>Finto AI on automaattisen sisällönkuvailun palvelu, joka perustuu Annifin versioon 0.60</p>
-        <h5>API-palvelu</h5>
-        <p>Finto AI toimii myös rajapintapalveluna, joka voidaan integroida omiin järjestelmiin.</p>
-        <a href="#" id="api-link">Lisätietoja | OpenAPI-kuvaus</a>
-      </div>
-      <div class="col-md-3">
-        <h4>Linkit</h4>
-        <ul class="list-group" id="footer-links">
-          <li class="list-group-item"><a href="#">Tietoa Fintosta</a></li>
-          <li class="list-group-item"><a href="#">Yhteystiedot</a></li>
-          <li class="list-group-item"><a href="#">Anna palautetta</a></li>
-          <li class="list-group-item"><a href="#">Saavutettavuus</a></li>
-          <li class="list-group-item"><a href="#">Tietosuoja</a></li>
-        </ul>
-      </div>
-      <div class="col-md-3">
-        <h4>Seuraa meitä</h4>
-        <span id="twitter"><a href="#">Twitterissä</span>
+    <div class="container-fluid" id="footer-bottom">
+      <div class="row">
+        <div class="col-md-6">
+          logo
+        </div>
+        <div class="col-md-6 text-end">
+          link
+        </div>
       </div>
     </div>
-  </div>
-  <div class="container-fluid" id="footer-bottom">
-    <div class="row">
-      <div class="col-md-6">
-        logo
-      </div>
-      <div class="col-md-6 text-end">
-        link
-      </div>
-    </div>
-  </div>
-</footer>
+  </footer>
 
-<script src="static/js/bootstrap-5.2.2.min.js"></script>
+  <script src="static/js/bootstrap-5.2.2.min.js"></script>
 
 </body>
