@@ -17,10 +17,16 @@
 
   <title>Finto AI</title>
 
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.11.1/dist/cdn.min.js"></script>
+
   <style>
     body {
       font-family: 'Public Sans', sans-serif;
       color: #002855;
+    }
+
+    [x-cloak] {
+      display: none !important;
     }
 
     /* For mobile */
@@ -356,6 +362,10 @@
       margin-top: 1rem;
     }
 
+    #results-spinner {
+      margin-top: 3rem;
+    }
+
     #suggestions-wrapper {
       margin-top: 3rem;
     }
@@ -373,6 +383,10 @@
       /* lining up with copy buttons */
       width: 50px;
       right: 110px;
+    }
+
+    #results {
+      margin-top: 1rem;
     }
 
     #results li,
@@ -552,7 +566,7 @@
   </style>
 </head>
 
-<body>
+<body x-data="{ annif_base_url: 'https://ai.finto.fi/v1/' }">
 
   <header>
     <div class="container">
@@ -574,7 +588,75 @@
       <p>Finto AI ehdottaa tekstille sopivia aiheita. Palvelu perustuu Annif-työkaluun.</p>
     </div>
 
-    <div class="container" id="content">
+    <div class="container" id="content"
+      x-data="{
+        projects: [],
+        selected_project: '',
+        limit: 10,
+        text: '',
+        language: 'project-language',
+        show_results: false,
+        loading_results: false,
+        results: [],
+        suggest() {
+          this.loading_results = true
+          this.show_results = false
+
+          var lang = this.language === 'project-language' ? '' : this.language
+
+          fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + lang
+          })
+          .then(data => {
+            return data.json()
+          })
+          .then(data => {
+            this.loading_results = false
+            this.show_results = true
+            this.results = data.results
+            console.log(this.results)
+          })
+        },
+        clear_text() {
+          this.text = ''
+          this.show_results = false
+        },
+        copy_label_to_clipboard(term) {
+          navigator.clipboard.writeText(term.label)
+        },
+        copy_uri_to_clipboard(term) {
+          navigator.clipboard.writeText(term.uri)
+        },
+        copy_uri_and_label_to_clipboard(term) {
+          languageCodes = {
+            'fi': 'fin',
+            'sv': 'swe',
+            'en': 'eng'
+          }
+          var term_language = 
+            this.language === 'project-language' 
+            ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language] 
+            : term_language = languageCodes[this.language]
+
+          navigator.clipboard.writeText(term.label + '$$2' + 'yso/' + term_language + '$$0'+ term.uri + '\n')
+        }
+      }"
+      x-init="
+        fetch(annif_base_url + 'projects')
+        .then(data => {
+          return data.json()
+        })
+        .then(data => {
+          projects = data.projects
+          selected_project = projects[0].project_id
+          console.log(projects)
+        })
+      "
+    >
       <div class="row">
 
         <div class="col-md-7" id="text-box">
@@ -631,8 +713,9 @@
 
           <div id="text-box-wrapper">
             <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
-              placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'></textarea>
-            <button id="button-clear" type="button" class="btn btn-danger">&#x1F7A8;</button>
+              placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia' x-model="text"></textarea>
+            <button id="button-clear" type="button" class="btn btn-danger" x-on:click="clear_text()">&#x1F7A8;</button>
+            
             <div id="text-box-background" class="dropzone">
               <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
               <span>Voit myös pudottaa tiedoston tai URL:n tähän</span>
@@ -649,44 +732,73 @@
 
           <label for="project">Sanasto ja tekstin kieli</label>
           <div class="select-wrapper">
-            <select class="form-control" id="project">
-              <option>YSO NN ensemble Finnish</option>
-              <option>option 2</option>
+            <select class="form-control" id="project" x-model="selected_project">
+              <template x-for="p in projects">
+                <option x-text="p.name" x-bind:value="p.project_id"></option>
+              </template>
             </select>
           </div>
 
           <label for="limit-buttons">Ehdotusten enimmäismäärä</label><br>
           <div id="limit-buttons" role="group" class="btn-group">
-            <input type="radio" class="btn-check" name="limit" value="10" id="l1" checked>
+            <input type="radio" class="btn-check" name="limit" value="10" id="l1" x-model.number="limit" checked>
             <label class="btn btn-secondary" for="l1">10</label>
-            <input type="radio" class="btn-check" name="limit" value="15" id="l2">
+            <input type="radio" class="btn-check" name="limit" value="15" id="l2" x-model.number="limit">
             <label class="btn btn-secondary" for="l2">15</label>
-            <input type="radio" class="btn-check" name="limit" value="20" id="l3">
+            <input type="radio" class="btn-check" name="limit" value="20" id="l3" x-model.number="limit">
             <label class="btn btn-secondary" for="l3">20</label>
           </div><br>
 
           <label for="label-language">Aihe-ehdotusten kieli</label>
           <div class="select-wrapper">
-            <select class="form-control" id="label-language">
-              <option>Sama kuin tekstin kieli</option>
+            <select class="form-control" id="label-language" x-model="language">
+              <option value="project-language">Sama kuin tekstin kieli</option>
+              <option value="fi">suomi</option>
+              <option value="sv">ruotsi</option>
+              <option value="en">englanti</option>
             </select>
           </div>
 
           <div class="d-grid justify-content-end">
-            <button id="get-suggestions" type="button" class="btn btn-primary">Anna aihe-ehdotukset</button>
+            <button id="get-suggestions" type="button" class="btn btn-primary" disabled
+              x-on:click="suggest()" x-bind:disabled="text===''">
+              Anna aihe-ehdotukset
+            </button>
           </div>
 
-          <div id="suggestions-wrapper">
-            <span id="suggestions-header">Ehdotukset</span>
-            <span id="copy-heading">Kopioi</span>
-
-            <div class="d-flex justify-content-center">
+          <div x-cloak x-show="loading_results">
+            <div id="results-spinner" class="d-flex justify-content-center">
               <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
+          </div>
 
-            <ul class="list-group" id="results">
+          <div id="suggestions-wrapper" x-cloak x-show="show_results">
+            <span id="suggestions-header">Ehdotukset</span>
+            <span id="copy-heading">Kopioi</span>
+
+            <ul class="list-group" id="results" x-show="results.length!==0">
+              <template x-for="r in results">
+                <li class="list-group-item">
+                  <div id="meter-wrapper">
+                    <meter max="1" x-bind:value="r.score" x-bind:title="r.score.toString().slice(0,6)"></meter>
+                  </div>
+                  <div class="btn-group copy-buttons" role="group">
+                    <button type="button" class="btn btn-secondary copy-button" id="copy-button-label"
+                      title="Kopioi termi leikepöydälle"
+                      x-on:click="copy_label_to_clipboard(r)">TERMI</button>
+                    <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri"
+                      title="Kopioi URI leikepöydälle"
+                      x-on:click="copy_uri_to_clipboard(r)">URI</button>
+                    <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
+                      title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten" 
+                      x-on:click="copy_uri_and_label_to_clipboard(r)"></button>
+                  </div>
+                  <p class="uri-link"><a target="_blank" x-bind:href="r.uri" x-text="r.label"></a></p>
+                </li>
+              </template>
+              <!--
               <li class="list-group-item">
                 <div id="meter-wrapper">
                   <meter value="0.7115005254745483" max="1" title="0.7115"></meter>
@@ -717,8 +829,9 @@
                 </div>
                 <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Kissa</a></p>
               </li>
+              -->
             </ul>
-            <ul class="list-group" id="no-results">
+            <ul class="list-group" id="no-results" x-show="results.length===0">
               <li class="list-group-item">Ei tuloksia</li>
             </ul>
           </div>
@@ -728,7 +841,19 @@
     </div>
   </div>
 
-  <footer>
+  <footer 
+    x-data="{ annif_version: '' }" 
+    x-init="
+      fetch(annif_base_url)
+        .then(data => {
+          return data.json()
+        })
+        .then(data => {
+          annif_version = data.version
+        })
+    "  
+  >
+
     <div class="container" id="footer-main">
       <div class="row">
 
@@ -742,7 +867,7 @@
 
         <div class="col-md-3 pb-3">
           <h4>Finto AI</h4>
-          <p>Finto AI on automaattisen sisällönkuvailun palvelu, joka perustuu Annifin versioon 0.60</p>
+          <p>Finto AI on automaattisen sisällönkuvailun palvelu, joka perustuu Annifin versioon <span x-text="annif_version"></span></p>
           <h5>API-palvelu</h5>
           <p>Finto AI toimii myös rajapintapalveluna, joka voidaan integroida omiin järjestelmiin.</p>
           <a href="#" id="api-link">Lisätietoja | OpenAPI-kuvaus</a>
