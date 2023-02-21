@@ -640,7 +640,7 @@
           var term_language = 
             this.language === 'project-language' 
             ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language] 
-            : term_language = languageCodes[this.language]
+            : languageCodes[this.language]
 
           navigator.clipboard.writeText(term.label + '$$2' + 'yso/' + term_language + '$$0'+ term.uri + '\n')
         }
