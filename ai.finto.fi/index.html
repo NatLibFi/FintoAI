@@ -15,6 +15,8 @@
   <!-- favicon -->
   <link rel="icon" href="favicon.ico">
 
+  <script src="static/js/vue.global.min.js"></script>
+
   <title>Finto AI</title>
 
   <style>
@@ -165,6 +167,7 @@
 
     .nav .active {
       background-color: white;
+      color: #002855;
     }
 
     .nav-link {
@@ -356,6 +359,10 @@
       margin-top: 1rem;
     }
 
+    #results-spinner {
+      margin-top: 3rem;
+    }
+
     #suggestions-wrapper {
       margin-top: 3rem;
     }
@@ -373,6 +380,10 @@
       /* lining up with copy buttons */
       width: 50px;
       right: 110px;
+    }
+
+    #results {
+      margin-top: 1rem;
     }
 
     #results li,
@@ -630,9 +641,7 @@
           </div>
 
           <div id="text-box-wrapper">
-            <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
-              placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'></textarea>
-            <button id="button-clear" type="button" class="btn btn-danger">&#x1F7A8;</button>
+            <text-input v-model="text" @hide-results="hide_results()"></text-input>
             <div id="text-box-background" class="dropzone">
               <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
               <span>Voit myös pudottaa tiedoston tai URL:n tähän</span>
@@ -647,80 +656,29 @@
 
           <h5>Sisällönkuvailu</h5>
 
-          <label for="project">Sanasto ja tekstin kieli</label>
-          <div class="select-wrapper">
-            <select class="form-control" id="project">
-              <option>YSO NN ensemble Finnish</option>
-              <option>option 2</option>
-            </select>
-          </div>
+          <project-select v-model="selected_project" :projects="projects"></project-select>
 
-          <label for="limit-buttons">Ehdotusten enimmäismäärä</label><br>
-          <div id="limit-buttons" role="group" class="btn-group">
-            <input type="radio" class="btn-check" name="limit" value="10" id="l1" checked>
-            <label class="btn btn-secondary" for="l1">10</label>
-            <input type="radio" class="btn-check" name="limit" value="15" id="l2">
-            <label class="btn btn-secondary" for="l2">15</label>
-            <input type="radio" class="btn-check" name="limit" value="20" id="l3">
-            <label class="btn btn-secondary" for="l3">20</label>
-          </div><br>
+          <limit-input v-model="limit"></limit-input><br>
 
-          <label for="label-language">Aihe-ehdotusten kieli</label>
-          <div class="select-wrapper">
-            <select class="form-control" id="label-language">
-              <option>Sama kuin tekstin kieli</option>
-            </select>
-          </div>
+          <language-select v-model="language"></language-select>
 
           <div class="d-grid justify-content-end">
-            <button id="get-suggestions" type="button" class="btn btn-primary">Anna aihe-ehdotukset</button>
+            <button id="get-suggestions" type="button" class="btn btn-primary" @click="suggest()" :disabled="text===''">Anna aihe-ehdotukset</button>
           </div>
 
-          <div id="suggestions-wrapper">
+          <div class="d-flex justify-content-center" id="results-spinner" v-if="loading_results">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <div id="suggestions-wrapper" v-if="show_results">
             <span id="suggestions-header">Ehdotukset</span>
             <span id="copy-heading">Kopioi</span>
 
-            <div class="d-flex justify-content-center">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </div>
-
-            <ul class="list-group" id="results">
-              <li class="list-group-item">
-                <div id="meter-wrapper">
-                  <meter value="0.7115005254745483" max="1" title="0.7115"></meter>
-                </div>
-                <div class="btn-group copy-buttons" role="group">
-                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-label"
-                    title="Kopioi termi leikepöydälle">TERMI</button>
-                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri"
-                    title="Kopioi URI leikepöydälle">URI</button>
-                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
-                    title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"></button>
-                </div>
-                <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Lorem ipsum dolor sit
-                    amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Sit amet tellus cras adipiscing enim eu turpis egestas</a></p>
-              </li>
-              <li class="list-group-item">
-                <div id="meter-wrapper">
-                  <meter value="0.5" max="1" title="0.5"></meter>
-                </div>
-                <div class="btn-group copy-buttons" role="group">
-                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-label"
-                    title="Kopioi termi leikepöydälle">TERMI</button>
-                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri"
-                    title="Kopioi URI leikepöydälle">URI</button>
-                  <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
-                    title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"></button>
-                </div>
-                <p class="uri-link"><a target="_blank" href="http://www.yso.fi/onto/yso/p19378">Kissa</a></p>
-              </li>
-            </ul>
-            <ul class="list-group" id="no-results">
-              <li class="list-group-item">Ei tuloksia</li>
-            </ul>
+            <result-list
+              :results="results" :language="language" :selected_project="selected_project" :projects="projects"
+            ></result-list>
           </div>
 
         </div>
@@ -742,7 +700,7 @@
 
         <div class="col-md-3 pb-3">
           <h4>Finto AI</h4>
-          <p>Finto AI on automaattisen sisällönkuvailun palvelu, joka perustuu Annifin versioon 0.60</p>
+          <p>Finto AI on automaattisen sisällönkuvailun palvelu, joka perustuu Annifin versioon {{ annif_version }}</p>
           <h5>API-palvelu</h5>
           <p>Finto AI toimii myös rajapintapalveluna, joka voidaan integroida omiin järjestelmiin.</p>
           <a href="#" id="api-link">Lisätietoja | OpenAPI-kuvaus</a>
@@ -761,7 +719,7 @@
 
         <div class="col-md-3">
           <h4>Seuraa meitä</h4>
-          <span id="twitter"><a href="#">Twitterissä</span>
+          <span id="twitter"><a href="#">Twitterissä</a></span>
         </div>
 
       </div>
@@ -778,6 +736,231 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    const { createApp } = Vue
+
+    const annif_base_url = 'https://ai.finto.fi/v1/'
+
+    const mainApp = createApp({
+      data() {
+        return {
+          projects: [],
+          selected_project: '',
+          text: '',
+          limit: 10,
+          language: 'project-language',
+          results: [],
+          show_results: false,
+          loading_results: false
+        }
+      },
+      methods: {
+        hide_results() {
+          this.show_results = false
+        },
+        suggest() {
+          this.loading_results = true
+          this.show_results = false
+
+          var lang = this.language === 'project-language' ? '' : this.language
+
+          fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + lang
+          })
+          .then(data => {
+            return data.json()
+          })
+          .then(data => {
+            this.results = data.results
+            this.loading_results = false
+            this.show_results = true
+          })
+        }
+      },
+      mounted() {
+        fetch(annif_base_url + 'projects')
+        .then(data => {
+          return data.json()
+        })
+        .then(data => {
+          this.projects = data.projects
+          this.selected_project = this.projects[0].project_id
+        })
+      }
+    })
+
+    mainApp.component('text-input', {
+      props: ['modelValue'], // text
+      emits: ['update:modelValue', 'hide-results'],
+      methods: {
+        clear_text() {
+          this.$emit('update:modelValue', '')
+          this.$emit('hide-results', null)
+        }
+      },
+      template: `
+        <textarea
+          class="form-control dropzone dropzone-border" id="text" rows="20"
+          placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'
+          :value="modelValue"
+          @input="$emit('update:modelValue', $event.target.value)"
+        ></textarea>
+        <button id="button-clear" type="button" class="btn btn-danger"
+          @click="clear_text">&#x1F7A8;</button>
+      `
+    })
+
+    mainApp.component('project-select', {
+      props: ['modelValue', 'projects'], //selected project
+      emits: ['update:modelValue'],
+      template:`
+        <label for="project">Sanasto ja tekstin kieli</label>
+        <div class="select-wrapper">
+          <select
+            class="form-control" id="project"
+            :value="modelValue"
+            @change="$emit('update:modelValue', $event.target.value)"
+          >
+            <option
+              v-for="p in projects"
+              :value="p.project_id"
+            >{{ p.name }}</option>
+          </select>
+        </div>
+      `
+    })
+
+    mainApp.component('limit-input', {
+      props: ['modelValue'], // limit
+      emits: ['update:modelValue'],
+      template: `
+        <label for="limit-buttons">Ehdotusten enimmäismäärä</label><br>
+        <div id="limit-buttons" role="group" class="btn-group">
+          <input type="radio" class="btn-check" name="limit" id="l1" checked
+            :value="modelValue"
+            @change="$emit('update:modelValue', 10)"
+          >
+          <label class="btn btn-secondary" for="l1">10</label>
+          <input type="radio" class="btn-check" name="limit" id="l2"
+            :value="modelValue"
+            @change="$emit('update:modelValue', 15)" 
+          >
+          <label class="btn btn-secondary" for="l2">15</label>
+          <input type="radio" class="btn-check" name="limit" id="l3"
+            :value="modelValue"
+            @change="$emit('update:modelValue', 20)" 
+          >
+          <label class="btn btn-secondary" for="l3">20</label>
+        </div>
+      `
+    })
+
+    mainApp.component('language-select', {
+      props: ['modelValue'], // selected language
+      emits: ['update:modelValue'],
+      template:`
+        <label for="label-language">Aihe-ehdotusten kieli</label>
+        <div class="select-wrapper">
+          <select class="form-control" id="label-language"
+            :value="modelValue"
+            @change="$emit('update:modelValue', $event.target.value)"
+          >
+            <option value="project-language">Sama kuin tekstin kieli</option>
+            <option value="fi">suomi</option>
+            <option value="sv">ruotsi</option>
+            <option value="en">englanti</option>
+          </select>
+        </div>
+      `
+    })
+
+    mainApp.component('result-list', {
+      props: ['results', 'language', 'selected_project', 'projects'],
+      methods: {
+        copy_label_to_clipboard(term) {
+          navigator.clipboard.writeText(term.label)
+        },
+        copy_uri_to_clipboard(term) {
+          navigator.clipboard.writeText(term.uri)
+        },
+        copy_uri_and_label_to_clipboard(term) {
+          var languageCodes = {
+            'fi': 'fin',
+            'sv': 'swe',
+            'en': 'eng'
+          }
+          var term_language = 
+            this.language === 'project-language' 
+            ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language] 
+            : languageCodes[this.language]
+          navigator.clipboard.writeText(term.label + '$$2' + 'yso/' + term_language + '$$0'+ term.uri + '\n')
+        }
+      },
+      template: `
+        <ul class="list-group" id="results" v-if="results.length!==0">
+          <li
+            class="list-group-item"
+            v-for="r in results"
+          >
+            <div id="meter-wrapper">
+              <meter
+                max="1" title="0.7115"
+                v-bind:value="r.score"
+                v-bind:title="r.score.toString().slice(0,6)"  
+              ></meter>
+            </div>
+            <div class="btn-group copy-buttons" role="group">
+              <button
+                type="button" class="btn btn-secondary copy-button" id="copy-button-label" title="Kopioi termi leikepöydälle"
+                @click="copy_label_to_clipboard(r)"
+              >TERMI</button>
+              <button
+                type="button" class="btn btn-secondary copy-button" id="copy-button-uri" title="Kopioi URI leikepöydälle"
+                @click="copy_uri_to_clipboard(r)"
+              >URI</button>
+              <button
+                type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
+                title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"
+                @click="copy_uri_and_label_to_clipboard(r)"  
+              ></button>
+            </div>
+            <p class="uri-link"><a target="_blank" v-bind:href="r.uri">{{ r.label }}</a></p>
+          </li>
+        </ul>
+        <ul class="list-group" id="no-results" v-if="results.length===0">
+          <li class="list-group-item">Ei tuloksia</li>
+        </ul>
+      `
+    })
+
+    mainApp.mount('#main')
+
+
+    const footerApp = createApp({
+      data() {
+        return {
+          annif_version: ''
+        }
+      },
+      mounted() {
+        fetch(annif_base_url)
+        .then(data => {
+          return data.json()
+        })
+        .then(data => {
+          this.annif_version = data.version
+        })
+      }
+    })
+
+    footerApp.mount('#footer-main')
+
+  </script>
 
   <script src="static/js/bootstrap.min.js"></script>
 
