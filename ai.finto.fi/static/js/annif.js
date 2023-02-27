@@ -4,9 +4,9 @@ if (window.location.protocol.startsWith('http')) {
     var annif_base_url = '/v1/';
     var textract_base_url = '/textract/';
 } else {
-    // local development case - use Finto AI dev API and textract running on localhost via port 8001
+    // local development case - use APIs of Finto AI dev instance
     var annif_base_url = 'https://ai.dev.finto.fi/v1/';
-    var textract_base_url = 'http://localhost:8001/textract/';
+    var textract_base_url = 'https://ai.dev.finto.fi/textract/';
 }
 var projects = {};
 
