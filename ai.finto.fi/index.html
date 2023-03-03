@@ -184,17 +184,19 @@
       padding: 1rem;
     }
 
-    #input-file {
+    #input-file-label {
       border: 1px solid #DFE5ED;
       border-radius: 0;
       color: #002855;
+      margin: 0;
     }
 
-    #input-file::file-selector-button {
+    #button-select-file {
       border: none;
       border-radius: 0;
       color: #002855;
       background-color: #B8C9DB;
+      margin: 0;
     }
 
     #input-url {
@@ -599,7 +601,9 @@
 
               <div role="tabpanel" class="tab-pane" id="tab-file-input">
                 <div class="input-group flex-fill">
-                  <input class="form-control" type="file" id="input-file">
+                  <label class="input-group-text" id="button-select-file" for="input-file" role="button">Selaa</label>
+                  <label for="input-file" class="form-control" id="input-file-label" role="button">Valitse tiedosto</label>
+                  <input type="file" class="d-none" id="input-file">
                 </div>
                 <div class="tabs-input-footer">
                   <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
