@@ -280,6 +280,16 @@
       padding: 10px;
     }
 
+    .dropzone-border.dragging {
+      outline: 3px dashed #FAE196;
+      outline-offset: -3px;
+    }
+
+    .dropzone.dragging {
+      /* aplha value 0.5 */
+      background-color: #FAE19680;
+    }
+
     #text-box-background {
       color: #5D7999;
       position: absolute;
@@ -614,6 +624,7 @@
         show_alert_file_size: false,
         show_alert_file_format: false,
         show_alert_request_failed: false,
+        show_dragging_effect: false,
         suggest() {
           this.loading_results = true
           this.show_results = false
@@ -649,6 +660,16 @@
         supported_formats_text() {
           return this.supported_formats.map(i => '.' + i).join(', ')
         },
+        drag_over(e) {
+          e.stopPropagation()
+          e.preventDefault()
+          this.show_dragging_effect = true
+        },
+        drag_leave(e) {
+          e.stopPropagation()
+          e.preventDefault()
+          this.show_dragging_effect = false
+        },
         select_file(e) {
           this.read_file(e.target.files[0])
         },
@@ -659,6 +680,8 @@
         read_drop_input(e) {
           e.stopPropagation()
           e.preventDefault()
+
+          this.show_dragging_effect = false
 
           const input = e.dataTransfer
           const files = input.files
@@ -847,14 +870,17 @@
             Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
           </div>
 
-          <div id="text-box-wrapper">
+          <div id="text-box-wrapper"
+            x-on:drop="read_drop_input($event)"
+            x-on:dragleave="drag_leave($event)"
+            x-on:dragover="drag_over($event)"
+          >
             <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
               placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'
-              x-model="text" x-on:drop="read_drop_input($event)"></textarea>
+              x-model="text" x-bind:class="{ 'dragging': show_dragging_effect }"></textarea>
             <button id="button-clear" type="button" class="btn btn-danger" x-on:click="clear()">&#x1F7A8;</button>          
             
-            <div id="text-box-background" class="dropzone"
-              x-show="!loading_upload && text.length===0" x-on:drop="read_drop_input($event)">
+            <div id="text-box-background" class="dropzone" x-show="!loading_upload && text.length===0">
               <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
               <span>Voit myös pudottaa tiedoston tai URL:n tähän</span>
             </div>
