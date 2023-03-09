@@ -239,6 +239,17 @@
       margin-left: 1rem;
     }
 
+    #alert-wrapper {
+      background-color: white;
+      padding: 1rem;
+      padding-bottom: 0;
+    }
+
+    .alert {
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+
     #text-box-wrapper {
       background-color: white;
       position: relative;
@@ -282,7 +293,7 @@
 
     .dropzone-border.dragging {
       outline: 3px dashed #FAE196;
-      outline-offset: -3px;
+      outline-offset: -4px;
     }
 
     .dropzone.dragging {
@@ -358,8 +369,13 @@
       background-color: #B8C9DB;
       border: none;
       border-radius: 0;
+      width: 40px;
       font-weight: bold;
+      text-align: center;
       margin-top: 0;
+      margin-left: 0;
+      transition: none;
+      padding: 5px 0;
     }
 
     #limit-buttons .btn-check:checked+.btn {
@@ -486,6 +502,11 @@
     .copy-button:hover {
       background-color: #B8C9DB;
       color: #002855;
+    }
+
+    .copy-button:active {
+      background-color: #B8C9DB !important;
+      color: #002855 !important;
     }
 
     #copy-button-label-and-uri {
@@ -860,14 +881,18 @@
             </div>
           </div>
 
-          <div class="alert alert-danger" x-cloak x-show="show_alert_file_format">
-            Tämä tiedostomuoto ei ole tuettu.
-          </div>
-          <div class="alert alert-danger" x-cloak x-show="show_alert_request_failed">
-            Tekstin haku epäonnistui.
-          </div>
-          <div class="alert alert-danger" x-cloak x-show="show_alert_file_size">
-            Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
+          <div id="alert-wrapper" x-cloak
+            x-show="show_alert_file_format || show_alert_request_failed || show_alert_file_size"
+          >
+            <div class="alert alert-danger" x-show="show_alert_file_format">
+              Tämä tiedostomuoto ei ole tuettu.
+            </div>
+            <div class="alert alert-danger" x-show="show_alert_request_failed">
+              Tekstin haku epäonnistui.
+            </div>
+            <div class="alert alert-danger" x-show="show_alert_file_size">
+              Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
+            </div>
           </div>
 
           <div id="text-box-wrapper"
