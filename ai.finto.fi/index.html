@@ -12,6 +12,8 @@
   <!-- Public Sans font -->
   <link rel="stylesheet" href="static/css/fonts.css">
 
+  <link rel="stylesheet" href="static/css/style.css">
+
   <!-- favicon -->
   <link rel="icon" href="favicon.ico">
 
@@ -19,594 +21,9 @@
 
   <script defer src="static/js/alpine.min.js"></script>
 
-  <style>
-    body {
-      font-family: 'Public Sans', sans-serif;
-      color: #002855;
-    }
-
-    [x-cloak] {
-      display: none !important;
-    }
-
-    /* For mobile */
-    @media screen and (max-width: 575px) {
-
-      header {
-        height: 175px !important;
-      }
-
-      #header-nav {
-        position: absolute !important;
-        top: 110px !important;
-      }
-
-      #main::before {
-        height: 400px !important;
-        background-position: 0 175px !important;
-      }
-
-      #info {
-        padding: 0 !important;
-        padding-left: 1rem !important;
-      }
-
-      #content {
-        padding: 1rem !important;
-      }
-
-      #text-box {
-        padding: 0 !important;
-        border: none !important;
-      }
-
-      #suggestions {
-        padding: 0 !important;
-        padding-top: 1rem !important;
-      }
-
-      #footer-main {
-        padding: 0 1rem !important;
-        padding-bottom: 1rem !important;
-      }
-    }
-
-    header {
-      background-color: #002855;
-      color: white;
-      padding-bottom: 1rem;
-      height: 100px;
-    }
-
-    header img {
-      width: 300px;
-      float: left;
-      position: relative;
-      top: -26px;
-      left: -45px;
-    }
-
-    #header-nav {
-      float: right;
-    }
-
-    #header-nav a {
-      color: white;
-      text-decoration: none;
-    }
-
-    #header-nav span {
-      padding-right: 1rem;
-    }
-
-    .header-nav-link {
-      background-position: left center;
-      background-repeat: no-repeat;
-      background-size: 35%;
-      padding-left: 25px;
-    }
-
-    /* what to do with hover selectors? */
-    header a:hover {
-      color: #009CC9 !important;
-    }
-
-    #header-nav-finto {
-      background-image: url("static/img/finto.svg");
-    }
-
-    #header-nav-info {
-      background-image: url("static/img/info.svg");
-    }
-
-    #header-nav-feedback {
-      background-image: url("static/img/feedback.svg");
-    }
-
-    #main {
-      padding-top: 3rem;
-      padding-bottom: 3rem;
-      min-height: 70%;
-      /* to keep footer at the bottom of the page with a bigger screen */
-      min-height: -webkit-calc(100vh - 100px - 448px);
-      /* screen height - header height - footer height */
-      min-height: -moz-calc(100vh - 100px - 448px);
-      min-height: calc(100vh - 100px - 448px);
-    }
-
-    /* cropped background image */
-    #main::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      background-image: url(./static/img/taustakuva-pexels-johannes-plenio.jpg);
-      background-repeat: no-repeat;
-      background-size: 100%;
-      background-position: 0;
-      height: 600px;
-      width: 100%;
-      z-index: -1;
-    }
-
-    #info {
-      color: white;
-      margin-bottom: 3rem;
-      padding-left: 4rem;
-    }
-
-    #content {
-      background-color: #F2F5F7;
-      padding: 4rem;
-      padding-top: 2rem;
-    }
-
-    #text-box {
-      border-right: 1px solid #DFE5ED;
-      padding-right: 2rem;
-    }
-
-    .nav {
-      background-color: #DFE5ED;
-    }
-
-    .nav .active {
-      background-color: white;
-      color: #002855;
-    }
-
-    .nav-link {
-      color: #002855;
-    }
-
-    /* what to do with hover selectors? */
-    .nav-link:hover {
-      color: #009CC9;
-    }
-
-    .tab-content {
-      background-color: white;
-    }
-
-    .input-group {
-      padding: 1rem;
-    }
-
-    #input-file-label {
-      border: 1px solid #DFE5ED;
-      border-radius: 0;
-      color: #002855;
-      margin: 0;
-    }
-
-    #button-select-file {
-      border: none;
-      border-radius: 0;
-      color: #002855;
-      background-color: #B8C9DB;
-      margin: 0;
-    }
-
-    #input-url {
-      border: 1px solid #DFE5ED;
-      border-radius: 0;
-      color: #002855;
-    }
-
-    /* Chrome, Firefox, Opera, Safari 10.1+ */
-    #input-url::placeholder {
-      color: #5D7999;
-    }
-
-    /* Internet Explorer 10-11 */
-    #input-url:-ms-input-placeholder {
-      color: #5D7999;
-    }
-
-    /* Microsoft Edge */
-    #input-url::-ms-input-placeholder {
-      color: #5D7999;
-    }
-
-    #button-select-url {
-      border: none;
-      border-radius: 0;
-      color: #002855;
-      background-color: #B8C9DB;
-    }
-
-    .tabs-input-footer {
-      margin-right: 1rem;
-      margin-left: 1rem;
-    }
-
-    #alert-wrapper {
-      background-color: white;
-      padding: 1rem;
-      padding-bottom: 0;
-    }
-
-    .alert {
-      border-radius: 0;
-      margin-bottom: 0;
-    }
-
-    #text-box-wrapper {
-      background-color: white;
-      position: relative;
-      padding: 1rem;
-    }
-
-    #text {
-      border: 1px solid #DFE5ED;
-      border-radius: 0;
-      margin-bottom: 0;
-    }
-
-    /* Chrome, Firefox, Opera, Safari 10.1+ */
-    #text::placeholder {
-      color: #5D7999;
-    }
-
-    /* Internet Explorer 10-11 */
-    #text:-ms-input-placeholder {
-      color: #5D7999;
-    }
-
-    /* Microsoft Edge */
-    #text::-ms-input-placeholder {
-      color: #5D7999;
-    }
-
-    #button-clear {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: none;
-      color: #5D7999;
-      border: none;
-      font-size: 30px;
-    }
-
-    .dropzone {
-      padding: 10px;
-    }
-
-    .dropzone-border.dragging {
-      outline: 3px dashed #FAE196;
-      outline-offset: -4px;
-    }
-
-    .dropzone.dragging {
-      /* aplha value 0.5 */
-      background-color: #FAE19680;
-    }
-
-    #text-box-background {
-      color: #5D7999;
-      position: absolute;
-      width: 500px;
-      max-width: 80%;
-      left: 50%;
-      top: 55%;
-      transform: translate(-50%, 0);
-      text-align: center;
-    }
-
-    #text-box-background.dragging {
-      opacity: 1.0;
-    }
-
-    #upload-spinner {
-      width: 50px;
-      height: 50px;
-      position: absolute;
-      left: 45%;
-      top: 45%;
-    }
-
-    #suggestions {
-      padding-left: 2rem;
-    }
-
-    label {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      border-left: 6px solid #009CC9;
-      padding-left: 6px;
-      font-weight: bold;
-    }
-
-    #suggestions .form-control {
-      margin-bottom: 1rem;
-      border-radius: 0;
-      border: none;
-    }
-
-    select:valid {
-      color: #002855;
-    }
-
-    select:valid:focus {
-      color: #002855;
-    }
-
-    .select-wrapper {
-      position: relative;
-    }
-
-    .select-wrapper:after {
-      content: '﹀';
-      font-size: 20px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      color: #002855;
-      pointer-events: none;
-    }
-
-    #limit-buttons label {
-      color: #002855;
-      background-color: #B8C9DB;
-      border: none;
-      border-radius: 0;
-      width: 40px;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 0;
-      margin-left: 0;
-      transition: none;
-      padding: 5px 0;
-    }
-
-    #limit-buttons .btn-check:checked+.btn {
-      background-color: #002855;
-      color: white;
-    }
-
-    #get-suggestions {
-      background-color: #FAE196;
-      color: #002855;
-      border: none;
-      border-radius: 0;
-      font-weight: bold;
-      margin-top: 1rem;
-    }
-
-    #results-spinner {
-      margin-top: 3rem;
-    }
-
-    #suggestions-wrapper {
-      margin-top: 3rem;
-    }
-
-    #suggestions-header {
-      margin-bottom: 1rem;
-      border-left: 6px solid #009CC9;
-      padding-left: 6px;
-      font-weight: bold;
-    }
-
-    #copy-heading {
-      float: right;
-      position: relative;
-      /* lining up with copy buttons */
-      width: 50px;
-      right: 110px;
-    }
-
-    #results {
-      margin-top: 1rem;
-    }
-
-    #results li,
-    #no-results li {
-      border-radius: 0;
-      border: none;
-      border-bottom: 1px solid #DFE5ED;
-      background: none;
-      padding-left: 0;
-      padding-right: 0;
-      justify-content: center;
-    }
-
-    /* meter styling might not be correct for all browsers */
-    #meter-wrapper {
-      float: left;
-    }
-
-    meter {
-      width: 20px;
-      height: 15px;
-      border: 1px solid #002855;
-      border-radius: 0;
-      background: none;
-    }
-
-    meter::-webkit-meter-bar {
-      width: 20px;
-      height: 15px;
-      border: 1px solid #002855;
-      border-radius: 0;
-      background: none;
-    }
-
-    meter:-moz-meter-optimum::-moz-meter-bar {
-      background: #002855;
-    }
-
-    meter::-webkit-meter-optimum-value {
-      background: #002855;
-    }
-
-    .uri-link {
-      margin: 0;
-      padding-left: 5px;
-      overflow: hidden;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-
-    .uri-link a {
-      color: #009CC9;
-      text-decoration: underline;
-    }
-
-    .copy-buttons {
-      float: right;
-      margin: 0px;
-      padding: 0px;
-      margin-right: -5px;
-      margin-left: 0.5rem;
-    }
-
-    .copy-button {
-      border: none;
-      border-radius: 0;
-      color: #002855;
-      text-align: center;
-      font-size: 0.75rem;
-      padding: 0;
-      margin-right: 5px;
-      height: 30px;
-      width: 50px;
-      background-color: #B8C9DB;
-      /* using text for TERM and URI buttons
-      background-size: 150%;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      */
-    }
-
-    /* what to do with hover selectors? */
-    .copy-button:hover {
-      background-color: #B8C9DB;
-      color: #002855;
-    }
-
-    .copy-button:active {
-      background-color: #B8C9DB !important;
-      color: #002855 !important;
-    }
-
-    #copy-button-label-and-uri {
-      background-image: url("static/img/melinda.svg");
-      background-size: 90%;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      margin-left: 0px;
-    }
-
-    /* using text for TERM and URI buttons
-    #copy-button-label {
-      background-image: url("static/img/term.svg");
-      margin-left: 0px;
-    }
-    #copy-button-uri {
-      background-image: url("static/img/uri.svg");
-      margin-left: 0px;
-    }
-    */
-
-    footer {
-      background-color: #5D7999;
-      color: white;
-    }
-
-    #footer-main {
-      padding-top: 3rem;
-      padding-bottom: 3rem;
-    }
-
-    footer img {
-      width: 75%;
-      margin-bottom: 2rem;
-      position: relative;
-      left: -13px;
-    }
-
-    footer a {
-      color: white;
-      text-decoration: none;
-    }
-
-    footer h4 {
-      margin-bottom: 1.5rem;
-      font-weight: bold;
-    }
-
-    footer h5 {
-      margin-bottom: 1.5rem;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-
-    #finto-email {
-      font-weight: bold;
-    }
-
-    #api-link {
-      text-decoration: underline;
-    }
-
-    #footer-links li {
-      color: white;
-      border-radius: 0;
-      border: none;
-      background: none;
-      padding-left: 0;
-      padding-top: 0;
-      padding-bottom: 0.75rem;
-    }
-
-    #footer-links>li::before {
-      content: "🡢";
-      margin-right: 0.5rem;
-    }
-
-    #twitter {
-      background-position: left center;
-      background-repeat: no-repeat;
-      background-size: 30px;
-      padding-left: 30px;
-      background-image: url("static/img/twitter.svg");
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-
-    #footer-bottom {
-      background-color: #002855;
-      padding: 1rem;
-    }
-  </style>
 </head>
 
-<body
-  x-data="{
-    annif_base_url: 'https://ai.finto.fi/v1/', 
-    textract_base_url: 'https://ai.dev.finto.fi/textract/' 
-  }"
->
+<body>
 
   <header>
     <div class="container">
@@ -628,217 +45,10 @@
       <p>Finto AI ehdottaa tekstille sopivia aiheita. Palvelu perustuu Annif-työkaluun.</p>
     </div>
 
-    <div class="container" id="content"
-      x-data="{
-        projects: [],
-        selected_project: '',
-        limit: 10,
-        text: '',
-        language: 'project-language',
-        show_results: false,
-        loading_results: false,
-        results: [],
-        supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html'],
-        selected_file: 'Valitse tiedosto',
-        selected_url: '',
-        loading_upload: false,
-        show_alert_file_size: false,
-        show_alert_file_format: false,
-        show_alert_request_failed: false,
-        show_dragging_effect: false,
-        suggest() {
-          this.loading_results = true
-          this.show_results = false
-
-          let lang = this.language === 'project-language' ? '' : this.language
-
-          fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + lang
-          })
-          .then(data => {
-            return data.json()
-          })
-          .then(data => {
-            this.loading_results = false
-            this.show_results = true
-            this.results = data.results
-            console.log(this.results)
-          })
-        },
-        clear() {
-          this.text = ''
-          this.show_results = false
-          this.selected_file = 'Valitse tiedosto'
-          this.selected_url = ''
-          this.show_alert_file_size = false
-          this.show_alert_file_format = false
-          this.show_alert_request_failed = false
-        },
-        supported_formats_text() {
-          return this.supported_formats.map(i => '.' + i).join(', ')
-        },
-        drag_over(e) {
-          e.stopPropagation()
-          e.preventDefault()
-          this.show_dragging_effect = true
-        },
-        drag_leave(e) {
-          e.stopPropagation()
-          e.preventDefault()
-          this.show_dragging_effect = false
-        },
-        select_file(e) {
-          this.read_file(e.target.files[0])
-        },
-        select_url(e) {
-          e.preventDefault()
-          this.read_url(e.target[0].value)
-        },
-        read_drop_input(e) {
-          e.stopPropagation()
-          e.preventDefault()
-
-          this.show_dragging_effect = false
-
-          const input = e.dataTransfer
-          const files = input.files
-          const url = input.getData('URL') || input.getData('text/x-moz-url') // works with chrome and firefox
-
-          if (files && files[0]) {
-            this.$refs.tab_file_input.dispatchEvent(new Event('click')) // not sure how else to switch the tab
-            this.read_file(files[0])
-          } else if (url) {
-            this.$refs.tab_url_input.dispatchEvent(new Event('click'))
-            this.read_url(url)
-          }
-        },
-        read_file(file) {
-          this.clear()
-          this.loading_upload = true
-          this.selected_file = file.name
-          
-          const extension = this.get_extension(file.name)
-          this.check_format_support(extension)
-          this.check_file_size(file.size)
-
-          if (extension === 'txt') {
-            file.text().then(text => {
-              this.loading_upload = false
-              this.text = text
-            })
-          } else {
-            let file_form_data = new FormData()
-            file_form_data.append('file', file)
-
-            fetch(textract_base_url + 'file', {
-              method: 'POST',
-              body: file_form_data
-            })
-            .then(data => {
-              return data.json()
-            })
-            .then(data => {
-              this.loading_upload = false
-              this.text = data.text
-            })
-            .catch(error => {
-              this.loading_upload = false
-              this.show_alert_request_failed = true
-            })
-          }
-        },
-        read_url(url) {
-          const url_obj = new URL(url)
-          const plain_url = url_obj.origin + url_obj.pathname
-
-          this.clear()
-          this.loading_upload = true
-          this.selected_url = plain_url
-
-          const extension = this.get_extension(url_obj.pathname)
-          this.check_format_support(extension)
-
-          fetch(textract_base_url + 'url', {
-            method:'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({'url': plain_url})
-          })
-          .then(data => {
-            return data.json()
-          })
-          .then(data => {
-            this.loading_upload = false
-            this.text = data.text
-          })
-          .catch(error => {
-            this.loading_upload = false
-            this.show_alert_request_failed = true
-          })
-        },
-        get_extension(path) {
-          const parts = path.split('.')
-          if (parts.length >= 2) {
-            return parts[parts.length - 1].toLowerCase()
-          } else {
-            return
-          }
-        },
-        check_format_support(extension) {
-          // Allow undefined because url to a typical html page lacks .html suffix
-          if (!this.supported_formats.includes(extension) && extension !== undefined) {
-            this.show_alert_file_format = true
-            this.loading_upload = false
-            throw new Error('Unsupported format')
-          }
-        },
-        check_file_size(size) {
-          if (size > 50000000) {
-            this.show_alert_file_size = true
-            this.loading_upload = false
-            throw new Error('File size exceeds maximum')
-          }
-        },
-        copy_label_to_clipboard(term) {
-          navigator.clipboard.writeText(term.label)
-        },
-        copy_uri_to_clipboard(term) {
-          navigator.clipboard.writeText(term.uri)
-        },
-        copy_uri_and_label_to_clipboard(term) {
-          let languageCodes = {
-            'fi': 'fin',
-            'sv': 'swe',
-            'en': 'eng'
-          }
-          let term_language = 
-            this.language === 'project-language' 
-            ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language] 
-            : languageCodes[this.language]
-
-          navigator.clipboard.writeText(term.label + '$$2' + 'yso/' + term_language + '$$0'+ term.uri + '\n')
-        }
-      }"
-      x-init="
-        fetch(annif_base_url + 'projects')
-        .then(data => {
-          return data.json()
-        })
-        .then(data => {
-          projects = data.projects
-          selected_project = projects[0].project_id
-          console.log(projects)
-        })
-      "
-    >
+    <div class="container" id="content" x-data="content">
       <div class="row">
 
-        <div class="col-md-7" id="text-box">
+        <div class="col-md-7" id="text-box" x-data="textbox">
           <h3>Kuvailtava teksti</h3>
           <div id="tabs-input">
             <ul class="nav nav-tabs-no-style nav-justified" role="tablist">
@@ -861,7 +71,7 @@
                 <div class="input-group flex-fill">
                   <label class="input-group-text" id="button-select-file" for="input-file" role="button">Selaa</label>
                   <label for="input-file" class="form-control" id="input-file-label" role="button" x-text="selected_file"></label>
-                  <input type="file" class="d-none" id="input-file" x-on:change="select_file($event)">
+                  <input type="file" class="d-none" id="input-file" @change="select_file($event)">
                 </div>
                 <div class="tabs-input-footer">
                   <span>Tuetut tiedostomuodot: </span><span x-text="supported_formats_text()"></span>
@@ -869,9 +79,9 @@
               </div>
 
               <div role="tabpanel" class="tab-pane" id="tab-url-input">
-                <form class="input-group flex-fill" id="form-url" x-on:submit="select_url($event)">
+                <form class="input-group flex-fill" id="form-url" @submit="select_url($event)">
                   <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" autocomplete="off"
-                    required x-bind:value="selected_url">
+                    required :value="selected_url">
                   <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
                 </form>
                 <div class="tabs-input-footer">
@@ -896,14 +106,14 @@
           </div>
 
           <div id="text-box-wrapper"
-            x-on:drop="read_drop_input($event)"
-            x-on:dragleave="drag_leave($event)"
-            x-on:dragover="drag_over($event)"
+            @drop="read_drop_input($event)"
+            @dragleave="drag_leave($event)"
+            @dragover="drag_over($event)"
           >
             <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
               placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'
-              x-model="text" x-bind:class="{ 'dragging': show_dragging_effect }"></textarea>
-            <button id="button-clear" type="button" class="btn btn-danger" x-on:click="clear()">&#x1F7A8;</button>          
+              x-model="text" :class="{ 'dragging': show_dragging_effect }"></textarea>
+            <button id="button-clear" type="button" class="btn btn-danger" @click="clear()">&#x1F7A8;</button>          
             
             <div id="text-box-background" class="dropzone" x-show="!loading_upload && text.length===0">
               <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
@@ -918,7 +128,7 @@
           </div>
         </div>
 
-        <div class="col-md-5" id="suggestions">
+        <div class="col-md-5" id="suggestions" x-data="suggestions">
 
           <h5>Sisällönkuvailu</h5>
 
@@ -926,7 +136,7 @@
           <div class="select-wrapper">
             <select class="form-control" id="project" x-model="selected_project">
               <template x-for="p in projects">
-                <option x-text="p.name" x-bind:value="p.project_id"></option>
+                <option x-text="p.name" :value="p.project_id"></option>
               </template>
             </select>
           </div>
@@ -953,7 +163,7 @@
 
           <div class="d-grid justify-content-end">
             <button id="get-suggestions" type="button" class="btn btn-primary" disabled
-              x-on:click="suggest()" x-bind:disabled="text===''">
+              @click="suggest()" :disabled="text===''">
               Anna aihe-ehdotukset
             </button>
           </div>
@@ -974,20 +184,20 @@
               <template x-for="r in results">
                 <li class="list-group-item">
                   <div id="meter-wrapper">
-                    <meter max="1" x-bind:value="r.score" x-bind:title="r.score.toString().slice(0,6)"></meter>
+                    <meter max="1" :value="r.score" :title="r.score.toString().slice(0,6)"></meter>
                   </div>
                   <div class="btn-group copy-buttons" role="group">
                     <button type="button" class="btn btn-secondary copy-button" id="copy-button-label"
                       title="Kopioi termi leikepöydälle"
-                      x-on:click="copy_label_to_clipboard(r)">TERMI</button>
+                      @click="copy_label_to_clipboard(r)">TERMI</button>
                     <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri"
                       title="Kopioi URI leikepöydälle"
-                      x-on:click="copy_uri_to_clipboard(r)">URI</button>
+                      @click="copy_uri_to_clipboard(r)">URI</button>
                     <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
                       title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten" 
-                      x-on:click="copy_uri_and_label_to_clipboard(r)"></button>
+                      @click="copy_uri_and_label_to_clipboard(r)"></button>
                   </div>
-                  <p class="uri-link"><a target="_blank" x-bind:href="r.uri" x-text="r.label"></a></p>
+                  <p class="uri-link"><a target="_blank" :href="r.uri" x-text="r.label"></a></p>
                 </li>
               </template>
             </ul>
@@ -1001,18 +211,7 @@
     </div>
   </div>
 
-  <footer 
-    x-data="{ annif_version: '' }" 
-    x-init="
-      fetch(annif_base_url)
-        .then(data => {
-          return data.json()
-        })
-        .then(data => {
-          annif_version = data.version
-        })
-    "  
-  >
+  <footer x-data="footer">
 
     <div class="container" id="footer-main">
       <div class="row">
@@ -1065,5 +264,6 @@
   </footer>
 
   <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/annif.js"></script>
 
 </body>

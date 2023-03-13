@@ -1,0 +1,578 @@
+body {
+    font-family: 'Public Sans', sans-serif;
+    color: #002855;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* For mobile */
+@media screen and (max-width: 575px) {
+
+    header {
+        height: 175px !important;
+    }
+
+    #header-nav {
+        position: absolute !important;
+        top: 110px !important;
+    }
+
+    #main::before {
+        height: 400px !important;
+        background-position: 0 175px !important;
+    }
+
+    #info {
+        padding: 0 !important;
+        padding-left: 1rem !important;
+    }
+
+    #content {
+        padding: 1rem !important;
+    }
+
+    #text-box {
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    #suggestions {
+        padding: 0 !important;
+        padding-top: 1rem !important;
+    }
+
+    #footer-main {
+        padding: 0 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+}
+
+header {
+    background-color: #002855;
+    color: white;
+    padding-bottom: 1rem;
+    height: 100px;
+}
+
+header img {
+    width: 300px;
+    float: left;
+    position: relative;
+    top: -26px;
+    left: -45px;
+}
+
+#header-nav {
+    float: right;
+}
+
+#header-nav a {
+    color: white;
+    text-decoration: none;
+}
+
+#header-nav span {
+    padding-right: 1rem;
+}
+
+.header-nav-link {
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 35%;
+    padding-left: 25px;
+}
+
+/* what to do with hover selectors? */
+header a:hover {
+    color: #009CC9 !important;
+}
+
+#header-nav-finto {
+    background-image: url("../img/finto.svg");
+}
+
+#header-nav-info {
+    background-image: url("../img/info.svg");
+}
+
+#header-nav-feedback {
+    background-image: url("../img/feedback.svg");
+}
+
+#main {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    min-height: 70%;
+    /* to keep footer at the bottom of the page with a bigger screen */
+    min-height: -webkit-calc(100vh - 100px - 448px);
+    /* screen height - header height - footer height */
+    min-height: -moz-calc(100vh - 100px - 448px);
+    min-height: calc(100vh - 100px - 448px);
+}
+
+/* cropped background image */
+#main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    background-image: url(../img/taustakuva-pexels-johannes-plenio.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 0;
+    height: 600px;
+    width: 100%;
+    z-index: -1;
+}
+
+#info {
+    color: white;
+    margin-bottom: 3rem;
+    padding-left: 4rem;
+}
+
+#content {
+    background-color: #F2F5F7;
+    padding: 4rem;
+    padding-top: 2rem;
+}
+
+#text-box {
+    border-right: 1px solid #DFE5ED;
+    padding-right: 2rem;
+}
+
+.nav {
+    background-color: #DFE5ED;
+}
+
+.nav .active {
+    background-color: white;
+    color: #002855;
+}
+
+.nav-link {
+    color: #002855;
+}
+
+/* what to do with hover selectors? */
+.nav-link:hover {
+    color: #009CC9;
+}
+
+.tab-content {
+    background-color: white;
+}
+
+.input-group {
+    padding: 1rem;
+}
+
+#input-file-label {
+    border: 1px solid #DFE5ED;
+    border-radius: 0;
+    color: #002855;
+    margin: 0;
+}
+
+#button-select-file {
+    border: none;
+    border-radius: 0;
+    color: #002855;
+    background-color: #B8C9DB;
+    margin: 0;
+}
+
+#input-url {
+    border: 1px solid #DFE5ED;
+    border-radius: 0;
+    color: #002855;
+}
+
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+#input-url::placeholder {
+    color: #5D7999;
+}
+
+/* Internet Explorer 10-11 */
+#input-url:-ms-input-placeholder {
+    color: #5D7999;
+}
+
+/* Microsoft Edge */
+#input-url::-ms-input-placeholder {
+    color: #5D7999;
+}
+
+#button-select-url {
+    border: none;
+    border-radius: 0;
+    color: #002855;
+    background-color: #B8C9DB;
+}
+
+.tabs-input-footer {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+#alert-wrapper {
+    background-color: white;
+    padding: 1rem;
+    padding-bottom: 0;
+}
+
+.alert {
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+#text-box-wrapper {
+    background-color: white;
+    position: relative;
+    padding: 1rem;
+}
+
+#text {
+    border: 1px solid #DFE5ED;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+#text::placeholder {
+    color: #5D7999;
+}
+
+/* Internet Explorer 10-11 */
+#text:-ms-input-placeholder {
+    color: #5D7999;
+}
+
+/* Microsoft Edge */
+#text::-ms-input-placeholder {
+    color: #5D7999;
+}
+
+#button-clear {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    color: #5D7999;
+    border: none;
+    font-size: 30px;
+}
+
+.dropzone {
+    padding: 10px;
+}
+
+.dropzone-border.dragging {
+    outline: 3px dashed #FAE196;
+    outline-offset: -4px;
+}
+
+.dropzone.dragging {
+    /* aplha value 0.5 */
+    background-color: #FAE19680;
+}
+
+#text-box-background {
+    color: #5D7999;
+    position: absolute;
+    width: 500px;
+    max-width: 80%;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, 0);
+    text-align: center;
+}
+
+#text-box-background.dragging {
+    opacity: 1.0;
+}
+
+#upload-spinner {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 45%;
+    top: 45%;
+}
+
+#suggestions {
+    padding-left: 2rem;
+}
+
+label {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-left: 6px solid #009CC9;
+    padding-left: 6px;
+    font-weight: bold;
+}
+
+#suggestions .form-control {
+    margin-bottom: 1rem;
+    border-radius: 0;
+    border: none;
+}
+
+select:valid {
+    color: #002855;
+}
+
+select:valid:focus {
+    color: #002855;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper:after {
+    content: '﹀';
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #002855;
+    pointer-events: none;
+}
+
+#limit-buttons label {
+    color: #002855;
+    background-color: #B8C9DB;
+    border: none;
+    border-radius: 0;
+    width: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0;
+    margin-left: 0;
+    transition: none;
+    padding: 5px 0;
+}
+
+#limit-buttons .btn-check:checked+.btn {
+    background-color: #002855;
+    color: white;
+}
+
+#get-suggestions {
+    background-color: #FAE196;
+    color: #002855;
+    border: none;
+    border-radius: 0;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+#results-spinner {
+    margin-top: 3rem;
+}
+
+#suggestions-wrapper {
+    margin-top: 3rem;
+}
+
+#suggestions-header {
+    margin-bottom: 1rem;
+    border-left: 6px solid #009CC9;
+    padding-left: 6px;
+    font-weight: bold;
+}
+
+#copy-heading {
+    float: right;
+    position: relative;
+    /* lining up with copy buttons */
+    width: 50px;
+    right: 110px;
+    }
+
+#results {
+    margin-top: 1rem;
+}
+
+#results li,
+#no-results li {
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid #DFE5ED;
+    background: none;
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+}
+
+/* meter styling might not be correct for all browsers */
+#meter-wrapper {
+    float: left;
+}
+
+meter {
+    width: 20px;
+    height: 15px;
+    border: 1px solid #002855;
+    border-radius: 0;
+    background: none;
+}
+
+meter::-webkit-meter-bar {
+    width: 20px;
+    height: 15px;
+    border: 1px solid #002855;
+    border-radius: 0;
+    background: none;
+}
+
+meter:-moz-meter-optimum::-moz-meter-bar {
+    background: #002855;
+}
+
+meter::-webkit-meter-optimum-value {
+    background: #002855;
+}
+
+.uri-link {
+    margin: 0;
+    padding-left: 5px;
+    overflow: hidden;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.uri-link a {
+    color: #009CC9;
+    text-decoration: underline;
+}
+
+.copy-buttons {
+    float: right;
+    margin: 0px;
+    padding: 0px;
+    margin-right: -5px;
+    margin-left: 0.5rem;
+}
+
+.copy-button {
+    border: none;
+    border-radius: 0;
+    color: #002855;
+    text-align: center;
+    font-size: 0.75rem;
+    padding: 0;
+    margin-right: 5px;
+    height: 30px;
+    width: 50px;
+    background-color: #B8C9DB;
+    /* using text for TERM and URI buttons
+    background-size: 150%;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+*/
+}
+
+/* what to do with hover selectors? */
+.copy-button:hover {
+    background-color: #B8C9DB;
+    color: #002855;
+}
+
+.copy-button:active {
+    background-color: #B8C9DB !important;
+    color: #002855 !important;
+}
+
+#copy-button-label-and-uri {
+    background-image: url("../img/melinda.svg");
+    background-size: 90%;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    margin-left: 0px;
+}
+
+/* using text for TERM and URI buttons
+#copy-button-label {
+    background-image: url("../img/term.svg");
+    margin-left: 0px;
+}
+#copy-button-uri {
+    background-image: url("../img/uri.svg");
+    margin-left: 0px;
+}
+*/
+
+footer {
+    background-color: #5D7999;
+    color: white;
+}
+
+#footer-main {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+footer img {
+    width: 75%;
+    margin-bottom: 2rem;
+    position: relative;
+    left: -13px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer h4 {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+footer h5 {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#finto-email {
+    font-weight: bold;
+}
+
+#api-link {
+    text-decoration: underline;
+}
+
+#footer-links li {
+    color: white;
+    border-radius: 0;
+    border: none;
+    background: none;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0.75rem;
+}
+
+#footer-links>li::before {
+    content: "🡢";
+    margin-right: 0.5rem;
+}
+
+#twitter {
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    padding-left: 30px;
+    background-image: url("../img/twitter.svg");
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#footer-bottom {
+    background-color: #002855;
+    padding: 1rem;
+}
