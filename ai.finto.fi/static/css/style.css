@@ -106,10 +106,10 @@ header a:hover {
   padding-bottom: 3rem;
   min-height: 70%;
   /* to keep footer at the bottom of the page with a bigger screen */
-  min-height: -webkit-calc(100vh - 100px - 448px);
   /* screen height - header height - footer height */
-  min-height: -moz-calc(100vh - 100px - 448px);
-  min-height: calc(100vh - 100px - 448px);
+  min-height: -webkit-calc(100vh - 100px - 500px);
+  min-height: -moz-calc(100vh - 100px - 500px);
+  min-height: calc(100vh - 100px - 500px);
 }
 
 /* cropped background image */
@@ -515,7 +515,7 @@ footer {
   padding-bottom: 3rem;
 }
 
-footer img {
+#footer-main img {
   width: 75%;
   margin-bottom: 2rem;
   position: relative;
@@ -574,4 +574,20 @@ footer h5 {
 #footer-bottom {
   background-color: #002855;
   padding: 1rem;
+  font-weight: bold;
+}
+
+#margin-bottom-logo {
+  font-size: 20px;
+}
+
+#margin-bottom-logo img {
+  height: 60px;
+  margin-right: 1rem;
+}
+
+#margin-bottom-link img {
+  height: 10px;
+  margin-bottom: 15px;
+  margin-left: 3px;
 }
