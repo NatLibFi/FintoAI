@@ -15,11 +15,13 @@
   <!-- favicon -->
   <link rel="icon" href="favicon.ico">
 
+  <!-- Vue.js -->
   <script src="static/js/vue.global.min.js"></script>
 
-  <title>Finto AI</title>
-
+  <!-- CSS styles -->
   <link rel="stylesheet" href="static/css/style.css" type="text/css">
+
+  <title>Finto AI</title>
 </head>
 
 <body>
@@ -56,58 +58,45 @@
                 <a class="nav-link active" href="#tab-text-input" role="tab" data-bs-toggle="tab">Syötä teksti</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#tab-file-input" role="tab" data-bs-toggle="tab">Syötä tiedosto</a>
+                <a class="nav-link" href="#tab-file-input" role="tab" data-bs-toggle="tab" ref="tab_file_input">Syötä tiedosto</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#tab-url-input" role="tab" data-bs-toggle="tab">Syötä URL</a>
+                <a class="nav-link" href="#tab-url-input" role="tab" data-bs-toggle="tab" ref="tab_url_input">Syötä URL</a>
               </li>
             </ul>
 
             <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="tab-text-input">
-              </div>
-
-              <div role="tabpanel" class="tab-pane" id="tab-file-input">
-                <div class="input-group flex-fill">
-                  <label class="input-group-text" id="button-select-file" for="input-file" role="button">Selaa</label>
-                  <label for="input-file" class="form-control" id="input-file-label" role="button">Valitse tiedosto</label>
-                  <input type="file" class="d-none" id="input-file">
-                </div>
-                <div class="tabs-input-footer">
-                  <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
-                </div>
-              </div>
-
-              <div role="tabpanel" class="tab-pane" id="tab-url-input">
-                <form class="input-group flex-fill" id="form-url">
-                  <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" autocomplete="off"
-                    required>
-                  <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
-                </form>
-                <div class="tabs-input-footer">
-                  <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats"></span>
-                </div>
-              </div>
+              <div role="tabpanel" class="tab-pane active" id="tab-text-input"></div>
+              <file-input :selected_file="selected_file" :supported_formats="supported_formats" @select-file="read_file($event)"></file-input>
+              <url-input :selected_url="selected_url" :supported_formats="supported_formats" @select-url="read_url($event)"></url-input>
             </div>
           </div>
 
-          <div class="alert alert-danger d-none" id="alert-not-supported-format">
-            Tämä tiedostomuoto ei ole tuettu.
-          </div>
-          <div class="alert alert-danger d-none" id="alert-textract-request-failed">
-            Tekstin haku epäonnistui.
-          </div>
-          <div class="alert alert-danger d-none" id="alert-too-big-file">
-            Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
+          <div id="alert-wrapper" v-cloak
+            v-if="show_alert_file_format || show_alert_request_failed || show_alert_file_size"
+          >
+            <div class="alert alert-danger" v-if="show_alert_file_format">
+              Tämä tiedostomuoto ei ole tuettu.
+            </div>
+            <div class="alert alert-danger" v-if="show_alert_request_failed">
+              Tekstin haku epäonnistui.
+            </div>
+            <div class="alert alert-danger" v-if="show_alert_file_size">
+              Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
+            </div>
           </div>
 
-          <div id="text-box-wrapper">
-            <text-input v-model="text" @hide-results="hide_results()"></text-input>
-            <div id="text-box-background" class="dropzone">
+          <div id="text-box-wrapper"
+            @drop="read_drop_input($event)"
+            @dragleave="drag_leave($event)"
+            @dragover="drag_over($event)"
+          >
+            <text-input v-model="text" :show_dragging_effect="show_dragging_effect" @clear="clear()"></text-input>
+            <div id="text-box-background" class="dropzone" v-if="!loading_upload && text.length === 0">
               <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
               <span>Voit myös pudottaa tiedoston tai URL:n tähän</span>
             </div>
-            <div id="upload-spinner" class="spinner-border" role="status">
+            <div id="upload-spinner" class="spinner-border" role="status" v-if="loading_upload" v-cloak>
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
@@ -118,22 +107,20 @@
           <h5>Sisällönkuvailu</h5>
 
           <project-select v-model="selected_project" :projects="projects"></project-select>
-
           <limit-input v-model="limit"></limit-input><br>
-
           <language-select v-model="language"></language-select>
 
           <div class="d-grid justify-content-end">
             <button id="get-suggestions" type="button" class="btn btn-primary" @click="suggest()" :disabled="text===''">Anna aihe-ehdotukset</button>
           </div>
 
-          <div class="d-flex justify-content-center" id="results-spinner" v-if="loading_results">
+          <div class="d-flex justify-content-center" id="results-spinner" v-if="loading_results" v-cloak>
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
 
-          <div id="suggestions-wrapper" v-if="show_results">
+          <div id="suggestions-wrapper" v-if="show_results" v-cloak>
             <span id="suggestions-header">Ehdotukset</span>
             <span id="copy-heading">Kopioi</span>
 

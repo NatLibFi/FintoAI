@@ -3,6 +3,10 @@ body {
   color: #002855;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 /* For mobile */
 @media screen and (max-width: 575px) {
 
@@ -150,6 +154,7 @@ header a:hover {
 
 .nav-link {
   color: #002855;
+  height: 100%;
 }
 
 /* what to do with hover selectors? */
@@ -213,6 +218,16 @@ header a:hover {
   margin-left: 1rem;
 }
 
+#alert-wrapper {
+  background-color: white;
+  padding: 1rem;
+  padding-bottom: 0;
+}
+.alert {
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
 #text-box-wrapper {
   background-color: white;
   position: relative;
@@ -252,6 +267,15 @@ header a:hover {
 
 .dropzone {
   padding: 10px;
+}
+
+.dropzone-border.dragging {
+  outline: 3px dashed #FAE196;
+  outline-offset: -4px;
+}
+.dropzone.dragging {
+  /* aplha value 0.5 */
+  background-color: #FAE19680;
 }
 
 #text-box-background {

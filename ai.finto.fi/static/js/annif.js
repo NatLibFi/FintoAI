@@ -1,6 +1,7 @@
 const { createApp } = Vue
 
 const annif_base_url = 'https://ai.finto.fi/v1/'
+const textract_base_url = 'https://ai.dev.finto.fi/textract/'
 
 const mainApp = createApp({
   data() {
@@ -12,12 +13,26 @@ const mainApp = createApp({
       language: 'project-language',
       results: [],
       show_results: false,
-      loading_results: false
+      loading_results: false,
+      selected_file: 'Valitse tiedosto',
+      selected_url: '',
+      loading_upload: false,
+      show_alert_file_size: false,
+      show_alert_file_format: false,
+      show_alert_request_failed: false,
+      show_dragging_effect: false,
+      supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html']
     }
   },
   methods: {
-    hide_results() {
+    clear() {
+      this.text = ''
       this.show_results = false
+      this.selected_file = 'Valitse tiedosto'
+      this.selected_url = ''
+      this.show_alert_file_size = false
+      this.show_alert_file_format = false
+      this.show_alert_request_failed = false
     },
     suggest() {
       this.loading_results = true
@@ -40,7 +55,124 @@ const mainApp = createApp({
         this.loading_results = false
         this.show_results = true
       })
-    }
+    },
+    drag_over(e) {
+      e.stopPropagation()
+      e.preventDefault()
+      this.show_dragging_effect = true
+    },
+    drag_leave(e) {
+      e.stopPropagation()
+      e.preventDefault()
+      this.show_dragging_effect = false
+    },
+    read_drop_input(e) {
+      e.stopPropagation()
+      e.preventDefault()
+
+      this.show_dragging_effect = false
+
+      const input = e.dataTransfer
+      const files = input.files
+      const url = input.getData('URL') || input.getData('text/x-moz-url') // works with chrome and firefox
+
+      if (files && files[0]) {
+        this.$refs.tab_file_input.click() // not sure how else to switch the tab
+        this.read_file(files[0])
+      } else if (url) {
+        this.$refs.tab_url_input.click()
+        this.read_url(url)
+      }
+    },
+    read_file(file) {
+      this.clear()
+      this.loading_upload = true
+      this.selected_file = file.name
+      
+      const extension = this.get_extension(file.name)
+      this.check_format_support(extension)
+      this.check_file_size(file.size)
+
+      if (extension === 'txt') {
+        file.text().then(file_text => {
+          this.loading_upload = false
+          this.text = file_text
+        })
+      } else {
+        let file_form_data = new FormData()
+        file_form_data.append('file', file)
+
+        fetch(textract_base_url + 'file', {
+          method: 'POST',
+          body: file_form_data
+        })
+        .then(data => {
+          return data.json()
+        })
+        .then(data => {
+          this.loading_upload = false
+          this.text = data.text
+        })
+        .catch(error => {
+          console.log('aa')
+          this.loading_upload = false
+          this.show_alert_request_failed = true
+        })
+      }
+    },
+    read_url(url) {
+      const url_obj = new URL(url)
+      const plain_url = url_obj.origin + url_obj.pathname
+
+      this.clear()
+      this.loading_upload = true
+      this.selected_url = plain_url
+
+      const extension = this.get_extension(url_obj.pathname)
+      this.check_format_support(extension)
+
+      fetch(textract_base_url + 'url', {
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'url': plain_url})
+      })
+      .then(data => {
+        return data.json()
+      })
+      .then(data => {
+        this.loading_upload = false
+        this.text = data.text
+      })
+      .catch(error => {
+        this.loading_upload = false
+        this.show_alert_request_failed = true
+      })
+    },
+    get_extension(path) {
+      const parts = path.split('.')
+      if (parts.length >= 2) {
+        return parts[parts.length - 1].toLowerCase()
+      } else {
+        return
+      }
+    },
+    check_format_support(extension) {
+      // Allow undefined because url to a typical html page lacks .html suffix
+      if (!this.supported_formats.includes(extension) && extension !== undefined) {
+        this.show_alert_file_format = true
+        this.loading_upload = false
+        throw new Error('Unsupported format')
+      }
+    },
+    check_file_size(size) {
+      if (size > 50000000) {
+        this.show_alert_file_size = true
+        this.loading_upload = false
+        throw new Error('File size exceeds maximum')
+      }
+    },
   },
   mounted() {
     fetch(annif_base_url + 'projects')
@@ -54,24 +186,66 @@ const mainApp = createApp({
   }
 })
 
-mainApp.component('text-input', {
-  props: ['modelValue'], // text
-  emits: ['update:modelValue', 'hide-results'],
+mainApp.component('file-input', {
+  props: ['selected_file', 'supported_formats'],
+  emits: ['select-file'],
+  template: `
+    <div role="tabpanel" class="tab-pane" id="tab-file-input">
+      <div class="input-group flex-fill">
+        <label class="input-group-text" id="button-select-file" for="input-file" role="button">Selaa</label>
+        <label for="input-file" class="form-control" id="input-file-label" role="button">{{ this.selected_file }}</label>
+        <input type="file" class="d-none" id="input-file"
+          @change="$emit('select-file', $event.target.files[0])"
+        >
+      </div>
+      <div class="tabs-input-footer">
+        <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats">{{ this.supported_formats.map(i => '.' + i).join(', ') }}</span>
+      </div>
+    </div>
+  `
+})
+
+mainApp.component('url-input', {
+  props: ['selected_url', 'supported_formats'],
+  emits: ['select-url'],
   methods: {
-    clear_text() {
-      this.$emit('update:modelValue', '')
-      this.$emit('hide-results', null)
+    select_url(e) {
+      e.preventDefault()
+      this.$emit('select-url', e.target[0].value)
     }
   },
   template: `
-    <textarea
-      class="form-control dropzone dropzone-border" id="text" rows="20"
+    <div role="tabpanel" class="tab-pane" id="tab-url-input">
+      <form class="input-group flex-fill" id="form-url" @submit="select_url($event)">
+        <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" autocomplete="off" required
+          :value="selected_url"
+        >
+        <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
+      </form>
+      <div class="tabs-input-footer">
+        <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats">{{ this.supported_formats.map(i => '.' + i).join(', ') }}</span>
+      </div>
+    </div>
+  `
+})
+
+mainApp.component('text-input', {
+  props: ['modelValue', 'show_dragging_effect'], // text
+  emits: ['update:modelValue', 'clear'],
+  methods: {
+    clear() {
+      this.$emit('clear', null)
+    }
+  },
+  template: `
+    <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
       placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
+      :class="{ 'dragging': show_dragging_effect }"
     ></textarea>
     <button id="button-clear" type="button" class="btn btn-danger"
-      @click="clear_text">&#x1F7A8;</button>
+      @click="clear">&#x1F7A8;</button>
   `
 })
 
@@ -81,8 +255,7 @@ mainApp.component('project-select', {
   template:`
     <label for="project">Sanasto ja tekstin kieli</label>
     <div class="select-wrapper">
-      <select
-        class="form-control" id="project"
+      <select class="form-control" id="project"
         :value="modelValue"
         @change="$emit('update:modelValue', $event.target.value)"
       >
@@ -162,7 +335,7 @@ mainApp.component('result-list', {
     }
   },
   template: `
-    <ul class="list-group" id="results" v-if="results.length!==0">
+    <ul class="list-group" id="results" v-if="results.length !== 0">
       <li
         class="list-group-item"
         v-for="r in results"
@@ -192,7 +365,7 @@ mainApp.component('result-list', {
         <p class="uri-link"><a target="_blank" v-bind:href="r.uri">{{ r.label }}</a></p>
       </li>
     </ul>
-    <ul class="list-group" id="no-results" v-if="results.length===0">
+    <ul class="list-group" id="no-results" v-if="results.length === 0">
       <li class="list-group-item">Ei tuloksia</li>
     </ul>
   `
