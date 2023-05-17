@@ -573,20 +573,27 @@ footer h5 {
 
 #footer-bottom {
   background-color: #002855;
-  padding: 1rem;
   font-weight: bold;
+  padding: 0.75rem 2rem;
+  margin: auto 0 !important;
 }
 
-#margin-bottom-logo {
+#footer-bottom-logo {
   font-size: 20px;
+  margin: auto 0 !important;
 }
 
-#margin-bottom-logo img {
+#footer-bottom-logo img {
   height: 60px;
   margin-right: 1rem;
 }
 
-#margin-bottom-link img {
+#footer-bottom-link {
+  margin: auto 0 !important;
+  margin-left: auto !important;
+}
+
+#footer-bottom-link img {
   height: 10px;
   margin-bottom: 15px;
   margin-left: 3px;
