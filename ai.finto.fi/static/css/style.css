@@ -579,7 +579,8 @@ footer h5 {
 }
 
 #footer-bottom-logo {
-  font-size: 20px;
+  font-size: 25px;
+  font-family: 'EB Garamond', serif;
   margin: auto 0 !important;
 }
 
