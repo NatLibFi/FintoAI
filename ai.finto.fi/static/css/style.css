@@ -1,6 +1,19 @@
+:root {
+  /* color definitions */
+  --dark-1: #002855;
+  --dark-2: #5D7999;
+  --medium-1: #DFE5ED;
+  --medium-2: #B8C9DB;
+  --light: #F2F5F7;
+  --white: #FFFFFF;
+  --accent-1: #009CC9;
+  --accent-2: #FAE196;
+  --accent-3: #FAE19680;
+}
+
 body {
   font-family: 'Public Sans', sans-serif;
-  color: #002855;
+  color: var(--dark-1);
 }
 
 [v-cloak] {
@@ -38,6 +51,10 @@ body {
     border: none !important;
   }
 
+  #text {
+    padding-right: 30px !important;
+  }
+
   #suggestions {
     padding: 0 !important;
     padding-top: 1rem !important;
@@ -50,8 +67,8 @@ body {
 }
 
 header {
-  background-color: #002855;
-  color: white;
+  background-color: var(--dark-1);
+  color: var(--white);
   padding-bottom: 1rem;
   height: 100px;
 }
@@ -66,10 +83,11 @@ header img {
 
 #header-nav {
   float: right;
+  padding: 5px 0;
 }
 
 #header-nav a {
-  color: white;
+  color: var(--white);
   text-decoration: none;
 }
 
@@ -86,7 +104,7 @@ header img {
 
 /* what to do with hover selectors? */
 header a:hover {
-  color: #009CC9 !important;
+  color: var(--accent-1) !important;
 }
 
 #header-nav-finto {
@@ -127,43 +145,43 @@ header a:hover {
 }
 
 #info {
-  color: white;
+  color: var(--white);
   margin-bottom: 3rem;
   padding-left: 4rem;
 }
 
 #content {
-  background-color: #F2F5F7;
+  background-color: var(--light);
   padding: 4rem;
   padding-top: 2rem;
 }
 
 #text-box {
-  border-right: 1px solid #DFE5ED;
+  border-right: 1px solid var(--medium-1);
   padding-right: 2rem;
 }
 
 .nav {
-  background-color: #DFE5ED;
+  background-color: var(--medium-1);
 }
 
 .nav .active {
-  background-color: white;
-  color: #002855;
+  background-color: var(--white);
+  color: var(--dark-1);
 }
 
 .nav-link {
-  color: #002855;
+  color: var(--dark-1);
   height: 100%;
 }
 
 /* what to do with hover selectors? */
 .nav-link:hover {
-  color: #009CC9;
+  color: var(--accent-1);
 }
 
 .tab-content {
-  background-color: white;
+  background-color: var(--white);
 }
 
 .input-group {
@@ -171,46 +189,46 @@ header a:hover {
 }
 
 #input-file-label {
-  border: 1px solid #DFE5ED;
+  border: 1px solid var(--medium-1);
   border-radius: 0;
-  color: #002855;
+  color: var(--dark-1);
   margin: 0;
 }
 
 #button-select-file {
   border: none;
   border-radius: 0;
-  color: #002855;
-  background-color: #B8C9DB;
+  color: var(--dark-1);
+  background-color: var(--medium-2);
   margin: 0;
 }
 
 #input-url {
-  border: 1px solid #DFE5ED;
+  border: 1px solid var(--medium-1);
   border-radius: 0;
-  color: #002855;
+  color: var(--dark-1);
 }
 
 /* Chrome, Firefox, Opera, Safari 10.1+ */
 #input-url::placeholder {
-  color: #5D7999;
+  color: var(--dark-2);
 }
 
 /* Internet Explorer 10-11 */
 #input-url:-ms-input-placeholder {
-  color: #5D7999;
+  color: var(--dark-2);
 }
 
 /* Microsoft Edge */
 #input-url::-ms-input-placeholder {
-  color: #5D7999;
+  color: var(--dark-2);
 }
 
 #button-select-url {
   border: none;
   border-radius: 0;
-  color: #002855;
-  background-color: #B8C9DB;
+  color: var(--dark-1);
+  background-color: var(--medium-2);
 }
 
 .tabs-input-footer {
@@ -219,7 +237,7 @@ header a:hover {
 }
 
 #alert-wrapper {
-  background-color: white;
+  background-color: var(--white);
   padding: 1rem;
   padding-bottom: 0;
 }
@@ -229,30 +247,30 @@ header a:hover {
 }
 
 #text-box-wrapper {
-  background-color: white;
+  background-color: var(--white);
   position: relative;
   padding: 1rem;
 }
 
 #text {
-  border: 1px solid #DFE5ED;
+  border: 1px solid var(--medium-1);
   border-radius: 0;
   margin-bottom: 0;
 }
 
 /* Chrome, Firefox, Opera, Safari 10.1+ */
 #text::placeholder {
-  color: #5D7999;
+  color: var(--dark-2);
 }
 
 /* Internet Explorer 10-11 */
 #text:-ms-input-placeholder {
-  color: #5D7999;
+  color: var(--dark-2);
 }
 
 /* Microsoft Edge */
 #text::-ms-input-placeholder {
-  color: #5D7999;
+  color: var(--dark-2);
 }
 
 #button-clear {
@@ -260,7 +278,7 @@ header a:hover {
   top: 15px;
   right: 15px;
   background: none;
-  color: #5D7999;
+  color: var(--dark-2);
   border: none;
   font-size: 30px;
 }
@@ -270,16 +288,16 @@ header a:hover {
 }
 
 .dropzone-border.dragging {
-  outline: 3px dashed #FAE196;
+  outline: 3px dashed var(--accent-2);
   outline-offset: -4px;
 }
 .dropzone.dragging {
   /* aplha value 0.5 */
-  background-color: #FAE19680;
+  background-color: var(--accent-3);
 }
 
 #text-box-background {
-  color: #5D7999;
+  color: var(--dark-2);
   position: absolute;
   width: 500px;
   max-width: 80%;
@@ -308,7 +326,7 @@ header a:hover {
 label {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  border-left: 6px solid #009CC9;
+  border-left: 6px solid var(--accent-1);
   padding-left: 6px;
   font-weight: bold;
 }
@@ -317,14 +335,16 @@ label {
   margin-bottom: 1rem;
   border-radius: 0;
   border: none;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 select:valid {
-  color: #002855;
+  color: var(--dark-1);
 }
 
 select:valid:focus {
-  color: #002855;
+  color: var(--dark-1);
 }
 
 .select-wrapper {
@@ -337,13 +357,13 @@ select:valid:focus {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: #002855;
+  color: var(--dark-1);
   pointer-events: none;
 }
 
 #limit-buttons label {
-  color: #002855;
-  background-color: #B8C9DB;
+  color: var(--dark-1);
+  background-color: var(--medium-2);
   border: none;
   border-radius: 0;
   width: 40px;
@@ -352,21 +372,23 @@ select:valid:focus {
   margin-top: 0;
   margin-left: 0;
   transition: none;
-  padding: 5px 0;
+  padding: 8px 0;
 }
 
 #limit-buttons .btn-check:checked+.btn {
-  background-color: #002855;
-  color: white;
+  background-color: var(--dark-1);
+  color: var(--white);
 }
 
 #get-suggestions {
-  background-color: #FAE196;
-  color: #002855;
+  background-color: var(--accent-2);
+  color: var(--dark-1);
   border: none;
   border-radius: 0;
   font-weight: bold;
   margin-top: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 #results-spinner {
@@ -379,7 +401,7 @@ select:valid:focus {
 
 #suggestions-heading {
   margin-bottom: 1rem;
-  border-left: 6px solid #009CC9;
+  border-left: 6px solid var(--accent-1);
   padding-left: 6px;
   font-weight: bold;
 }
@@ -400,7 +422,7 @@ select:valid:focus {
 #no-results li {
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid #DFE5ED;
+  border-bottom: 1px solid var(--medium-1);
   background: none;
   padding-left: 0;
   padding-right: 0;
@@ -415,7 +437,7 @@ select:valid:focus {
 meter {
   width: 20px;
   height: 15px;
-  border: 1px solid #002855;
+  border: 1px solid var(--dark-1);
   border-radius: 0;
   background: none;
 }
@@ -423,17 +445,17 @@ meter {
 meter::-webkit-meter-bar {
   width: 20px;
   height: 15px;
-  border: 1px solid #002855;
+  border: 1px solid var(--dark-1);
   border-radius: 0;
   background: none;
 }
 
 meter:-moz-meter-optimum::-moz-meter-bar {
-  background: #002855;
+  background: var(--dark-1);
 }
 
 meter::-webkit-meter-optimum-value {
-  background: #002855;
+  background: var(--dark-1);
 }
 
 .uri-link {
@@ -445,7 +467,7 @@ meter::-webkit-meter-optimum-value {
 }
 
 .uri-link a {
-  color: #009CC9;
+  color: var(--accent-1);
   text-decoration: underline;
 }
 
@@ -460,7 +482,7 @@ meter::-webkit-meter-optimum-value {
 .copy-button {
   border: none;
   border-radius: 0;
-  color: #002855;
+  color: var(--dark-1);
   text-align: center;
   font-size: 0.75rem;
   padding: 0;
@@ -468,7 +490,7 @@ meter::-webkit-meter-optimum-value {
   margin-left: 0 !important;
   height: 30px;
   width: 50px;
-  background-color: #B8C9DB;
+  background-color: var(--medium-2);
   /* using text for TERM and URI buttons
   background-size: 150%;
   background-repeat: no-repeat !important;
@@ -478,13 +500,13 @@ meter::-webkit-meter-optimum-value {
 
 /* what to do with hover selectors? */
 .copy-button:hover {
-  background-color: #B8C9DB;
-  color: #002855;
+  background-color: var(--medium-2);
+  color: var(--dark-1);
 }
 
 .copy-button:active {
-  background-color: #B8C9DB !important;
-  color: #002855 !important;
+  background-color: var(--medium-2) !important;
+  color: var(--dark-1) !important;
 }
 
 #copy-button-label-and-uri {
@@ -507,8 +529,8 @@ meter::-webkit-meter-optimum-value {
 */
 
 footer {
-  background-color: #5D7999;
-  color: white;
+  background-color: var(--dark-2);
+  color: var(--white);
 }
 
 #footer-main {
@@ -524,8 +546,13 @@ footer {
 }
 
 footer a {
-  color: white;
+  color: var(--white);
   text-decoration: none;
+}
+
+/* what to do with hover selectors? */
+footer a:hover {
+  color: var(--accent-1);
 }
 
 footer h4 {
@@ -552,7 +579,7 @@ footer h5 {
 }
 
 #footer-links li {
-  color: white;
+  color: var(--white);
   border-radius: 0;
   border: none;
   background: none;
@@ -577,7 +604,7 @@ footer h5 {
 }
 
 #footer-bottom {
-  background-color: #002855;
+  background-color: var(--dark-1);
   font-weight: bold;
   padding: 0.75rem 2rem;
   margin: auto 0 !important;
