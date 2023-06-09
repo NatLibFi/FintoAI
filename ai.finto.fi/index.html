@@ -105,7 +105,7 @@
               <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
               <span i18next-key="text-box-background">Voit myös pudottaa tiedoston tai URL:n tähän</span>
             </div>
-            <div id="upload-spinner" class="spinner-border" role="status" v-show="loading_upload" v-cloak>
+            <div id="upload-spinner" class="spinner-border" role="status" v-if="loading_upload" v-cloak>
               <span class="visually-hidden" i18next-key="loading">Ladataan...</span>
             </div>
           </div>
@@ -124,7 +124,7 @@
               @click="suggest()" :disabled="text===''">Anna aihe-ehdotukset</button>
           </div>
 
-          <div class="d-flex justify-content-center" id="results-spinner" v-show="loading_results" v-cloak>
+          <div class="d-flex justify-content-center" id="results-spinner" v-if="loading_results" v-cloak>
             <div class="spinner-border" role="status">
               <span class="visually-hidden" i18next-key="loading">Ladataan...</span>
             </div>
