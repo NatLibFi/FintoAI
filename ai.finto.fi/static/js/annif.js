@@ -3,6 +3,46 @@ const { createApp } = Vue
 const annif_base_url = 'https://ai.finto.fi/v1/'
 const textract_base_url = 'https://ai.dev.finto.fi/textract/'
 
+const headerApp = createApp({})
+
+headerApp.component('language-switcher', {
+  data() {
+    return {
+      language: ''
+    }
+  },
+  mounted() {
+    const lng = (new URL(document.location)).searchParams.get('lng')
+    // check if url parameter is one of Finnish, English or Swedish
+    if (['fi', 'en', 'sv'].indexOf(lng) !== -1) {
+      // if yes, set language as such
+      this.language = lng
+    } else {
+      // if not, set language to Finnish and change url to match
+      this.language = 'fi'
+      window.history.pushState({ url: '?lng=fi' }, '', '?lng=fi')
+    }
+  },
+  methods: {
+    change_language(e, l) {
+      e.preventDefault()
+      // change language in i18nextify
+      chngLng(l)
+      // change url
+      window.history.pushState({ url: '?lng=' + l }, '', '?lng=' + l)
+      // set language to new one
+      this.language = l
+    }
+  },
+  template: `
+    <span v-if="this.language !== 'fi'"><a href="?lng=fi" @click="this.change_language($event, 'fi')">suomeksi</a></span>
+    <span v-if="this.language !== 'sv'"><a href="?lng=sv" @click="this.change_language($event, 'sv')">på svenska</a></span>
+    <span v-if="this.language !== 'en'"><a href="?lng=en" @click="this.change_language($event, 'en')">in English</a></span>
+  `
+})
+
+headerApp.mount('#header')
+
 const mainApp = createApp({
   data() {
     return {
@@ -14,12 +54,13 @@ const mainApp = createApp({
       results: [],
       show_results: false,
       loading_results: false,
-      selected_file: 'Valitse tiedosto',
+      selected_file: '',
       selected_url: '',
       loading_upload: false,
       show_alert_file_size: false,
       show_alert_file_format: false,
       show_alert_request_failed: false,
+      show_alert_request_failed_url: false,
       show_dragging_effect: false,
       supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html']
     }
@@ -28,11 +69,12 @@ const mainApp = createApp({
     clear() {
       this.text = ''
       this.show_results = false
-      this.selected_file = 'Valitse tiedosto'
+      this.selected_file = ''
       this.selected_url = ''
       this.show_alert_file_size = false
       this.show_alert_file_format = false
       this.show_alert_request_failed = false
+      this.show_alert_request_failed_url = false
     },
     suggest() {
       this.loading_results = true
@@ -114,7 +156,6 @@ const mainApp = createApp({
           this.text = data.text
         })
         .catch(error => {
-          console.log('aa')
           this.loading_upload = false
           this.show_alert_request_failed = true
         })
@@ -147,7 +188,7 @@ const mainApp = createApp({
       })
       .catch(error => {
         this.loading_upload = false
-        this.show_alert_request_failed = true
+        this.show_alert_request_failed_url = true
       })
     },
     get_extension(path) {
@@ -192,14 +233,18 @@ mainApp.component('file-input', {
   template: `
     <div role="tabpanel" class="tab-pane" id="tab-file-input">
       <div class="input-group flex-fill">
-        <label class="input-group-text" id="button-select-file" for="input-file" role="button">Selaa</label>
-        <label for="input-file" class="form-control" id="input-file-label" role="button">{{ this.selected_file }}</label>
+        <label class="input-group-text" id="button-select-file" for="input-file" role="button" i18next-key="file-input-browse">Selaa</label>
+        <label for="input-file" class="form-control" id="input-file-label" role="button">
+          <span v-show="this.selected_file">{{ this.selected_file }}</span>
+          <span v-show="!this.selected_file" i18next-key="file-input-select">Valitse tiedosto</span>
+        </label>
         <input type="file" class="d-none" id="input-file"
           @change="$emit('select-file', $event.target.files[0])"
         >
       </div>
       <div class="tabs-input-footer">
-        <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats">{{ this.supported_formats.map(i => '.' + i).join(', ') }}</span>
+        <span i18next-key="supported-file-formats">Tuetut tiedostomuodot: </span>
+        <span class="supported-file-formats">{{ this.supported_formats.map(i => '.' + i).join(', ') }}</span>
       </div>
     </div>
   `
@@ -217,13 +262,14 @@ mainApp.component('url-input', {
   template: `
     <div role="tabpanel" class="tab-pane" id="tab-url-input">
       <form class="input-group flex-fill" id="form-url" @submit="select_url($event)">
-        <input type="url" class="form-control" id="input-url" placeholder="Syötä URL" autocomplete="off" required
+        <input type="url" class="form-control" id="input-url" placeholder="url-input-placeholder" autocomplete="off" required
           :value="selected_url"
         >
-        <input type="submit" id="button-select-url" value="Hae teksti" class="btn btn-primary">
+        <input type="submit" id="button-select-url" value="url-input-submit" class="btn btn-primary">
       </form>
       <div class="tabs-input-footer">
-        <span>Tuetut tiedostomuodot: </span><span class="supported-file-formats">{{ this.supported_formats.map(i => '.' + i).join(', ') }}</span>
+        <span i18next-key="supported-file-formats">Tuetut tiedostomuodot: </span>
+        <span class="supported-file-formats">{{ this.supported_formats.map(i => '.' + i).join(', ') }}</span>
       </div>
     </div>
   `
@@ -239,7 +285,7 @@ mainApp.component('text-input', {
   },
   template: `
     <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
-      placeholder='Kopioi tähän tekstiä ja paina "Anna aihe-ehdotukset"-nappia'
+      placeholder="text-box-placeholder"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       :class="{ 'dragging': show_dragging_effect }"
@@ -253,7 +299,7 @@ mainApp.component('project-select', {
   props: ['modelValue', 'projects'], //selected project
   emits: ['update:modelValue'],
   template:`
-    <label for="project">Sanasto ja tekstin kieli</label>
+    <label for="project" i18next-key="project-select-label">Sanasto ja tekstin kieli</label>
     <div class="select-wrapper">
       <select class="form-control" id="project"
         :value="modelValue"
@@ -272,7 +318,7 @@ mainApp.component('limit-input', {
   props: ['modelValue'], // limit
   emits: ['update:modelValue'],
   template: `
-    <label for="limit-buttons">Ehdotusten enimmäismäärä</label><br>
+    <label for="limit-buttons" i18next-key="limit-input-label">Ehdotusten enimmäismäärä</label><br>
     <div id="limit-buttons" role="group" class="btn-group">
       <input type="radio" class="btn-check" name="limit" id="l1" checked
         :value="modelValue"
@@ -297,16 +343,16 @@ mainApp.component('language-select', {
   props: ['modelValue'], // selected language
   emits: ['update:modelValue'],
   template:`
-    <label for="label-language">Aihe-ehdotusten kieli</label>
+    <label for="label-language" i18next-key="language-select-label">Aihe-ehdotusten kieli</label>
     <div class="select-wrapper">
       <select class="form-control" id="label-language"
         :value="modelValue"
         @change="$emit('update:modelValue', $event.target.value)"
       >
-        <option value="project-language">Sama kuin tekstin kieli</option>
-        <option value="fi">suomi</option>
-        <option value="sv">ruotsi</option>
-        <option value="en">englanti</option>
+        <option value="project-language" i18next-key="language-select-project">Sama kuin tekstin kieli</option>
+        <option value="fi" i18next-key="language-select-fi">suomi</option>
+        <option value="sv" i18next-key="language-select-sv">ruotsi</option>
+        <option value="en" i18next-key="language-select-en">englanti</option>
       </select>
     </div>
   `
@@ -335,38 +381,36 @@ mainApp.component('result-list', {
     }
   },
   template: `
-    <ul class="list-group" id="results" v-if="results.length !== 0">
+    <ul class="list-group" id="results" v-show="results.length !== 0">
       <li
         class="list-group-item"
         v-for="r in results"
       >
         <div id="meter-wrapper">
-          <meter
-            max="1" title="0.7115"
-            v-bind:value="r.score"
-            v-bind:title="r.score.toString().slice(0,6)"  
+          <meter max="1"
+            :value="r.score" :title="r.score.toString().slice(0,6)"  
           ></meter>
         </div>
         <div class="btn-group copy-buttons" role="group">
           <button
-            type="button" class="btn btn-secondary copy-button" id="copy-button-label" title="Kopioi termi leikepöydälle"
+            type="button" class="btn btn-secondary copy-button" id="copy-button-label" title="copy-term-title"
             @click="copy_label_to_clipboard(r)"
           >TERMI</button>
           <button
-            type="button" class="btn btn-secondary copy-button" id="copy-button-uri" title="Kopioi URI leikepöydälle"
+            type="button" class="btn btn-secondary copy-button" id="copy-button-uri" title="copy-uri-title"
             @click="copy_uri_to_clipboard(r)"
           >URI</button>
           <button
             type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
-            title="Kopioi termi, URI ja kielikoodi leikepöydälle Melindaa/Alephia varten"
+            title="copy-label-and-uri-title"
             @click="copy_uri_and_label_to_clipboard(r)"  
           ></button>
         </div>
-        <p class="uri-link"><a target="_blank" v-bind:href="r.uri">{{ r.label }}</a></p>
+        <p class="uri-link"><a target="_blank" :href="r.uri">{{ r.label }}</a></p>
       </li>
     </ul>
-    <ul class="list-group" id="no-results" v-if="results.length === 0">
-      <li class="list-group-item">Ei tuloksia</li>
+    <ul class="list-group" id="no-results" v-show="results.length === 0">
+      <li class="list-group-item" i18next-key="no-results">Ei tuloksia</li>
     </ul>
   `
 })

@@ -80,8 +80,8 @@ header img {
 .header-nav-link {
   background-position: left center;
   background-repeat: no-repeat;
-  background-size: 35%;
-  padding-left: 25px;
+  background-size: 30px;
+  padding-left: 30px;
 }
 
 /* what to do with hover selectors? */
@@ -93,7 +93,7 @@ header a:hover {
   background-image: url("../img/finto.svg");
 }
 
-#header-nav-info {
+#header-nav-about {
   background-image: url("../img/info.svg");
 }
 
@@ -377,7 +377,7 @@ select:valid:focus {
   margin-top: 3rem;
 }
 
-#suggestions-header {
+#suggestions-heading {
   margin-bottom: 1rem;
   border-left: 6px solid #009CC9;
   padding-left: 6px;
@@ -465,6 +465,7 @@ meter::-webkit-meter-optimum-value {
   font-size: 0.75rem;
   padding: 0;
   margin-right: 5px;
+  margin-left: 0 !important;
   height: 30px;
   width: 50px;
   background-color: #B8C9DB;
@@ -542,7 +543,11 @@ footer h5 {
   font-weight: bold;
 }
 
-#api-link {
+#footer-info {
+  margin-bottom: 1rem;
+}
+
+.api-link {
   text-decoration: underline;
 }
 
