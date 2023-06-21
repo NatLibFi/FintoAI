@@ -18,7 +18,9 @@
   "alert-request-failed-url": "Text extraction failed. Size of target max. 6 MB. No redirects.",
   "alert-file-size": "File is too large; maximum allowed size is 50 MB.",
 
-  "text-box-placeholder": "Copy text here and press the button \"Get subject suggestions\"",
+  "text-box-placeholder-text-input": "Copy text here and press the button \"Get subject suggestions\"",
+  "text-box-placeholder-file-input": "Text from the file is fetched here. Then press the button \"Get subject suggestions\"",
+  "text-box-placeholder-url-input": "Text from the URL is fetched here. Then press the button \"Get subject suggestions\"",
   "text-box-background": "You can also drop a file or a URL here",
   "loading": "Loading...",
 

@@ -20,6 +20,13 @@ body {
   display: none;
 }
 
+/* what should the max width be? */
+@media screen and (min-width: 1500px) {
+  .container {
+    max-width: 1400px !important;
+  }
+}
+
 /* For mobile */
 @media screen and (max-width: 575px) {
 
@@ -49,10 +56,6 @@ body {
   #text-box {
     padding: 0 !important;
     border: none !important;
-  }
-
-  #text {
-    padding-right: 30px !important;
   }
 
   #suggestions {
@@ -125,9 +128,9 @@ header a:hover {
   min-height: 70%;
   /* to keep footer at the bottom of the page with a bigger screen */
   /* screen height - header height - footer height */
-  min-height: -webkit-calc(100vh - 100px - 500px);
-  min-height: -moz-calc(100vh - 100px - 500px);
-  min-height: calc(100vh - 100px - 500px);
+  min-height: -webkit-calc(100vh - 100px - 445px);
+  min-height: -moz-calc(100vh - 100px - 445px);
+  min-height: calc(100vh - 100px - 445px);
 }
 
 /* cropped background image */
@@ -256,6 +259,7 @@ header a:hover {
   border: 1px solid var(--medium-1);
   border-radius: 0;
   margin-bottom: 0;
+  padding-right: 30px;
 }
 
 /* Chrome, Firefox, Opera, Safari 10.1+ */

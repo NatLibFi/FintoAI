@@ -59,15 +59,18 @@
             <ul class="nav nav-tabs-no-style nav-justified" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" href="#tab-text-input" role="tab" 
-                  data-bs-toggle="tab" i18next-key="tab-text-input">Syötä teksti</a>
+                  data-bs-toggle="tab" i18next-key="tab-text-input"
+                  @click="placeholder_to_show = 'text'">Syötä teksti</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#tab-file-input" role="tab"
-                data-bs-toggle="tab" i18next-key="tab-file-input" ref="tab_file_input">Syötä tiedosto</a>
+                data-bs-toggle="tab" i18next-key="tab-file-input" ref="tab_file_input"
+                @click="placeholder_to_show = 'file'">Syötä tiedosto</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#tab-url-input" role="tab"
-                data-bs-toggle="tab" i18next-key="tab-url-input" ref="tab_url_input">Syötä URL</a>
+                data-bs-toggle="tab" i18next-key="tab-url-input" ref="tab_url_input"
+                @click="placeholder_to_show = 'url'">Syötä URL</a>
               </li>
             </ul>
 
@@ -100,7 +103,9 @@
             @dragleave="drag_leave($event)"
             @dragover="drag_over($event)"
           >
-            <text-input v-model="text" :show_dragging_effect="show_dragging_effect" @clear="clear()"></text-input>
+            <text-input
+              v-model="text" :show_dragging_effect="show_dragging_effect" :placeholder_to_show="placeholder_to_show" @clear="clear()"
+            ></text-input>
             <div id="text-box-background" class="dropzone" v-show="!loading_upload && text.length === 0">
               <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
               <span i18next-key="text-box-background">Voit myös pudottaa tiedoston tai URL:n tähän</span>

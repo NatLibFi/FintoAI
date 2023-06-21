@@ -18,7 +18,9 @@
   "alert-request-failed-url": "Det gick inte att extrahera text. Storlek av objekt max. 6 MB. Inga omdirigeringar.",
   "alert-file-size": "För stor fil; den maximala tillåtna filstorleken är 50 MB.",
 
-  "text-box-placeholder": "Kopiera text hit och tryck på knappen \"Ge förslag till ämnesord\"",
+  "text-box-placeholder-text-input": "Kopiera text hit och tryck på knappen \"Ge förslag till ämnesord\"",
+  "text-box-placeholder-file-input": "Texten från filen hämtas hit. Tryck sedan på knappen \"Ge förslag till ämnesord\"",
+  "text-box-placeholder-url-input": "Texten från URL:en hämtas hit. Tryck sedan på knappen \"Ge förslag till ämnesord\"",
   "text-box-background": "Du kan också släppa en fil eller URL här",
   "loading": "Laddar...",
 

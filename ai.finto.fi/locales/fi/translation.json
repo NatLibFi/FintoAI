@@ -18,7 +18,9 @@
   "alert-request-failed-url": "Tekstin haku epäonnistui. Kohteen koko max. 6 MB. Ei uudelleenohjauksia.",
   "alert-file-size": "Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB.",
 
-  "text-box-placeholder": "Kopioi tähän tekstiä ja paina \"Anna aihe-ehdotukset\"-nappia",
+  "text-box-placeholder-text-input": "Kopioi tähän tekstiä ja paina \"Anna aihe-ehdotukset\"-painiketta",
+  "text-box-placeholder-file-input": "Teksti tiedostosta haetaan tähän. Paina sitten \"Anna aihe-ehdotukset\"-painiketta",
+  "text-box-placeholder-url-input": "Teksti URL-osoitteesta haetaan tähän. Paina sitten \"Anna aihe-ehdotukset\"-painiketta",
   "text-box-background": "Voit myös pudottaa tiedoston tai URL:n tähän",
   "loading": "Ladataan...",
 

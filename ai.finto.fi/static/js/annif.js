@@ -56,6 +56,7 @@ const mainApp = createApp({
       loading_results: false,
       selected_file: '',
       selected_url: '',
+      placeholder_to_show: 'text', // one of 'text', 'file' or 'url'
       loading_upload: false,
       show_alert_file_size: false,
       show_alert_file_format: false,
@@ -276,16 +277,32 @@ mainApp.component('url-input', {
 })
 
 mainApp.component('text-input', {
-  props: ['modelValue', 'show_dragging_effect'], // text
+  props: ['modelValue', 'show_dragging_effect', 'placeholder_to_show'], // modelValue: text
   emits: ['update:modelValue', 'clear'],
   methods: {
     clear() {
       this.$emit('clear', null)
     }
   },
+  /* Showing textarea's placeholder for text, file or url input tab based on placeholder_to_show */
   template: `
     <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
-      placeholder="text-box-placeholder"
+      v-show="this.placeholder_to_show === 'text'"
+      placeholder="text-box-placeholder-text-input"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+      :class="{ 'dragging': show_dragging_effect }"
+    ></textarea>
+    <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
+      v-show="this.placeholder_to_show === 'file'"
+      placeholder="text-box-placeholder-file-input"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+      :class="{ 'dragging': show_dragging_effect }"
+    ></textarea>
+    <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
+      v-show="this.placeholder_to_show === 'url'"
+      placeholder="text-box-placeholder-url-input"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       :class="{ 'dragging': show_dragging_effect }"
@@ -296,7 +313,7 @@ mainApp.component('text-input', {
 })
 
 mainApp.component('project-select', {
-  props: ['modelValue', 'projects'], //selected project
+  props: ['modelValue', 'projects'], // modelValue: selected project
   emits: ['update:modelValue'],
   template:`
     <label for="project" i18next-key="project-select-label">Sanasto ja tekstin kieli</label>
@@ -315,7 +332,7 @@ mainApp.component('project-select', {
 })
 
 mainApp.component('limit-input', {
-  props: ['modelValue'], // limit
+  props: ['modelValue'], // modelValue: limit
   emits: ['update:modelValue'],
   template: `
     <label for="limit-buttons" i18next-key="limit-input-label">Ehdotusten enimmäismäärä</label><br>
@@ -340,7 +357,7 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('language-select', {
-  props: ['modelValue'], // selected language
+  props: ['modelValue'], // modelValue: selected language
   emits: ['update:modelValue'],
   template:`
     <label for="label-language" i18next-key="language-select-label">Aihe-ehdotusten kieli</label>
