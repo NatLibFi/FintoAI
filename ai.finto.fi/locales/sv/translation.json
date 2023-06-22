@@ -1,7 +1,7 @@
 {
   "header-nav-about": "Information",
   "header-nav-feedback": "Respons",
-  "info": "???",
+  "info": "Finto AI föreslår ämnesord för text. Det är baserat på verktyget Annif.",
 
   "text-box-label": "Text för indexering",
   "tab-text-input": "Mata in text",
@@ -31,7 +31,7 @@
   "language-select-project": "Samma som textens språk",
   "language-select-fi": "finska",
   "language-select-sv": "svenska",
-  "language-select-en": "engleska",
+  "language-select-en": "engelska",
 
   "get-suggestions": "Ge förslag till ämnesord",
   "suggestions-heading": "Förslag",
@@ -42,20 +42,20 @@
   "TERMI": "TERM",
   "no-results": "Inga resultat",
 
-  "email-label": "???",
-  "footer-info": "???",
+  "email-label": "E-post:",
+  "footer-info": "Finto AI är en tjänst för automatisk ämnesordsindexering, som är baserat på Annif version ",
   "api-heading": "API-tjänst",
   "api-description": "Finto AI är också en API-tjänst som kan integreras med andra system.",
   "api-info-link": "Mer information",
   "api-description-link": "OpenAPI-beskrivning",
-  "footer-links-heading": "???",
-  "footer-info-link": "???",
-  "footer-contact-link": "???",
-  "footer-feedback-link": "???",
-  "footer-accessibility-link": "???",
-  "footer-privacy-link": "???",
-  "footer-follow-heading": "???",
-  "footer-twitter-link": "???",
+  "footer-links-heading": "Länkar",
+  "footer-info-link": "Information om Finto",
+  "footer-contact-link": "Kontaktinformation",
+  "footer-feedback-link": "Respons",
+  "footer-accessibility-link": "Tillgänglighet",
+  "footer-privacy-link": "Dataskydd",
+  "footer-follow-heading": "Följ oss",
+  "footer-twitter-link": "Twitter",
   "nat-lib-alt": "Nationalbiblioteket",
-  "nat-lib": "???"
+  "nat-lib": "Tjänsten erbjuds av Nationalbiblioteket"
 }
