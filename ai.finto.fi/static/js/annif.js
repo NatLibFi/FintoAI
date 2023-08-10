@@ -22,6 +22,10 @@ headerApp.component('switch-locale', {
       this.$i18n.locale = locale
 
       window.history.pushState({url: '?locale=' + locale}, '', '?locale=' + locale)
+
+      // change html lang attribute
+      let h = document.querySelector('html')
+      h.setAttribute('lang', this.$i18n.locale)
     }
   },
   mounted() {
@@ -36,6 +40,10 @@ headerApp.component('switch-locale', {
       this.$i18n.locale = 'en'
       window.history.pushState({ url: '?locale=en' }, '', '?locale=en')
     }
+
+    // change html lang attribute
+    let h = document.querySelector('html')
+    h.setAttribute('lang', this.$i18n.locale)
   },
   template: `
     <span v-for="locale in this.$i18n.availableLocales.filter(l => l !== this.$i18n.locale)">
@@ -239,7 +247,7 @@ mainApp.component('file-input', {
         <label for="input-file" class="form-control" id="input-file-label" role="button">
           {{ this.selected_file ? this.selected_file : $t('file_input_select') }}
         </label>
-        <input type="file" class="d-none" id="input-file"
+        <input type="file" class="d-none" id="input-file" aria-labelledby="input-file-label"
           @change="$emit('select-file', $event.target.files[0])"
         >
       </div>
@@ -263,6 +271,7 @@ mainApp.component('url-input', {
   template: `
     <div role="tabpanel" class="tab-pane" id="tab-url-input">
       <form class="input-group flex-fill" id="form-url" @submit="select_url($event)">
+        <label class="visually-hidden" for="input-url">{{ $t('url_input_placeholder') }}</label>
         <input type="url" class="form-control" id="input-url" autocomplete="off" required
         :placeholder="$t('url_input_placeholder')" :value="selected_url"
         >
@@ -285,6 +294,7 @@ mainApp.component('text-input', {
     }
   },
   template: `
+    <label class="visually-hidden" for="text">{{ $t(placeholder_to_show) }}></label> 
     <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
       :placeholder="$t(placeholder_to_show)"
       :value="modelValue"
@@ -300,7 +310,7 @@ mainApp.component('project-select', {
   props: ['modelValue', 'projects'], // modelValue: selected project
   emits: ['update:modelValue'],
   template:`
-    <label for="project">{{ $t('project_select_label') }}</label>
+    <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
     <div class="select-wrapper">
       <select class="form-control" id="project"
         :value="modelValue"
@@ -319,8 +329,8 @@ mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
   emits: ['update:modelValue'],
   template: `
-    <label for="limit-buttons">{{ $t('limit_input_label') }}</label><br>
-    <div id="limit-buttons" role="group" class="btn-group">
+    <fieldset id="limit-buttons" class="btn-group">
+      <legend class="suggest-form-label">{{ $t('limit_input_label') }}</legend>
       <input type="radio" class="btn-check" name="limit" id="l1" checked
         :value="modelValue"
         @change="$emit('update:modelValue', 10)"
@@ -336,7 +346,7 @@ mainApp.component('limit-input', {
         @change="$emit('update:modelValue', 20)" 
       >
       <label class="btn btn-secondary" for="l3">20</label>
-    </div>
+    </fieldset>
   `
 })
 
@@ -344,7 +354,7 @@ mainApp.component('language-select', {
   props: ['modelValue'], // modelValue: selected language
   emits: ['update:modelValue'],
   template:`
-    <label for="label-language">{{ $t('language_select_label') }}</label>
+    <label class="suggest-form-label form-label" for="label-language">{{ $t('language_select_label') }}</label>
     <div class="select-wrapper">
       <select class="form-control" id="label-language"
         :value="modelValue"

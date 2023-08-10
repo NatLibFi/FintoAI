@@ -31,11 +31,14 @@
 
   <header id="header">
     <div class="container">
-      <img src="static/img/finto-ai-logo-vaaka.svg" class="img" alt="Finto AI">
+      <h1>
+        <img src="static/img/finto-ai-logo-vaaka.svg" class="img" alt="Finto AI">
+      </h1>
       <div id="header-nav">
         <span><a :href="$t('finto_url')" class="header-nav-link" id="header-nav-finto">Finto.fi</a></span>
         <span><a :href="$t('about_url')" class="header-nav-link" id="header-nav-about">{{ $t('header_nav_about') }}</a></span>
         <span><a :href="$t('feedback_url')" class="header-nav-link" id="header-nav-feedback">{{ $t('header_nav_feedback') }}</a></span>
+        <span><a :href="$t('guide_url')" class="header-nav-link" id="header-nav-guide">{{ $t('header_nav_guide') }}</a></span>
         <span> | </span>
         <switch-locale></switch-locale>
       </div>
@@ -52,22 +55,22 @@
       <div class="row">
 
         <div class="col-md-7" id="text-box">
-          <h3>{{ $t('text_box_label') }}</h3>
+          <h2>{{ $t('text_box_label') }}</h2>
 
           <div id="tabs-input">
             <ul class="nav nav-tabs-no-style nav-justified" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" href="#tab-text-input" role="tab" data-bs-toggle="tab"
+                <a class="nav-link active" href="#tab-text-input" role="tab" data-bs-toggle="tab" aria-controls="tab-text-input"
                   @click="placeholder_to_show = 'text_box_placeholder_text_input'"
                 >{{ $t('tab_text_input') }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#tab-file-input" role="tab"data-bs-toggle="tab" ref="tab_file_input"
+                <a class="nav-link" href="#tab-file-input" role="tab" data-bs-toggle="tab" ref="tab_file_input" aria-controls="tab-file-input"
                   @click="placeholder_to_show = 'text_box_placeholder_file_input'"
                 >{{ $t('tab_file_input') }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#tab-url-input" role="tab" data-bs-toggle="tab" ref="tab_url_input"
+                <a class="nav-link" href="#tab-url-input" role="tab" data-bs-toggle="tab" ref="tab_url_input" aria-controls="tab-url-input"
                   @click="placeholder_to_show = 'text_box_placeholder_url_input'"
                 >{{ $t('tab_url_input') }}</a>
               </li>
@@ -106,7 +109,7 @@
               v-model="text" :show_dragging_effect="show_dragging_effect" :placeholder_to_show="placeholder_to_show" @clear="clear()"
             ></text-input>
             <div id="text-box-background" class="dropzone" v-show="!loading_upload && text.length === 0">
-              <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
+              <img src="static/img/drop-a-file.svg" class="img" alt="" width="50" id="upload-icon" aria-hidden="true">
               <span>{{ $t('text_box_background') }}</span>
             </div>
             <div id="upload-spinner" class="spinner-border" role="status" v-if="loading_upload" v-cloak>
@@ -117,7 +120,7 @@
 
         <div class="col-md-5" id="suggestions">
 
-          <h5>{{ $t('suggestions_label') }}</h5>
+          <h3>{{ $t('suggestions_label') }}</h3>
 
           <project-select v-model="selected_project" :projects="projects"></project-select>
           <limit-input v-model="limit"></limit-input><br>
@@ -179,11 +182,36 @@
         <div class="col-md-3">
           <h4>{{ $t('footer_links_heading') }}</h4>
           <ul class="list-group" id="footer-links">
-            <li class="list-group-item"><a :href="$t('about_url')">{{ $t('footer_info_link') }}</a></li>
-            <li class="list-group-item"><a href="#">{{ $t('footer_contact_link') }}</a></li>
-            <li class="list-group-item"><a :href="$t('feedback_url')">{{ $t('footer_feedback_link') }}</a></li>
-            <li class="list-group-item"><a :href="$t('footer_accessibility_link_url')">{{ $t('footer_accessibility_link') }}</a></li>
-            <li class="list-group-item"><a href="#">{{ $t('footer_privacy_link') }}</a></li>
+            <li class="list-group-item">
+              <a :href="$t('about_url')">
+                <span aria-hidden="true">🡢</span>
+                {{ $t('footer_info_link') }}
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a href="#">
+                <span aria-hidden="true">🡢</span>
+                {{ $t('footer_contact_link') }}
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a :href="$t('feedback_url')">
+                <span aria-hidden="true">🡢</span>
+                {{ $t('footer_feedback_link') }}
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a :href="$t('footer_accessibility_link_url')">
+                <span aria-hidden="true">🡢</span>
+                {{ $t('footer_accessibility_link') }}
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a href="#">
+                <span aria-hidden="true">🡢</span>
+                {{ $t('footer_privacy_link') }}
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -202,7 +230,7 @@
       </div>
       <div id="footer-bottom-link">
         <a :href="$t('nat_lib_url')">kansalliskirjasto.fi</a>
-        <img src="static/img/arrow-up-right-from-square-solid.svg">
+        <img src="static/img/arrow-up-right-from-square-solid.svg" alt="" aria-hidden="true">
       </div>
     </div>
 

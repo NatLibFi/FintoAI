@@ -76,6 +76,10 @@ header {
   height: 100px;
 }
 
+header h1 {
+  margin: 0;
+}
+
 header img {
   width: 300px;
   float: left;
@@ -122,6 +126,12 @@ header a:hover {
   background-image: url("../img/feedback.svg");
 }
 
+#header-nav-guide {
+  background-image: url("../img/guide.svg");
+  background-size: 17px;
+  padding-left: 24px;
+}
+
 #main {
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -162,6 +172,10 @@ header a:hover {
 #text-box {
   border-right: 1px solid var(--medium-1);
   padding-right: 2rem;
+}
+
+#text-box h2 {
+  font-size: 1.75rem;
 }
 
 .nav {
@@ -327,12 +341,21 @@ header a:hover {
   padding-left: 2rem;
 }
 
-label {
+#suggestions h3 {
+  font-size: 1.25rem;
+}
+
+.suggest-form-label {
   margin-top: 1rem;
   margin-bottom: 1rem;
   border-left: 6px solid var(--accent-1);
   padding-left: 6px;
   font-weight: bold;
+}
+
+legend {
+  float: none;
+  font-size: 1rem;
 }
 
 #suggestions .form-control {
@@ -370,10 +393,10 @@ select:valid:focus {
   background-color: var(--medium-2);
   border: none;
   border-radius: 0;
-  width: 40px;
+  max-width: 40px;
   font-weight: bold;
   text-align: center;
-  margin-top: 0;
+  margin-bottom: 1rem;
   margin-left: 0;
   transition: none;
   padding: 8px 0;
@@ -556,7 +579,7 @@ footer a {
 
 /* what to do with hover selectors? */
 footer a:hover {
-  color: var(--accent-1);
+  color: var(--white);
 }
 
 footer h4 {
@@ -592,8 +615,7 @@ footer h5 {
   padding-bottom: 0.75rem;
 }
 
-#footer-links>li::before {
-  content: "🡢";
+#footer-links span {
   margin-right: 0.5rem;
 }
 
