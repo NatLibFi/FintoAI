@@ -18,8 +18,8 @@
   <!-- Vue.js -->
   <script src="static/js/vue.global.min.js"></script>
 
-  <!-- i18nextify -->
-  <script src="static/js/i18nextify.min.js"></script>
+  <!-- Vue i18n -->
+  <script src="static/js/vue-i18n.global.js"></script>
 
   <!-- CSS styles -->
   <link rel="stylesheet" href="static/css/style.css" type="text/css">
@@ -27,50 +27,49 @@
   <title>Finto AI</title>
 </head>
 
-<!-- display none for i18nextify to prevent flickering on initial load -->
-<body style="display: none;">
+<body>
 
   <header id="header">
     <div class="container">
       <img src="static/img/finto-ai-logo-vaaka.svg" class="img" alt="Finto AI">
       <div id="header-nav">
-        <span><a href="#" class="header-nav-link" id="header-nav-finto">Finto.fi</a></span>
-        <span><a href="#" class="header-nav-link" id="header-nav-about" i18next-key="header-nav-about">Tietoja</a></span>
-        <span><a href="#" class="header-nav-link" id="header-nav-feedback" i18next-key="header-nav-feedback">Palaute</a></span>
+        <span><a :href="$t('finto_url')" class="header-nav-link" id="header-nav-finto">Finto.fi</a></span>
+        <span><a :href="$t('about_url')" class="header-nav-link" id="header-nav-about">{{ $t('header_nav_about') }}</a></span>
+        <span><a :href="$t('feedback_url')" class="header-nav-link" id="header-nav-feedback">{{ $t('header_nav_feedback') }}</a></span>
         <span> | </span>
-        <language-switcher></language-switcher>
+        <switch-locale></switch-locale>
       </div>
     </div>
   </header>
 
-  <div id="main">
+  <main id="main">
 
     <div class="container" id="info">
-      <p i18next-key="info">Finto AI ehdottaa tekstille sopivia aiheita. Palvelu perustuu Annif-työkaluun.</p>
+      <p>{{ $t('info') }}</p>
     </div>
 
     <div class="container" id="content">
       <div class="row">
 
         <div class="col-md-7" id="text-box">
-          <h3 i18next-key="text-box-label">Kuvailtava teksti</h3>
+          <h3>{{ $t('text_box_label') }}</h3>
 
           <div id="tabs-input">
             <ul class="nav nav-tabs-no-style nav-justified" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" href="#tab-text-input" role="tab" 
-                  data-bs-toggle="tab" i18next-key="tab-text-input"
-                  @click="placeholder_to_show = 'text'">Syötä teksti</a>
+                <a class="nav-link active" href="#tab-text-input" role="tab" data-bs-toggle="tab"
+                  @click="placeholder_to_show = 'text_box_placeholder_text_input'"
+                >{{ $t('tab_text_input') }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#tab-file-input" role="tab"
-                data-bs-toggle="tab" i18next-key="tab-file-input" ref="tab_file_input"
-                @click="placeholder_to_show = 'file'">Syötä tiedosto</a>
+                <a class="nav-link" href="#tab-file-input" role="tab"data-bs-toggle="tab" ref="tab_file_input"
+                  @click="placeholder_to_show = 'text_box_placeholder_file_input'"
+                >{{ $t('tab_file_input') }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#tab-url-input" role="tab"
-                data-bs-toggle="tab" i18next-key="tab-url-input" ref="tab_url_input"
-                @click="placeholder_to_show = 'url'">Syötä URL</a>
+                <a class="nav-link" href="#tab-url-input" role="tab" data-bs-toggle="tab" ref="tab_url_input"
+                  @click="placeholder_to_show = 'text_box_placeholder_url_input'"
+                >{{ $t('tab_url_input') }}</a>
               </li>
             </ul>
 
@@ -82,19 +81,19 @@
           </div>
 
           <div id="alert-wrapper" v-cloak
-            v-show="show_alert_file_format || show_alert_request_failed || show_alert_request_failed_url  || show_alert_file_size"
+            v-if="show_alert_file_format || show_alert_request_failed || show_alert_request_failed_url  || show_alert_file_size"
           >
-            <div class="alert alert-danger" i18next-key="alert-file-format" v-show="show_alert_file_format">
-              Tämä tiedostomuoto ei ole tuettu.
+            <div class="alert alert-danger" v-if="show_alert_file_format">
+              {{ $t('alert_file_format') }}
             </div>
-            <div class="alert alert-danger" i18next-key="alert-request-failed" v-show="show_alert_request_failed">
-              Tekstin haku epäonnistui.
+            <div class="alert alert-danger" v-if="show_alert_request_failed">
+              {{ $t('alert_request_failed') }}
             </div>
-            <div class="alert alert-danger" i18next-key="alert-request-failed-url" v-show="show_alert_request_failed_url">
-              Tekstin haku epäonnistui. Kohteen koko max. 6 MB. Ei uudelleenohjauksia.
+            <div class="alert alert-danger" v-if="show_alert_request_failed_url">
+              {{ $t('alert_request_failed_url') }}
             </div>
-            <div class="alert alert-danger" i18next-key="alert-file-size" v-show="show_alert_file_size">
-              Liian suuri tiedosto; suurin sallittu tiedoston koko on 50 MB
+            <div class="alert alert-danger" v-if="show_alert_file_size">
+              {{ $t('alert_file_size') }}
             </div>
           </div>
 
@@ -108,36 +107,37 @@
             ></text-input>
             <div id="text-box-background" class="dropzone" v-show="!loading_upload && text.length === 0">
               <img src="static/img/drop-a-file.svg" class="img" alt="Lataa tiedosto" width="50" id="upload-icon">
-              <span i18next-key="text-box-background">Voit myös pudottaa tiedoston tai URL:n tähän</span>
+              <span>{{ $t('text_box_background') }}</span>
             </div>
             <div id="upload-spinner" class="spinner-border" role="status" v-if="loading_upload" v-cloak>
-              <span class="visually-hidden" i18next-key="loading">Ladataan...</span>
+              <span class="visually-hidden">{{ $t('text_box_background') }}</span>
             </div>
           </div>
         </div>
 
         <div class="col-md-5" id="suggestions">
 
-          <h5 i18next-key="suggestions-label">Sisällönkuvailu</h5>
+          <h5>{{ $t('suggestions_label') }}</h5>
 
           <project-select v-model="selected_project" :projects="projects"></project-select>
           <limit-input v-model="limit"></limit-input><br>
           <language-select v-model="language"></language-select>
 
           <div class="d-grid justify-content-end">
-            <button id="get-suggestions" type="button" class="btn btn-primary" i18next-key="get-suggestions"
-              @click="suggest()" :disabled="text===''">Anna aihe-ehdotukset</button>
+            <button id="get-suggestions" type="button" class="btn btn-primary"
+              @click="suggest()" :disabled="text===''"
+            >{{ $t('get_suggestions') }}</button>
           </div>
 
           <div class="d-flex justify-content-center" id="results-spinner" v-if="loading_results" v-cloak>
             <div class="spinner-border" role="status">
-              <span class="visually-hidden" i18next-key="loading">Ladataan...</span>
+              <span class="visually-hidden">{{ $t('loading') }}</span>
             </div>
           </div>
 
-          <div id="suggestions-wrapper" v-show="show_results" v-cloak>
-            <span id="suggestions-heading" i18next-key="suggestions-heading">Ehdotukset</span>
-            <span id="copy-heading" i18next-key="copy-heading">Kopioi</span>
+          <div id="suggestions-wrapper" v-if="show_results" v-cloak>
+            <span id="suggestions-heading">{{ $t('suggestions_heading') }}</span>
+            <span id="copy-heading">{{ $t('copy_heading') }}</span>
 
             <result-list
               :results="results" :language="language"
@@ -148,45 +148,48 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
-  <footer>
+  <footer id="footer">
+
     <div class="container" id="footer-main">
       <div class="row py-3">
 
         <div class="col-md-3">
           <img src="static/img/finto-ai-logo-vaaka.svg" class="img-fluid" alt="Finto AI">
           <p>
-            <span i18next-key="email-label">Sähköposti:</span><br>
+            <span>{{ $t('email_label') }}</span><br>
             <span id="finto-email">finto-posti@helsinki.fi</span>
           <p>
         </div>
 
         <div class="col-md-3">
           <h4>Finto AI</h4>
-          <div id="footer-info">
-            <span i18next-key="footer-info">Finto AI on automaattisen sisällönkuvailun palvelu, joka perustuu Annifin versioon </span>
-            <span>{{annif_version}}</span>
+          <div id="footer-info" v-cloak>
+            <span>{{ $t('footer_info') }}</span>
+            <span>{{ annif_version }}</span>
           </div>
-          <h5 i18next-key="api-heading">API-palvelu</h5>
-          <p i18next-key="api-description">Finto AI toimii myös rajapintapalveluna, joka voidaan integroida omiin järjestelmiin.</p>
-          <a class="api-link" i18next-key="api-info-link" href="#">Lisätietoja<a> | <a class="api-link" i18next-key="api-description-link" href="#">OpenAPI-kuvaus</a>
+          <h5>{{ $t('api_heading') }}</h5>
+          <p>{{ $t('api_description') }}</p>
+          <a class="api-link" :href="$t('api_info_link_url')">{{ $t('api_info_link') }}</a>
+          <span> | </span>
+          <a class="api-link" :href="annif_base_url">{{ $t('api_description_link') }}</a>
         </div>
 
         <div class="col-md-3">
-          <h4 i18next-key="footer-links-heading">Linkit</h4>
+          <h4>{{ $t('footer_links_heading') }}</h4>
           <ul class="list-group" id="footer-links">
-            <li class="list-group-item"><a i18next-key="footer-info-link" href="#">Tietoa Fintosta</a></li>
-            <li class="list-group-item"><a i18next-key="footer-contact-link" href="#">Yhteystiedot</a></li>
-            <li class="list-group-item"><a i18next-key="footer-feedback-link" href="#">Anna palautetta</a></li>
-            <li class="list-group-item"><a i18next-key="footer-accessibility-link" href="#">Saavutettavuus</a></li>
-            <li class="list-group-item"><a i18next-key="footer-privacy-link" href="#">Tietosuoja</a></li>
+            <li class="list-group-item"><a :href="$t('about_url')">{{ $t('footer_info_link') }}</a></li>
+            <li class="list-group-item"><a href="#">{{ $t('footer_contact_link') }}</a></li>
+            <li class="list-group-item"><a :href="$t('feedback_url')">{{ $t('footer_feedback_link') }}</a></li>
+            <li class="list-group-item"><a :href="$t('footer_accessibility_link_url')">{{ $t('footer_accessibility_link') }}</a></li>
+            <li class="list-group-item"><a href="#">{{ $t('footer_privacy_link') }}</a></li>
           </ul>
         </div>
 
         <div class="col-md-3">
-          <h4 i18next-key="footer-follow-heading">Seuraa meitä</h4>
-          <span id="twitter" i18next-key="footer-twitter-link"><a href="#">Twitterissä</a></span>
+          <h4>{{ $t('footer_follow_heading') }}</h4>
+          <span id="twitter"><a href="https://twitter.com/Fintopalvelu">{{ $t('footer_twitter_link') }}</a></span>
         </div>
 
       </div>
@@ -194,18 +197,18 @@
 
     <div class="container-fluid d-flex" id="footer-bottom">
       <div id="footer-bottom-logo">
-        <img src="static/img/KK_logo_keskitetty_sf_swe_white.svg" alt="nat-lib-alt">
-        <span i18next-key="nat-lib">Palvelun tarjoaa Kansalliskirjasto</span>
+        <img src="static/img/KK_logo_keskitetty_sf_swe_white.svg" :alt="$t('nat_lib_alt')">
+        <span>{{ $t('nat_lib') }}</span>
       </div>
       <div id="footer-bottom-link">
-        <a href="#">kansalliskirjasto.fi</a>
+        <a :href="$t('nat_lib_url')">kansalliskirjasto.fi</a>
         <img src="static/img/arrow-up-right-from-square-solid.svg">
       </div>
     </div>
 
   </footer>
 
-  <script src="static/js/i18next.js"></script>
+  <script src="static/js/i18n.js"></script>
   <script src="static/js/annif.js"></script>
   <script src="static/js/bootstrap.min.js"></script>
 

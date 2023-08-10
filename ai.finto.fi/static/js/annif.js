@@ -1,47 +1,48 @@
 const { createApp } = Vue
 
-const annif_base_url = 'https://ai.finto.fi/v1/'
+const annif_base_url = 'https://ai.dev.finto.fi/v1/'
 const textract_base_url = 'https://ai.dev.finto.fi/textract/'
 
 const headerApp = createApp({})
 
-headerApp.component('language-switcher', {
+headerApp.component('switch-locale', {
   data() {
     return {
-      language: ''
-    }
-  },
-  mounted() {
-    const lng = (new URL(document.location)).searchParams.get('lng')
-    // check if url parameter is one of Finnish, English or Swedish
-    if (['fi', 'en', 'sv'].indexOf(lng) !== -1) {
-      // if yes, set language as such
-      this.language = lng
-    } else {
-      // if not, set language to Finnish and change url to match
-      this.language = 'fi'
-      window.history.pushState({ url: '?lng=fi' }, '', '?lng=fi')
+      locale_names: {
+        fi: 'suomeksi',
+        en: 'in English',
+        sv: 'på svenska'
+      }
     }
   },
   methods: {
-    change_language(e, l) {
-      e.preventDefault()
-      // change language in i18nextify
-      chngLng(l)
-      // change url
-      window.history.pushState({ url: '?lng=' + l }, '', '?lng=' + l)
-      // set language to new one
-      this.language = l
+    change_locale(event, locale) {
+      event.preventDefault()
+
+      this.$i18n.locale = locale
+
+      window.history.pushState({url: '?locale=' + locale}, '', '?locale=' + locale)
+    }
+  },
+  mounted() {
+    const locale = (new URL(document.location)).searchParams.get('locale')
+
+    // check if url parameter is one of Finnish, English or Swedish
+    if (['fi', 'en', 'sv'].indexOf(locale) !== -1) {
+      // if yes, set language as such
+      this.$i18n.locale = locale
+    } else {
+      // if not, set language to English and change url to match
+      this.$i18n.locale = 'en'
+      window.history.pushState({ url: '?locale=en' }, '', '?locale=en')
     }
   },
   template: `
-    <span v-if="this.language !== 'fi'"><a href="?lng=fi" @click="this.change_language($event, 'fi')">suomeksi</a></span>
-    <span v-if="this.language !== 'sv'"><a href="?lng=sv" @click="this.change_language($event, 'sv')">på svenska</a></span>
-    <span v-if="this.language !== 'en'"><a href="?lng=en" @click="this.change_language($event, 'en')">in English</a></span>
+    <span v-for="locale in this.$i18n.availableLocales.filter(l => l !== this.$i18n.locale)">
+      <a :href="'?locale=' + locale" @click="change_locale($event, locale)">{{ locale_names[locale] }}</a>
+    </span>
   `
 })
-
-headerApp.mount('#header')
 
 const mainApp = createApp({
   data() {
@@ -56,7 +57,7 @@ const mainApp = createApp({
       loading_results: false,
       selected_file: '',
       selected_url: '',
-      placeholder_to_show: 'text', // one of 'text', 'file' or 'url'
+      placeholder_to_show: 'text_box_placeholder_text_input', // i18n translation key of the textbox placeholder
       loading_upload: false,
       show_alert_file_size: false,
       show_alert_file_format: false,
@@ -234,17 +235,16 @@ mainApp.component('file-input', {
   template: `
     <div role="tabpanel" class="tab-pane" id="tab-file-input">
       <div class="input-group flex-fill">
-        <label class="input-group-text" id="button-select-file" for="input-file" role="button" i18next-key="file-input-browse">Selaa</label>
+        <label class="input-group-text" id="button-select-file" for="input-file" role="button">{{ $t('file_input_browse') }}</label>
         <label for="input-file" class="form-control" id="input-file-label" role="button">
-          <span v-show="this.selected_file">{{ this.selected_file }}</span>
-          <span v-show="!this.selected_file" i18next-key="file-input-select">Valitse tiedosto</span>
+          {{ this.selected_file ? this.selected_file : $t('file_input_select') }}
         </label>
         <input type="file" class="d-none" id="input-file"
           @change="$emit('select-file', $event.target.files[0])"
         >
       </div>
       <div class="tabs-input-footer">
-        <span i18next-key="supported-file-formats">Tuetut tiedostomuodot: </span>
+        <span>{{ $t('supported_file_formats') }}</span>
         <span class="supported-file-formats">{{ this.supported_formats.map(i => '.' + i).join(', ') }}</span>
       </div>
     </div>
@@ -263,13 +263,13 @@ mainApp.component('url-input', {
   template: `
     <div role="tabpanel" class="tab-pane" id="tab-url-input">
       <form class="input-group flex-fill" id="form-url" @submit="select_url($event)">
-        <input type="url" class="form-control" id="input-url" placeholder="url-input-placeholder" autocomplete="off" required
-          :value="selected_url"
+        <input type="url" class="form-control" id="input-url" autocomplete="off" required
+        :placeholder="$t('url_input_placeholder')" :value="selected_url"
         >
-        <input type="submit" id="button-select-url" value="url-input-submit" class="btn btn-primary">
+        <input type="submit" id="button-select-url" class="btn btn-primary" :value="$t('url_input_submit')">
       </form>
       <div class="tabs-input-footer">
-        <span i18next-key="supported-file-formats">Tuetut tiedostomuodot: </span>
+      <span>{{ $t('supported_file_formats') }}</span>
         <span class="supported-file-formats">{{ this.supported_formats.map(i => '.' + i).join(', ') }}</span>
       </div>
     </div>
@@ -284,25 +284,9 @@ mainApp.component('text-input', {
       this.$emit('clear', null)
     }
   },
-  /* Showing textarea's placeholder for text, file or url input tab based on placeholder_to_show */
   template: `
     <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
-      v-show="this.placeholder_to_show === 'text'"
-      placeholder="text-box-placeholder-text-input"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      :class="{ 'dragging': show_dragging_effect }"
-    ></textarea>
-    <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
-      v-show="this.placeholder_to_show === 'file'"
-      placeholder="text-box-placeholder-file-input"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      :class="{ 'dragging': show_dragging_effect }"
-    ></textarea>
-    <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
-      v-show="this.placeholder_to_show === 'url'"
-      placeholder="text-box-placeholder-url-input"
+      :placeholder="$t(placeholder_to_show)"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       :class="{ 'dragging': show_dragging_effect }"
@@ -316,7 +300,7 @@ mainApp.component('project-select', {
   props: ['modelValue', 'projects'], // modelValue: selected project
   emits: ['update:modelValue'],
   template:`
-    <label for="project" i18next-key="project-select-label">Sanasto ja tekstin kieli</label>
+    <label for="project">{{ $t('project_select_label') }}</label>
     <div class="select-wrapper">
       <select class="form-control" id="project"
         :value="modelValue"
@@ -335,7 +319,7 @@ mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
   emits: ['update:modelValue'],
   template: `
-    <label for="limit-buttons" i18next-key="limit-input-label">Ehdotusten enimmäismäärä</label><br>
+    <label for="limit-buttons">{{ $t('limit_input_label') }}</label><br>
     <div id="limit-buttons" role="group" class="btn-group">
       <input type="radio" class="btn-check" name="limit" id="l1" checked
         :value="modelValue"
@@ -360,16 +344,16 @@ mainApp.component('language-select', {
   props: ['modelValue'], // modelValue: selected language
   emits: ['update:modelValue'],
   template:`
-    <label for="label-language" i18next-key="language-select-label">Aihe-ehdotusten kieli</label>
+    <label for="label-language">{{ $t('language_select_label') }}</label>
     <div class="select-wrapper">
       <select class="form-control" id="label-language"
         :value="modelValue"
         @change="$emit('update:modelValue', $event.target.value)"
       >
-        <option value="project-language" i18next-key="language-select-project">Sama kuin tekstin kieli</option>
-        <option value="fi" i18next-key="language-select-fi">suomi</option>
-        <option value="sv" i18next-key="language-select-sv">ruotsi</option>
-        <option value="en" i18next-key="language-select-en">englanti</option>
+        <option value="project-language">{{ $t('language_select_project') }}</option>
+        <option value="fi">{{ $t('language_select_fi') }}</option>
+        <option value="sv">{{ $t('language_select_sv') }}</option>
+        <option value="en">{{ $t('language_select_en') }}</option>
       </select>
     </div>
   `
@@ -398,7 +382,7 @@ mainApp.component('result-list', {
     }
   },
   template: `
-    <ul class="list-group" id="results" v-show="results.length !== 0">
+    <ul class="list-group" id="results" v-if="results.length !== 0">
       <li
         class="list-group-item"
         v-for="r in results"
@@ -410,35 +394,33 @@ mainApp.component('result-list', {
         </div>
         <div class="btn-group copy-buttons" role="group">
           <button
-            type="button" class="btn btn-secondary copy-button" id="copy-button-label" title="copy-term-title"
+            type="button" class="btn btn-secondary copy-button" id="copy-button-label" :title="$t('copy_term_title')"
             @click="copy_label_to_clipboard(r)"
-          >TERMI</button>
+          >{{ $t('term_button') }}</button>
           <button
-            type="button" class="btn btn-secondary copy-button" id="copy-button-uri" title="copy-uri-title"
+            type="button" class="btn btn-secondary copy-button" id="copy-button-uri" :title="$t('copy_uri_title')"
             @click="copy_uri_to_clipboard(r)"
           >URI</button>
           <button
             type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
-            title="copy-label-and-uri-title"
+            :title="$t('copy_label_and_uri_title')"
             @click="copy_uri_and_label_to_clipboard(r)"  
           ></button>
         </div>
         <p class="uri-link"><a target="_blank" :href="r.uri">{{ r.label }}</a></p>
       </li>
     </ul>
-    <ul class="list-group" id="no-results" v-show="results.length === 0">
-      <li class="list-group-item" i18next-key="no-results">Ei tuloksia</li>
+    <ul class="list-group" id="no-results" v-if="results.length === 0">
+      <li class="list-group-item">{{ $t('no_results') }}</li>
     </ul>
   `
 })
 
-mainApp.mount('#main')
-
-
 const footerApp = createApp({
   data() {
     return {
-      annif_version: ''
+      annif_version: '',
+      annif_base_url: annif_base_url
     }
   },
   mounted() {
@@ -452,4 +434,12 @@ const footerApp = createApp({
   }
 })
 
-footerApp.mount('#footer-main')
+headerApp.use(i18n)
+mainApp.use(i18n)
+footerApp.use(i18n)
+
+//headerApp.config.warnHandler = () => null;
+
+headerApp.mount('#header')
+mainApp.mount('#main')
+footerApp.mount('#footer')
