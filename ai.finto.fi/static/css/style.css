@@ -31,12 +31,16 @@ body {
 @media screen and (max-width: 575px) {
 
   header {
-    height: 175px !important;
+    height: 200px !important;
   }
 
   #header-nav {
     position: absolute !important;
     top: 110px !important;
+  }
+
+  #header-nav-guide {
+    display: inline-block !important;
   }
 
   #main::before {
@@ -111,7 +115,8 @@ header img {
 
 /* what to do with hover selectors? */
 header a:hover {
-  color: var(--accent-1) !important;
+  color: var(--accent-2) !important;
+  text-decoration: underline !important;
 }
 
 #header-nav-finto {
@@ -130,6 +135,22 @@ header a:hover {
   background-image: url("../img/guide.svg");
   background-size: 17px;
   padding-left: 24px;
+}
+
+#header-nav-finto:hover {
+  background-image: url("../img/finto-2.svg");
+}
+
+#header-nav-about:hover {
+  background-image: url("../img/info-2.svg");
+}
+
+#header-nav-feedback:hover {
+  background-image: url("../img/feedback-2.svg");
+}
+
+#header-nav-guide:hover {
+  background-image: url("../img/guide-2.svg");
 }
 
 #main {
@@ -194,7 +215,15 @@ header a:hover {
 
 /* what to do with hover selectors? */
 .nav-link:hover {
-  color: var(--accent-1);
+  color: var(--dark-1);
+}
+
+.nav-link:not(.active):hover {
+  background-color: var(--medium-2);
+}
+
+.nav-link:focus {
+  color: var(--dark-1);
 }
 
 .tab-content {
@@ -580,6 +609,7 @@ footer a {
 /* what to do with hover selectors? */
 footer a:hover {
   color: var(--white);
+  text-decoration: underline;
 }
 
 footer h4 {
