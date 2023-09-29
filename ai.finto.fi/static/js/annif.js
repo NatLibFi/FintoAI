@@ -1,7 +1,14 @@
 const { createApp } = Vue
 
-const annif_base_url = 'https://ai.dev.finto.fi/v1/'
-const textract_base_url = 'https://ai.dev.finto.fi/textract/'
+if (window.location.protocol.startsWith('http')) {
+  // http or https - use APIs of current Annif and textract instances
+  var annif_base_url = '/v1/';
+  var textract_base_url = '/textract/';
+} else {
+  // local development case - use Finto AI dev API and textract running on localhost via port 8001
+  var annif_base_url = 'https://ai.dev.finto.fi/v1/';
+  var textract_base_url = 'https://ai.dev.finto.fi/textract/'//'http://localhost:8001/textract/';
+}
 
 const headerApp = createApp({})
 
@@ -21,7 +28,7 @@ headerApp.component('switch-locale', {
 
       this.$i18n.locale = locale
 
-      window.history.pushState({url: '?locale=' + locale}, '', '?locale=' + locale)
+      window.history.pushState({ url: '?locale=' + locale }, '', '?locale=' + locale)
 
       // change html lang attribute
       let h = document.querySelector('html')
@@ -55,6 +62,7 @@ headerApp.component('switch-locale', {
 const mainApp = createApp({
   data() {
     return {
+      annif_version: '',
       projects: [],
       selected_project: '',
       text: '',
@@ -233,6 +241,14 @@ const mainApp = createApp({
     .then(data => {
       this.projects = data.projects
       this.selected_project = this.projects[0].project_id
+    })
+
+    fetch(annif_base_url)
+    .then(data => {
+      return data.json()
+    })
+    .then(data => {
+      this.annif_version = data.version
     })
   }
 })
@@ -426,23 +442,7 @@ mainApp.component('result-list', {
   `
 })
 
-const footerApp = createApp({
-  data() {
-    return {
-      annif_version: '',
-      annif_base_url: annif_base_url
-    }
-  },
-  mounted() {
-    fetch(annif_base_url)
-    .then(data => {
-      return data.json()
-    })
-    .then(data => {
-      this.annif_version = data.version
-    })
-  }
-})
+const footerApp = createApp({})
 
 headerApp.use(i18n)
 mainApp.use(i18n)

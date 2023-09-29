@@ -159,9 +159,9 @@ header a:hover {
   min-height: 70%;
   /* to keep footer at the bottom of the page with a bigger screen */
   /* screen height - header height - footer height */
-  min-height: -webkit-calc(100vh - 100px - 445px);
-  min-height: -moz-calc(100vh - 100px - 445px);
-  min-height: calc(100vh - 100px - 445px);
+  min-height: -webkit-calc(100vh - 100px - 531px);
+  min-height: -moz-calc(100vh - 100px - 531px);
+  min-height: calc(100vh - 100px - 531px);
 }
 
 /* cropped background image */
@@ -366,6 +366,11 @@ header a:hover {
   top: 45%;
 }
 
+#annif-version {
+  float: right;
+  margin-top: 0.5rem;
+}
+
 #suggestions {
   padding-left: 2rem;
 }
@@ -523,7 +528,7 @@ meter::-webkit-meter-optimum-value {
 }
 
 .uri-link a {
-  color: var(--accent-1);
+  color: var(--dark-1);
   text-decoration: underline;
 }
 
@@ -627,15 +632,15 @@ footer h5 {
   font-weight: bold;
 }
 
-#footer-info {
-  margin-bottom: 1rem;
-}
-
-.api-link {
+.footer-info-link {
   text-decoration: underline;
 }
 
-#footer-links li {
+.footer-list {
+  margin-bottom: 1rem;
+}
+
+.footer-list li {
   color: var(--white);
   border-radius: 0;
   border: none;
@@ -645,18 +650,41 @@ footer h5 {
   padding-bottom: 0.75rem;
 }
 
-#footer-links span {
+.footer-list span {
   margin-right: 0.5rem;
 }
 
-#twitter {
+.footer-follow-heading {
+  margin-bottom: 1rem;
+}
+
+.footer-follow-icon {
   background-position: left center;
   background-repeat: no-repeat;
-  background-size: 30px;
-  padding-left: 30px;
-  background-image: url("../img/twitter.svg");
+  background-size: 25px;
+  padding-left: 40px;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+#twitter {
+  background-image: url("../img/x-twitter.svg");
+}
+
+#instagram {
+  background-image: url("../img/instagram.svg");
+}
+
+#facebook {
+  background-image: url("../img/facebook.svg");
+}
+
+#linked-in {
+  background-image: url("../img/linked-in.svg");
+}
+
+#youtube {
+  background-image: url("../img/youtube.svg");
 }
 
 #footer-bottom {
@@ -674,7 +702,7 @@ footer h5 {
 
 #footer-bottom-logo img {
   height: 60px;
-  margin-right: 1rem;
+  margin-right: 2rem;
 }
 
 #footer-bottom-link {

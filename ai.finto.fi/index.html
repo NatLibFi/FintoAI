@@ -116,6 +116,7 @@
               <span class="visually-hidden">{{ $t('text_box_background') }}</span>
             </div>
           </div>
+          <div id="annif-version">{{ $t('annif_version') + annif_version }}</div>
         </div>
 
         <div class="col-md-5" id="suggestions">
@@ -156,7 +157,7 @@
   <footer id="footer">
 
     <div class="container" id="footer-main">
-      <div class="row py-3">
+      <div class="row pt-3">
 
         <div class="col-md-3">
           <img src="static/img/finto-ai-logo-vaaka.svg" class="img-fluid" alt="Finto AI">
@@ -168,29 +169,28 @@
 
         <div class="col-md-3">
           <h4>Finto AI</h4>
-          <div id="footer-info" v-cloak>
-            <span>{{ $t('footer_info') }}</span>
-            <span>{{ annif_version }}</span>
-          </div>
+          <p>
+            {{ $t('footer_info') }}<a href="https://annif.org" class="footer-info-link">Annif</a>{{ $t('footer_info_tool') }}
+          </p>
           <h5>{{ $t('api_heading') }}</h5>
           <p>{{ $t('api_description') }}</p>
-          <a class="api-link" :href="$t('api_info_link_url')">{{ $t('api_info_link') }}</a>
+          <a class="footer-info-link" :href="$t('api_info_link_url')">{{ $t('api_info_link') }}</a>
           <span> | </span>
-          <a class="api-link" :href="annif_base_url">{{ $t('api_description_link') }}</a>
+          <a class="footer-info-link" href="v1/ui/">{{ $t('api_description_link') }}</a>
         </div>
 
         <div class="col-md-3">
           <h4>{{ $t('footer_links_heading') }}</h4>
-          <ul class="list-group" id="footer-links">
+          <ul class="list-group footer-list">
             <li class="list-group-item">
               <span aria-hidden="true">🡢</span>
-              <a :href="$t('about_url')">
+              <a :href="$t('footer_info_link_url')">
                 {{ $t('footer_info_link') }}
               </a>
             </li>
             <li class="list-group-item">
               <span aria-hidden="true">🡢</span>
-              <a href="#">
+              <a :href="$t('footer_contact_link_url')">
                 {{ $t('footer_contact_link') }}
               </a>
             </li>
@@ -208,7 +208,7 @@
             </li>
             <li class="list-group-item">
               <span aria-hidden="true">🡢</span>
-              <a href="#">
+              <a :href="$t('footer_privacy_link_url')">
                 {{ $t('footer_privacy_link') }}
               </a>
             </li>
@@ -217,7 +217,32 @@
 
         <div class="col-md-3">
           <h4>{{ $t('footer_follow_heading') }}</h4>
-          <span id="twitter"><a href="https://twitter.com/Fintopalvelu">{{ $t('footer_twitter_link') }}</a></span>
+
+          <h5 class="footer-follow-heading">{{ $t('footer_follow_heading_finto') }}</h5>
+          <ul class="list-group footer-list">
+            <li class="list-group-item">
+              <span class="footer-follow-icon" id="twitter"><a href="https://twitter.com/Fintopalvelu/">{{ $t('footer_twitter_link') }}</a></span>
+            </li>
+          </ul>
+
+          <h5 class="footer-follow-heading">{{ $t('footer_follow_heading_natlib') }}</h5>
+          <ul class="list-group footer-list">
+            <li class="list-group-item">
+              <span class="footer-follow-icon" id="facebook"><a href="https://www.facebook.com/Kansalliskirjasto/">Facebook</a></span>
+            </li>
+            <li class="list-group-item">
+              <span class="footer-follow-icon" id="youtube"><a href="https://www.youtube.com/channel/UCMCKdIT517O4D8o9-lesbvQ/">Youtube</a></span>
+            </li>
+            <li class="list-group-item">
+              <span class="footer-follow-icon" id="instagram"><a href="https://instagram.com/kansalliskirjasto/">Instagram</a></span>
+            </li>
+            <li class="list-group-item">
+              <span class="footer-follow-icon" id="linked-in"><a href="https://fi.linkedin.com/company/nationallibraryfinland/">LinkedIn</a></span>
+            </li>
+          </ul>
+        </div>
+
+          
         </div>
 
       </div>
