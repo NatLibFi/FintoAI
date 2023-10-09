@@ -186,8 +186,7 @@ header a:hover {
 
 #content {
   background-color: var(--light);
-  padding: 4rem;
-  padding-top: 2rem;
+  padding: 2rem 4rem;
 }
 
 #text-box {

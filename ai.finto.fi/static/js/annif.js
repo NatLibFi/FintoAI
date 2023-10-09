@@ -98,7 +98,7 @@ const mainApp = createApp({
       this.loading_results = true
       this.show_results = false
 
-      var lang = this.language === 'project-language' ? '' : this.language
+      const lang = this.language === 'project-language' ? '' : this.language
 
       fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
         method: 'POST',
@@ -134,7 +134,7 @@ const mainApp = createApp({
 
       const input = e.dataTransfer
       const files = input.files
-      const url = input.getData('URL') || input.getData('text/x-moz-url') // works with chrome and firefox
+      const url = input.getData('URL') || input.getData('text/x-moz-url') // works with chrome and firefox but not edge
 
       if (files && files[0]) {
         this.$refs.tab_file_input.click() // not sure how else to switch the tab
@@ -304,11 +304,6 @@ mainApp.component('url-input', {
 mainApp.component('text-input', {
   props: ['modelValue', 'show_dragging_effect', 'placeholder_to_show'], // modelValue: text
   emits: ['update:modelValue', 'clear'],
-  methods: {
-    clear() {
-      this.$emit('clear', null)
-    }
-  },
   template: `
     <label class="visually-hidden" for="text">{{ $t(placeholder_to_show) }}></label> 
     <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
@@ -318,7 +313,7 @@ mainApp.component('text-input', {
       :class="{ 'dragging': show_dragging_effect }"
     ></textarea>
     <button id="button-clear" type="button" class="btn btn-danger"
-      @click="clear">&#x1F7A8;</button>
+      @click="this.$emit('clear')">&#x1F7A8;</button>
   `
 })
 
@@ -395,12 +390,12 @@ mainApp.component('result-list', {
       navigator.clipboard.writeText(term.uri)
     },
     copy_uri_and_label_to_clipboard(term) {
-      var languageCodes = {
+      const languageCodes = {
         'fi': 'fin',
         'sv': 'swe',
         'en': 'eng'
       }
-      var term_language = 
+      const term_language = 
         this.language === 'project-language' 
         ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language] 
         : languageCodes[this.language]
@@ -447,8 +442,6 @@ const footerApp = createApp({})
 headerApp.use(i18n)
 mainApp.use(i18n)
 footerApp.use(i18n)
-
-//headerApp.config.warnHandler = () => null;
 
 headerApp.mount('#header')
 mainApp.mount('#main')
