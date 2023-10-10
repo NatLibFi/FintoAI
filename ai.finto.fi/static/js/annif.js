@@ -26,13 +26,15 @@ headerApp.component('switch-locale', {
     change_locale(event, locale) {
       event.preventDefault()
 
+      // set language
       this.$i18n.locale = locale
 
+      // update URL and history
       window.history.pushState({ url: '?locale=' + locale }, '', '?locale=' + locale)
 
       // change html lang attribute
-      let h = document.querySelector('html')
-      h.setAttribute('lang', this.$i18n.locale)
+      const html = document.querySelector('html')
+      html.setAttribute('lang', this.$i18n.locale)
     }
   },
   mounted() {
@@ -49,12 +51,15 @@ headerApp.component('switch-locale', {
     }
 
     // change html lang attribute
-    let h = document.querySelector('html')
-    h.setAttribute('lang', this.$i18n.locale)
+    let html = document.querySelector('html')
+    html.setAttribute('lang', this.$i18n.locale)
   },
   template: `
     <span v-for="locale in this.$i18n.availableLocales.filter(l => l !== this.$i18n.locale)">
-      <a :href="'?locale=' + locale" @click="change_locale($event, locale)">{{ locale_names[locale] }}</a>
+      <a
+        :href="'?locale=' + locale"
+        @click="change_locale($event, locale)"
+      >{{ locale_names[locale] }}</a>
     </span>
   `
 })
@@ -85,6 +90,7 @@ const mainApp = createApp({
   },
   methods: {
     clear() {
+      // clear previous text, suggestions, alerts etc
       this.text = ''
       this.show_results = false
       this.selected_file = ''
@@ -100,6 +106,7 @@ const mainApp = createApp({
 
       const lang = this.language === 'project-language' ? '' : this.language
 
+      // get suggestions for given text
       fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
         method: 'POST',
         headers: {
@@ -132,12 +139,14 @@ const mainApp = createApp({
 
       this.show_dragging_effect = false
 
+      // get file or url from input data
       const input = e.dataTransfer
       const files = input.files
       const url = input.getData('URL') || input.getData('text/x-moz-url') // works with chrome and firefox but not edge
 
+      // read contents of file or url
       if (files && files[0]) {
-        this.$refs.tab_file_input.click() // not sure how else to switch the tab
+        this.$refs.tab_file_input.click() // there is probably a better way to switch the tab
         this.read_file(files[0])
       } else if (url) {
         this.$refs.tab_url_input.click()
@@ -154,6 +163,7 @@ const mainApp = createApp({
       this.check_file_size(file.size)
 
       if (extension === 'txt') {
+        // read text files locally
         file.text().then(file_text => {
           this.loading_upload = false
           this.text = file_text
@@ -162,6 +172,7 @@ const mainApp = createApp({
         let file_form_data = new FormData()
         file_form_data.append('file', file)
 
+        // read contents of file using textract
         fetch(textract_base_url + 'file', {
           method: 'POST',
           body: file_form_data
@@ -190,6 +201,7 @@ const mainApp = createApp({
       const extension = this.get_extension(url_obj.pathname)
       this.check_format_support(extension)
 
+      // read contents of URL using textract
       fetch(textract_base_url + 'url', {
         method:'POST',
         headers: {
@@ -234,6 +246,7 @@ const mainApp = createApp({
     },
   },
   mounted() {
+    // get available projects
     fetch(annif_base_url + 'projects')
     .then(data => {
       return data.json()
@@ -243,6 +256,7 @@ const mainApp = createApp({
       this.selected_project = this.projects[0].project_id
     })
 
+    // get annif version number
     fetch(annif_base_url)
     .then(data => {
       return data.json()
@@ -259,7 +273,9 @@ mainApp.component('file-input', {
   template: `
     <div role="tabpanel" class="tab-pane" id="tab-file-input">
       <div class="input-group flex-fill">
-        <label class="input-group-text" id="button-select-file" for="input-file" role="button">{{ $t('file_input_browse') }}</label>
+        <label class="input-group-text" id="button-select-file" for="input-file" role="button">
+          {{ $t('file_input_browse') }}
+        </label>
         <label for="input-file" class="form-control" id="input-file-label" role="button">
           {{ this.selected_file ? this.selected_file : $t('file_input_select') }}
         </label>
@@ -289,9 +305,12 @@ mainApp.component('url-input', {
       <form class="input-group flex-fill" id="form-url" @submit="select_url($event)">
         <label class="visually-hidden" for="input-url">{{ $t('url_input_placeholder') }}</label>
         <input type="url" class="form-control" id="input-url" autocomplete="off" required
-        :placeholder="$t('url_input_placeholder')" :value="selected_url"
+          :placeholder="$t('url_input_placeholder')"
+          :value="selected_url"
         >
-        <input type="submit" id="button-select-url" class="btn btn-primary" :value="$t('url_input_submit')">
+        <input type="submit" id="button-select-url" class="btn btn-primary" 
+          :value="$t('url_input_submit')"
+        >
       </form>
       <div class="tabs-input-footer">
       <span>{{ $t('supported_file_formats') }}</span>
@@ -327,10 +346,7 @@ mainApp.component('project-select', {
         :value="modelValue"
         @change="$emit('update:modelValue', $event.target.value)"
       >
-        <option
-          v-for="p in projects"
-          :value="p.project_id"
-        >{{ p.name }}</option>
+        <option v-for="p in projects" :value="p.project_id">{{ p.name }}</option>
       </select>
     </div>
   `
@@ -391,9 +407,9 @@ mainApp.component('result-list', {
     },
     copy_uri_and_label_to_clipboard(term) {
       const languageCodes = {
-        'fi': 'fin',
-        'sv': 'swe',
-        'en': 'eng'
+        fi: 'fin',
+        sv: 'swe',
+        en: 'eng'
       }
       const term_language = 
         this.language === 'project-language' 
@@ -403,27 +419,28 @@ mainApp.component('result-list', {
     }
   },
   template: `
-    <ul class="list-group" id="results" v-if="results.length !== 0">
-      <li
-        class="list-group-item"
+    <ul class="list-group" id="results"
+      v-if="results.length !== 0"
+    >
+      <li class="list-group-item"
         v-for="r in results"
       >
         <div id="meter-wrapper">
           <meter max="1"
-            :value="r.score" :title="r.score.toString().slice(0,6)"  
+            :value="r.score"
+            :title="r.score.toString().slice(0,6)"  
           ></meter>
         </div>
         <div class="btn-group copy-buttons" role="group">
-          <button
-            type="button" class="btn btn-secondary copy-button" id="copy-button-label" :title="$t('copy_term_title')"
+          <button type="button" class="btn btn-secondary copy-button" id="copy-button-label"
+            :title="$t('copy_term_title')"
             @click="copy_label_to_clipboard(r)"
           >{{ $t('term_button') }}</button>
-          <button
-            type="button" class="btn btn-secondary copy-button" id="copy-button-uri" :title="$t('copy_uri_title')"
+          <button type="button" class="btn btn-secondary copy-button" id="copy-button-uri"
+            :title="$t('copy_uri_title')"
             @click="copy_uri_to_clipboard(r)"
           >URI</button>
-          <button
-            type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
+          <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
             :title="$t('copy_label_and_uri_title')"
             @click="copy_uri_and_label_to_clipboard(r)"  
           ></button>
@@ -431,12 +448,15 @@ mainApp.component('result-list', {
         <p class="uri-link"><a target="_blank" :href="r.uri">{{ r.label }}</a></p>
       </li>
     </ul>
-    <ul class="list-group" id="no-results" v-if="results.length === 0">
+    <ul class="list-group" id="no-results"
+      v-if="results.length === 0"
+    >
       <li class="list-group-item">{{ $t('no_results') }}</li>
     </ul>
   `
 })
 
+// empty footer app for i18n
 const footerApp = createApp({})
 
 headerApp.use(i18n)
