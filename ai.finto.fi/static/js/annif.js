@@ -332,7 +332,8 @@ mainApp.component('text-input', {
       :class="{ 'dragging': show_dragging_effect }"
     ></textarea>
     <button id="button-clear" type="button" class="btn btn-danger"
-      @click="this.$emit('clear')">&#x1F7A8;</button>
+      @click="this.$emit('clear')"
+    >&#x2715;</button>
   `
 })
 

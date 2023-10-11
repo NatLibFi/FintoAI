@@ -159,6 +159,7 @@ header a:hover {
   min-height: 70%;
   /* to keep footer at the bottom of the page with a bigger screen */
   /* screen height - header height - footer height */
+  /* may need to be adjusted if element heights change */
   min-height: -webkit-calc(100vh - 100px - 531px);
   min-height: -moz-calc(100vh - 100px - 531px);
   min-height: calc(100vh - 100px - 531px);
@@ -321,11 +322,14 @@ header a:hover {
 
 #button-clear {
   position: absolute;
+  color: var(--dark-2);
+  background: none;
+  border: none;
   top: 15px;
   right: 15px;
-  background: none;
-  color: var(--dark-2);
-  border: none;
+  height: 40px;
+  width: 40px;
+  padding: 0;
   font-size: 30px;
 }
 
@@ -651,6 +655,14 @@ footer h5 {
 
 .footer-list span {
   margin-right: 0.5rem;
+}
+
+.footer-link-arrow {
+  background-image: url("../img/arrow-right-solid.svg");
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: 15px;
+  padding-left: 25px;
 }
 
 .footer-follow-heading {
