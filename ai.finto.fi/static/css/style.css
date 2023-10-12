@@ -113,7 +113,6 @@ header img {
   padding-left: 30px;
 }
 
-/* what to do with hover selectors? */
 header a:hover {
   color: var(--accent-2) !important;
   text-decoration: underline !important;
@@ -213,7 +212,6 @@ header a:hover {
   height: 100%;
 }
 
-/* what to do with hover selectors? */
 .nav-link:hover {
   color: var(--dark-1);
 }
@@ -330,7 +328,7 @@ header a:hover {
   height: 40px;
   width: 40px;
   padding: 0;
-  font-size: 30px;
+  font-size: 25px;
 }
 
 .dropzone {
@@ -342,7 +340,6 @@ header a:hover {
   outline-offset: -4px;
 }
 .dropzone.dragging {
-  /* aplha value 0.5 */
   background-color: var(--accent-3);
 }
 
@@ -555,14 +552,8 @@ meter::-webkit-meter-optimum-value {
   height: 30px;
   width: 50px;
   background-color: var(--medium-2);
-  /* using text for TERM and URI buttons
-  background-size: 150%;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  */
 }
 
-/* what to do with hover selectors? */
 .copy-button:hover {
   background-color: var(--medium-2);
   color: var(--dark-1);
@@ -580,17 +571,6 @@ meter::-webkit-meter-optimum-value {
   background-position: center !important;
   margin-left: 0px;
 }
-
-/* using text for TERM and URI buttons
-#copy-button-label {
-  background-image: url("../img/term.svg");
-  margin-left: 0px;
-}
-#copy-button-uri {
-  background-image: url("../img/uri.svg");
-  margin-left: 0px;
-}
-*/
 
 footer {
   background-color: var(--dark-2);
@@ -614,7 +594,6 @@ footer a {
   text-decoration: none;
 }
 
-/* what to do with hover selectors? */
 footer a:hover {
   color: var(--white);
   text-decoration: underline;
