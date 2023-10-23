@@ -682,23 +682,13 @@ footer h5 {
   padding: 0.75rem 2rem;
   margin: auto 0 !important;
 }
-
-#footer-bottom-logo {
-  font-size: 25px;
-  font-family: 'EB Garamond', serif;
-  margin: auto 0 !important;
-}
-
 #footer-bottom-logo img {
   height: 60px;
-  margin-right: 2rem;
 }
-
-#footer-bottom-link {
-  margin: auto 0 !important;
-  margin-left: auto !important;
+#footer-bottom-text {
+  font-size: 25px;
+  font-family: 'EB Garamond', serif;
 }
-
 #footer-bottom-link img {
   height: 10px;
   margin-bottom: 15px;

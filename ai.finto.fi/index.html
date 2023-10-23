@@ -304,14 +304,22 @@
       </div>
     </div>
 
-    <div class="container-fluid d-flex" id="footer-bottom">
-      <div id="footer-bottom-logo">
-        <img src="static/img/KK_logo_keskitetty_sf_swe_white.svg" :alt="$t('nat_lib_alt')">
-        <span>{{ $t('nat_lib') }}</span>
-      </div>
-      <div id="footer-bottom-link">
-        <a target="_blank" :href="$t('nat_lib_url')">kansalliskirjasto.fi</a>
-        <img src="static/img/arrow-up-right-from-square-solid.svg" alt="" aria-hidden="true">
+    <div class="container-fluid" id="footer-bottom">
+      <div class="row align-items-center">
+        <div class="col-md-auto">
+          <div id="footer-bottom-logo">
+            <img src="static/img/KK_logo_keskitetty_sf_swe_white.svg" :alt="$t('nat_lib_alt')">
+          </div>
+        </div>
+        <div class="col-md-auto" id="footer-bottom-text">
+          <span>{{ $t('nat_lib') }}</span>
+        </div>
+        <div class="col-md-auto ms-auto">
+          <div id="footer-bottom-link">
+            <a target="_blank" :href="$t('nat_lib_url')">kansalliskirjasto.fi</a>
+            <img src="static/img/arrow-up-right-from-square-solid.svg" alt="" aria-hidden="true">
+          </div>
+        </div>
       </div>
     </div>
 
