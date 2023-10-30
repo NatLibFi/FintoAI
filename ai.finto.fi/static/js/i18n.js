@@ -72,7 +72,7 @@ const messages = {
   en: {
     header_nav_about: "About",
     header_nav_feedback: "Feedback",
-    header_nav_guide: "User quide",
+    header_nav_guide: "User guide",
     finto_url: "https://finto.fi/en/",
     about_url: "https://www.kiwi.fi/x/DYDbCQ",
     feedback_url: "http://finto.fi/en/feedback",
