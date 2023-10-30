@@ -75,7 +75,7 @@ const messages = {
     about_url: "https://www.kiwi.fi/x/DYDbCQ",
     feedback_url: "http://finto.fi/en/feedback",
     guide_url: "https://www.kiwi.fi/x/6QAnEg",
-    info: "Finto AI is service for automated subject indexing based on artificial intelligence. Finto AI suggests subjects for texts from a vocabulary. The subjects can be utilized to support information retrieval.",
+    info: "Finto AI — a service for automated subject indexing based on artificial intelligence. Finto AI suggests subject headings for texts from a vocabulary. The subjects can be utilized to support information retrieval.",
     text_box_label: "Enter text to be indexed",
     tab_text_input: "Enter text",
     tab_file_input: "Upload file",
