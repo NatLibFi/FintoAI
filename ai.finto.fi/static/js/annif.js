@@ -114,14 +114,14 @@ const mainApp = createApp({
         },
         body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + lang
       })
-      .then(data => {
-        return data.json()
-      })
-      .then(data => {
-        this.results = data.results
-        this.loading_results = false
-        this.show_results = true
-      })
+        .then(data => {
+          return data.json()
+        })
+        .then(data => {
+          this.results = data.results
+          this.loading_results = false
+          this.show_results = true
+        })
     },
     drag_over(e) {
       e.stopPropagation()
@@ -157,7 +157,7 @@ const mainApp = createApp({
       this.clear()
       this.loading_upload = true
       this.selected_file = file.name
-      
+
       const extension = this.get_extension(file.name)
       this.check_format_support(extension)
       this.check_file_size(file.size)
@@ -177,17 +177,17 @@ const mainApp = createApp({
           method: 'POST',
           body: file_form_data
         })
-        .then(data => {
-          return data.json()
-        })
-        .then(data => {
-          this.loading_upload = false
-          this.text = data.text
-        })
-        .catch(error => {
-          this.loading_upload = false
-          this.show_alert_request_failed = true
-        })
+          .then(data => {
+            return data.json()
+          })
+          .then(data => {
+            this.loading_upload = false
+            this.text = data.text
+          })
+          .catch(error => {
+            this.loading_upload = false
+            this.show_alert_request_failed = true
+          })
       }
     },
     read_url(url) {
@@ -203,23 +203,23 @@ const mainApp = createApp({
 
       // read contents of URL using textract
       fetch(textract_base_url + 'url', {
-        method:'POST',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({'url': plain_url})
+        body: JSON.stringify({ 'url': plain_url })
       })
-      .then(data => {
-        return data.json()
-      })
-      .then(data => {
-        this.loading_upload = false
-        this.text = data.text
-      })
-      .catch(error => {
-        this.loading_upload = false
-        this.show_alert_request_failed_url = true
-      })
+        .then(data => {
+          return data.json()
+        })
+        .then(data => {
+          this.loading_upload = false
+          this.text = data.text
+        })
+        .catch(error => {
+          this.loading_upload = false
+          this.show_alert_request_failed_url = true
+        })
     },
     get_extension(path) {
       const parts = path.split('.')
@@ -248,22 +248,22 @@ const mainApp = createApp({
   mounted() {
     // get available projects
     fetch(annif_base_url + 'projects')
-    .then(data => {
-      return data.json()
-    })
-    .then(data => {
-      this.projects = data.projects
-      this.selected_project = this.projects[0].project_id
-    })
+      .then(data => {
+        return data.json()
+      })
+      .then(data => {
+        this.projects = data.projects
+        this.selected_project = this.projects[0].project_id
+      })
 
     // get annif version number
     fetch(annif_base_url)
-    .then(data => {
-      return data.json()
-    })
-    .then(data => {
-      this.annif_version = data.version
-    })
+      .then(data => {
+        return data.json()
+      })
+      .then(data => {
+        this.annif_version = data.version
+      })
   }
 })
 
@@ -308,7 +308,7 @@ mainApp.component('url-input', {
           :placeholder="$t('url_input_placeholder')"
           :value="selected_url"
         >
-        <input type="submit" id="button-select-url" class="btn btn-primary" 
+        <input type="submit" id="button-select-url" class="btn btn-primary"
           :value="$t('url_input_submit')"
         >
       </form>
@@ -324,7 +324,7 @@ mainApp.component('text-input', {
   props: ['modelValue', 'show_dragging_effect', 'placeholder_to_show'], // modelValue: text
   emits: ['update:modelValue', 'clear'],
   template: `
-    <label class="visually-hidden" for="text">{{ $t(placeholder_to_show) }}></label> 
+    <label class="visually-hidden" for="text">{{ $t(placeholder_to_show) }}></label>
     <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
       :placeholder="$t(placeholder_to_show)"
       :value="modelValue"
@@ -340,7 +340,7 @@ mainApp.component('text-input', {
 mainApp.component('project-select', {
   props: ['modelValue', 'projects'], // modelValue: selected project
   emits: ['update:modelValue'],
-  template:`
+  template: `
     <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
     <div class="select-wrapper">
       <select class="form-control" id="project"
@@ -366,12 +366,12 @@ mainApp.component('limit-input', {
       <label class="btn btn-secondary" for="l1">10</label>
       <input type="radio" class="btn-check" name="limit" id="l2"
         :value="modelValue"
-        @change="$emit('update:modelValue', 15)" 
+        @change="$emit('update:modelValue', 15)"
       >
       <label class="btn btn-secondary" for="l2">15</label>
       <input type="radio" class="btn-check" name="limit" id="l3"
         :value="modelValue"
-        @change="$emit('update:modelValue', 20)" 
+        @change="$emit('update:modelValue', 20)"
       >
       <label class="btn btn-secondary" for="l3">20</label>
     </fieldset>
@@ -381,7 +381,7 @@ mainApp.component('limit-input', {
 mainApp.component('language-select', {
   props: ['modelValue'], // modelValue: selected language
   emits: ['update:modelValue'],
-  template:`
+  template: `
     <label class="suggest-form-label form-label" for="label-language">{{ $t('language_select_label') }}</label>
     <div class="select-wrapper">
       <select class="form-control" id="label-language"
@@ -412,11 +412,11 @@ mainApp.component('result-list', {
         sv: 'swe',
         en: 'eng'
       }
-      const term_language = 
-        this.language === 'project-language' 
-        ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language] 
-        : languageCodes[this.language]
-      navigator.clipboard.writeText(term.label + '$$2' + 'yso/' + term_language + '$$0'+ term.uri + '\n')
+      const term_language =
+        this.language === 'project-language'
+          ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language]
+          : languageCodes[this.language]
+      navigator.clipboard.writeText(term.label + '$$2' + 'yso/' + term_language + '$$0' + term.uri + '\n')
     }
   },
   template: `
@@ -429,7 +429,7 @@ mainApp.component('result-list', {
         <div id="meter-wrapper">
           <meter max="1"
             :value="r.score"
-            :title="r.score.toString().slice(0,6)"  
+            :title="r.score.toString().slice(0,6)"
           ></meter>
         </div>
         <div class="btn-group copy-buttons" role="group">
@@ -443,7 +443,7 @@ mainApp.component('result-list', {
           >URI</button>
           <button type="button" class="btn btn-secondary copy-button" id="copy-button-label-and-uri"
             :title="$t('copy_label_and_uri_title')"
-            @click="copy_uri_and_label_to_clipboard(r)"  
+            @click="copy_uri_and_label_to_clipboard(r)"
           ></button>
         </div>
         <p class="uri-link"><a target="_blank" :href="r.uri">{{ r.label }}</a></p>
