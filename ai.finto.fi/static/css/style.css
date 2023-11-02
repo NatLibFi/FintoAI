@@ -348,7 +348,7 @@ header a:hover {
   width: 500px;
   max-width: 80%;
   left: 50%;
-  top: 55%;
+  top: 45%;
   transform: translate(-50%, 0);
   text-align: center;
 }
