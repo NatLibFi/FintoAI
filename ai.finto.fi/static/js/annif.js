@@ -446,7 +446,7 @@ mainApp.component('result-list', {
             @click="copy_uri_and_label_to_clipboard(r)"
           ></button>
         </div>
-        <p class="uri-link"><a target="_blank" :href="r.uri">{{ r.label }}</a></p>
+        <p class="uri-link"><a target="_blank" :href="r.uri">{{ r.notation }} {{ r.label }}</a></p>
       </li>
     </ul>
     <ul class="list-group" id="no-results"
