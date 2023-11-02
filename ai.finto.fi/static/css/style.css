@@ -275,8 +275,8 @@ header a:hover {
 }
 
 .tabs-input-footer {
-  margin-right: 1rem;
-  margin-left: 1rem;
+  margin-right: 0.99rem;
+  margin-left: 0.99rem;
 }
 
 #alert-wrapper {
