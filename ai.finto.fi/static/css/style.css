@@ -385,6 +385,12 @@ header a:hover {
   font-size: 1.25rem;
 }
 
+#vocabulary-info img {
+  height: 11px;
+  margin-bottom: 10px;
+  margin-left: 2px;
+}
+
 .suggest-form-label {
   margin-top: 1rem;
   margin-bottom: 1rem;

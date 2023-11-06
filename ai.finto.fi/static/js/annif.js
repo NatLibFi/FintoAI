@@ -340,18 +340,67 @@ mainApp.component('text-input', {
 mainApp.component('project-select', {
   props: ['modelValue', 'projects'], // modelValue: selected project
   emits: ['update:modelValue'],
+  components: {
+    'vocabulary-info': {
+      props: ['selectedProject'],
+      data() {
+        return {
+          vocabularyUrlsMap: {
+            'yso': 'https://finto.fi/yso/',
+            'ykl': 'https://finto.fi/ykl/',
+            'kauno': 'https://finto.fi/kauno/',
+            'thema': 'https://ns.editeur.org/thema/',
+          },
+        };
+      },
+      computed: {
+        vocabularyId() {
+          // Assume vocabulary id is a prefix of project id
+          if (this.selectedProject && this.selectedProject.project_id) {
+            // Assume vocabulary id is a prefix of project id
+            return this.selectedProject.project_id.split("-")[0];
+          }
+          return '';
+        },
+        vocabularyName() {
+          const vocabularyNamesMap = {
+            'yso': this.$t('vocabulary_name_yso'),
+            'ykl': this.$t('vocabulary_name_ykl'),
+            'kauno': this.$t('vocabulary_name_kauno'),
+            'thema': this.$t('vocabulary_name_thema'),
+          }
+          return vocabularyNamesMap[this.vocabularyId] || '';
+        },
+        vocabularyUrl() {
+          return this.vocabularyUrlsMap[this.vocabularyId] || '';
+        },
+      },
+      template: `
+      <span id="vocabulary-info"><a :href="vocabularyUrl" target="_blank">{{ vocabularyName }}
+        <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true"></a></span>
+      `,
+    },
+  },
   template: `
-    <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
-    <div class="select-wrapper">
-      <select class="form-control" id="project"
-        :value="modelValue"
-        @change="$emit('update:modelValue', $event.target.value)"
-      >
-        <option v-for="p in projects" :value="p.project_id">{{ p.name }}</option>
-      </select>
+    <div>
+      <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
+      <div class="select-wrapper">
+        <select class="form-control" id="project"
+          :value="modelValue"
+          @change="$emit('update:modelValue', $event.target.value)"
+        >
+          <option v-for="p in projects" :value="p.project_id">{{ p.name }}</option>
+        </select>
+      </div>
+      <vocabulary-info :selectedProject="getSelectedProject()" />
     </div>
-  `
-})
+  `,
+  methods: {
+    getSelectedProject() {
+      return this.projects.find(p => p.project_id === this.modelValue) || null;
+    },
+  },
+});
 
 mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
