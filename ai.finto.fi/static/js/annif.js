@@ -340,18 +340,56 @@ mainApp.component('text-input', {
 mainApp.component('project-select', {
   props: ['modelValue', 'projects'], // modelValue: selected project
   emits: ['update:modelValue'],
+  components: {
+    'annif-project-info': {
+      props: ['selectedProject'],
+      methods: {
+        getDateString: function (d) {
+          // Returns modification time in the format 'yyyy-mm-dd hh:mm:ss UTC' or '-' in
+          // case of null modification time
+          if (d === null)
+            return '-';
+          date = new Date(d);
+          return (
+            [date.getUTCFullYear(), ('0' + (date.getUTCMonth() + 1)).slice(-2), ('0' + date.getUTCDate()).slice(-2)].join('-') + ' ' +
+            [('0' + date.getUTCHours()).slice(-2), ('0' + date.getUTCMinutes()).slice(-2), ('0' + date.getUTCSeconds()).slice(-2)].join(':') + ' UTC'
+          );
+        }
+      },
+      template: `
+        <button id="show-project-info" class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-info" aria-expanded="false" aria-controls="collapse-info">
+          <span class="if-collapsed"><span>▸</span>Show information</span>
+          <span class="if-not-collapsed"><span>▾</span>Show information</span>
+        </button>
+        <div id="collapse-info" class="collapse">
+          <div id="project-info" v-if="selectedProject">
+            <span>Backend type: {{ selectedProject.backend.backend_id }}</span><br>
+            <span>Last modified: {{ getDateString(selectedProject.modification_time) }}</span>
+          </div>
+        </div>
+      `,
+    },
+  },
   template: `
-    <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
-    <div class="select-wrapper">
-      <select class="form-control" id="project"
-        :value="modelValue"
-        @change="$emit('update:modelValue', $event.target.value)"
-      >
-        <option v-for="p in projects" :value="p.project_id">{{ p.name }}</option>
-      </select>
+    <div>
+      <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
+      <div class="select-wrapper">
+        <select class="form-control" id="project"
+          :value="modelValue"
+          @change="$emit('update:modelValue', $event.target.value)"
+        >
+          <option v-for="p in projects" :value="p.project_id">{{ p.name }}</option>
+        </select>
+      </div>
+      <annif-project-info :selectedProject="getSelectedProjectInfo()" />
     </div>
-  `
-})
+  `,
+  methods: {
+    getSelectedProjectInfo() {
+      return this.projects.find(p => p.project_id === this.modelValue) || null;
+    },
+  },
+});
 
 mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
