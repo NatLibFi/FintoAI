@@ -400,6 +400,9 @@ mainApp.component('language-select', {
 mainApp.component('result-list', {
   props: ['results', 'language', 'selected_project', 'projects'],
   methods: {
+    copy_class_to_clipboard(term) {
+      navigator.clipboard.writeText(term.notation)
+    },
     copy_label_to_clipboard(term) {
       navigator.clipboard.writeText(term.label)
     },
@@ -433,6 +436,11 @@ mainApp.component('result-list', {
           ></meter>
         </div>
         <div class="btn-group copy-buttons" role="group">
+          <button type="button" class="btn btn-secondary copy-button" id="copy-button-class"
+            v-if="r.notation"
+            :title="$t('copy_class_title')"
+            @click="copy_class_to_clipboard(r)"
+          >{{ $t('class_button') }}</button>
           <button type="button" class="btn btn-secondary copy-button" id="copy-button-label"
             :title="$t('copy_term_title')"
             @click="copy_label_to_clipboard(r)"
