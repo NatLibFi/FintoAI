@@ -400,6 +400,15 @@ header a:hover {
 #project-info {
   margin-left: 1.25rem;
 }
+#project-info a {
+  color: var(--dark-1);
+  text-decoration: underline;
+}
+#project-info img {
+  height: 11px;
+  margin-bottom: 10px;
+  margin-left: 2px;
+}
 
 .suggest-form-label {
   margin-top: 1rem;

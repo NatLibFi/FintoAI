@@ -343,6 +343,33 @@ mainApp.component('project-select', {
   components: {
     'annif-project-info': {
       props: ['selectedProject'],
+      data() {
+        return {
+          vocabularyNamesMap: {
+            'yso': 'YSO - Yleinen suomalainen ontologia',
+            'ykl': 'YKL - Yleisten kirjastojen luokitusjärjestelmä',
+            'kauno': 'KAUNO - fiktiivisen aineiston ontologia',
+            'thema': 'Thema',
+          },
+          vocabularyUrlsMap: {
+            'yso': 'https://finto.fi/yso/',
+            'ykl': 'https://finto.fi/ykl/',
+            'kauno': 'https://finto.fi/kauno/',
+          },
+        };
+      },
+      computed: {
+        vocabularyId() {
+          // Assume vocabulary id is a prefix of project id
+          return this.selectedProject.project_id.split("-")[0];
+        },
+        vocabularyName() {
+          return this.vocabularyNamesMap[this.vocabularyId] || '';
+        },
+        vocabularyUrl() {
+          return this.vocabularyUrlsMap[this.vocabularyId] || '';
+        },
+      },
       methods: {
         getDateString: function (d) {
           // Returns modification time in the format 'yyyy-mm-dd hh:mm:ss UTC' or '-' in
@@ -358,13 +385,15 @@ mainApp.component('project-select', {
       },
       template: `
         <button id="show-project-info" class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-info" aria-expanded="false" aria-controls="collapse-info">
-          <span class="if-collapsed"><span>▸</span>Show information</span>
-          <span class="if-not-collapsed"><span>▾</span>Show information</span>
+          <span class="if-collapsed"><span>▸</span>Project information</span>
+          <span class="if-not-collapsed"><span>▾</span>Project information</span>
         </button>
         <div id="collapse-info" class="collapse">
           <div id="project-info" v-if="selectedProject">
+            <span>Vocabulary: <a :href="vocabularyUrl" target="_blank">{{ vocabularyName }}
+              <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true"></a></span><br>
             <span>Backend type: {{ selectedProject.backend.backend_id }}</span><br>
-            <span>Last modified: {{ getDateString(selectedProject.modification_time) }}</span>
+            <span>Last modified: {{ getDateString(selectedProject.modification_time) }}</span><br>
           </div>
         </div>
       `,
