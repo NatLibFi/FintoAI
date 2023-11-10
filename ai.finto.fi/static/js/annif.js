@@ -419,7 +419,8 @@ mainApp.component('result-list', {
         this.language === 'project-language'
           ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language]
           : languageCodes[this.language]
-      navigator.clipboard.writeText(term.label + '$$2' + 'yso/' + term_language + '$$0' + term.uri + '\n')
+      const vocab = this.selected_project.split('-')[0];  // Get vocabulary id for Melinda format from project id
+      navigator.clipboard.writeText(term.label + '$$2' + vocab + '/' + term_language + '$$0' + term.uri + '\n')
     }
   },
   template: `
