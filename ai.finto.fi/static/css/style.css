@@ -187,6 +187,9 @@ header a:hover {
   background-color: var(--light);
   padding: 2rem 4rem;
 }
+#content a {
+  color: var(--dark-1);
+}
 
 #text-box {
   border-right: 1px solid var(--medium-1);
