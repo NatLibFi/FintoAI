@@ -9,6 +9,7 @@
   --accent-1: #009CC9;
   --accent-2: #FAE196;
   --accent-3: #FAE19680;
+  --accent-4: #F9CD48;
 }
 
 body {
@@ -332,6 +333,9 @@ header a:hover {
   padding: 0;
   font-size: 25px;
 }
+#button-clear:active {
+  color: var(--dark-1);
+}
 
 .dropzone {
   padding: 10px;
@@ -442,6 +446,10 @@ select:valid:focus {
   background-color: var(--dark-1);
   color: var(--white);
 }
+#limit-buttons label:active {
+  background-color: var(--dark-1);
+  color: var(--white);
+}
 
 #get-suggestions {
   background-color: var(--accent-2);
@@ -452,6 +460,9 @@ select:valid:focus {
   margin-top: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+#get-suggestions:active {
+  background-color: var(--accent-4);
 }
 
 #results-spinner {
@@ -562,8 +573,8 @@ meter::-webkit-meter-optimum-value {
 }
 
 .copy-button:active {
-  background-color: var(--medium-2) !important;
-  color: var(--dark-1) !important;
+  background-color: var(--dark-1) !important;
+  color: var(--white) !important;
 }
 
 #copy-button-label-and-uri {
@@ -572,6 +583,9 @@ meter::-webkit-meter-optimum-value {
   background-repeat: no-repeat !important;
   background-position: center !important;
   margin-left: 0px;
+}
+#copy-button-label-and-uri:active {
+  background-image: url("../img/melinda-active.svg");
 }
 
 footer {

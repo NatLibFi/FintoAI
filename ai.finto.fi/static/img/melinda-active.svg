@@ -17,12 +17,12 @@
    viewBox="0 0 39 27"
    style="enable-background:new 0 0 39 27;"
    xml:space="preserve"
-   sodipodi:docname="melinda.svg"
+   sodipodi:docname="melinda-active.svg"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"><metadata
-   id="metadata891"><rdf:RDF><cc:Work
+   id="metadata913"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-   id="defs889" /><sodipodi:namedview
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
+   id="defs911" /><sodipodi:namedview
    pagecolor="#ffffff"
    bordercolor="#666666"
    borderopacity="1"
@@ -33,26 +33,27 @@
    inkscape:pageshadow="2"
    inkscape:window-width="1855"
    inkscape:window-height="1176"
-   id="namedview887"
+   id="namedview909"
    showgrid="false"
-   inkscape:zoom="8.7407407"
-   inkscape:cx="-2.4661017"
-   inkscape:cy="13.5"
+   inkscape:zoom="32.487179"
+   inkscape:cx="13.68232"
+   inkscape:cy="13.407656"
    inkscape:window-x="1985"
    inkscape:window-y="24"
    inkscape:window-maximized="1"
    inkscape:current-layer="Layer_1" />
 <style
    type="text/css"
-   id="style872">
+   id="style894">
 	.st0{fill:#B8C9DB;}
 	.st1{clip-path:url(#SVGID_00000014605617548314546870000011936971628441284284_);fill:#002855;}
 </style>
 
 <g
-   id="g884">
+   id="g906"
+   style="fill:#ffffff;fill-opacity:0.99583334">
 	<defs
-   id="defs877">
+   id="defs899">
 		<rect
    id="SVGID_1_"
    x="-0.3"
@@ -65,12 +66,12 @@
 		<use
    xlink:href="#SVGID_1_"
    style="overflow:visible;"
-   id="use879" />
+   id="use901" />
 	</clipPath>
 	<path
-   style="clip-path:url(#SVGID_00000142158407801614603240000016489266035638276506_);fill:#002855;"
+   style="clip-path:url(#SVGID_00000142158407801614603240000016489266035638276506_);fill:#ffffff;fill-opacity:0.99583334"
    d="M24.1,11.9v-2h0V5.8   l-5.4,7L15.1,8v7.4l-2.9-3.7v10.2h1.5V16l1.4,1.8v4.1h1.5v-2.1l1.6,2.1v0h1.5v-5.5l1.4,1.8l1.6-2v5.7h0v0h1.5v-7.6l1.5-1.9v9.5h1.5   V8L24.1,11.9z M18.2,19.5l-1.6-2.1v-5l1.6,2.1V19.5z M21.1,15.8L19.7,14v0l3-3.8v3.7L21.1,15.8z"
    clip-path="url(#SVGID_00000142158407801614603240000016489266035638276506_)"
-   id="path882" />
+   id="path904" />
 </g>
 </svg>
