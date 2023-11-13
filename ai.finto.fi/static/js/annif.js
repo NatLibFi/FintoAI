@@ -415,12 +415,17 @@ mainApp.component('result-list', {
         sv: 'swe',
         en: 'eng'
       }
-      const term_language =
-        this.language === 'project-language'
-          ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language]
-          : languageCodes[this.language]
       const vocab = this.selected_project.split('-')[0];  // Get vocabulary id for Melinda format from project id
-      navigator.clipboard.writeText(term.label + '$$2' + vocab + '/' + term_language + '$$0' + term.uri + '\n')
+      if (vocab === 'ykl') {
+        var alephString = term.notation + '$$2' + vocab + '\n';
+      } else {
+        const term_language =
+          this.language === 'project-language'
+            ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language]
+            : languageCodes[this.language]
+        var alephString = term.label + '$$2' + vocab + '/' + term_language + '$$0' + term.uri + '\n';
+      }
+      navigator.clipboard.writeText(alephString);
     }
   },
   template: `
