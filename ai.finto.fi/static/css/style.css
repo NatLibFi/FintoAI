@@ -113,7 +113,7 @@ header img {
   padding-left: 30px;
 }
 
-header a:hover {
+header a:hover, footer a:hover {
   color: var(--accent-2) !important;
   text-decoration: underline !important;
 }
