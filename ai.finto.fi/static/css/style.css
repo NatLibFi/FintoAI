@@ -653,6 +653,13 @@ footer h5 {
   padding-top: 0;
   padding-bottom: 0.75rem;
 }
+.footer-list li:hover a {
+  color: var(--accent-2);
+  text-decoration: underline;
+}
+.footer-list li:hover .footer-link-arrow {
+  background-image: url("../img/arrow-right-solid-2.svg");
+}
 
 .footer-list span {
   margin-right: 0.5rem;
@@ -682,21 +689,36 @@ footer h5 {
 #twitter {
   background-image: url("../img/x-twitter.svg");
 }
+#twitter:hover {
+  background-image: url("../img/x-twitter-2.svg");
+}
 
 #instagram {
   background-image: url("../img/instagram.svg");
+}
+#instagram:hover {
+  background-image: url("../img/instagram-2.svg");
 }
 
 #facebook {
   background-image: url("../img/facebook.svg");
 }
+#facebook:hover {
+  background-image: url("../img/facebook-2.svg");
+}
 
 #linked-in {
   background-image: url("../img/linked-in.svg");
 }
+#linked-in:hover {
+  background-image: url("../img/linked-in-2.svg");
+}
 
 #youtube {
   background-image: url("../img/youtube.svg");
+}
+#youtube:hover {
+  background-image: url("../img/youtube-2.svg");
 }
 
 #footer-bottom {
@@ -716,4 +738,7 @@ footer h5 {
   height: 10px;
   margin-bottom: 15px;
   margin-left: 3px;
+}
+#footer-bottom-link:hover img {
+  content: url("../img/arrow-up-right-from-square-solid-2.svg");
 }
