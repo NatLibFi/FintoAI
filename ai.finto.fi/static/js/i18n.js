@@ -155,7 +155,7 @@ const messages = {
     about_url: "https://www.kiwi.fi/x/FoDbCQ",
     feedback_url: "http://finto.fi/sv/feedback",
     guide_url: "https://www.kiwi.fi/x/6QAnEg",
-    info: "Finto AI — en tjänst för automatisk ämnesindexering baserad på artificiell intelligens. Finto AI föreslår ämnen för texten utifrån ett fördefinierat ordval, vilka kan användas som stöd för informationssökning.",
+    info: "Finto AI — en tjänst för automatisk innehållsbeskrivning baserad på artificiell intelligens. Finto AI föreslår ämnesord för texter utifrån en vald vokabulär. Ämnesorden kan till exempel användas som stöd för informationssökning.",
     text_box_label: "Text för indexering",
     tab_text_input: "Mata in text",
     tab_file_input: "Ladda upp en fil",
