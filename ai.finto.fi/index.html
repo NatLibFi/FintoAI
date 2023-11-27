@@ -57,11 +57,6 @@
               >Finto.fi</a>
             </span>
             <span>
-              <a class="header-nav-link" id="header-nav-about"
-                :href="$t('about_url')"
-              >{{ $t('header_nav_about') }}</a>
-            </span>
-            <span>
               <a class="header-nav-link" id="header-nav-feedback"
                 :href="$t('feedback_url')"
               >{{ $t('header_nav_feedback') }}</a>
@@ -240,6 +235,13 @@
               <span class="footer-link-arrow">
                 <a :href="$t('footer_info_link_url')">
                   {{ $t('footer_info_link') }}
+                </a>
+              </span>
+            </li>
+            <li class="list-group-item">
+              <span class="footer-link-arrow">
+                <a :href="$t('footer_wiki_link_url')">
+                  {{ $t('footer_wiki_link') }}
                 </a>
               </span>
             </li>

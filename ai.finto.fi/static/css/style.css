@@ -122,10 +122,6 @@ header a:hover, footer a:hover {
   background-image: url("../img/finto.svg");
 }
 
-#header-nav-about {
-  background-image: url("../img/info.svg");
-}
-
 #header-nav-feedback {
   background-image: url("../img/feedback.svg");
 }
