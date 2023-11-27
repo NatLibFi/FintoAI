@@ -391,7 +391,7 @@ mainApp.component('project-select', {
           :value="modelValue"
           @change="$emit('update:modelValue', $event.target.value)"
         >
-          <option v-for="p in projects" :value="p.project_id">{{ p.name }}</option>
+          <option v-for="p in projects" :value="p.project_id">{{ $t(p.project_id) }} {{ extractVersionSpecifierInParentheses(p.name) }}</option>
         </select>
       </div>
       <vocabulary-info :selectedProject="getSelectedProject()" />
@@ -400,6 +400,10 @@ mainApp.component('project-select', {
   methods: {
     getSelectedProject() {
       return this.projects.find(p => p.project_id === this.modelValue) || null;
+    },
+    extractVersionSpecifierInParentheses(name) {
+      const match = name.match(/\(([^)]+)\)$/);
+      return match ? match[0] : '';
     },
   },
 });
