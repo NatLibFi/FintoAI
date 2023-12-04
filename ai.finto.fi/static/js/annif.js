@@ -203,6 +203,7 @@ const mainApp = createApp({
 
       // read contents of URL using textract
       fetch(textract_base_url + 'url', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
