@@ -150,7 +150,7 @@ const messages = {
     footer_wiki_link: "Finto service customer wiki",
     footer_wiki_link_url: "https://www.kiwi.fi/x/CogdCw",
     footer_accessibility_link: "Accessibility statement",
-    footer_accessibility_link_url: "https://www.kiwi.fi/x/LQBTCw",
+    footer_accessibility_link_url: "https://www.kiwi.fi/x/moE9FQ",
     footer_privacy_link: "Privacy policy",
     footer_privacy_link_url: "https://www.kiwi.fi/x/94BzEw",
     footer_follow_heading: "Follow us",
