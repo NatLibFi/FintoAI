@@ -448,6 +448,7 @@ mainApp.component('language-select', {
         <option value="fi">{{ $t('language_select_fi') }}</option>
         <option value="sv">{{ $t('language_select_sv') }}</option>
         <option value="en">{{ $t('language_select_en') }}</option>
+        <option value="se">{{ $t('language_select_sm') }}</option>
       </select>
     </div>
   `
