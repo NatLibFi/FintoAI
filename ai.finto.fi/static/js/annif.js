@@ -435,8 +435,27 @@ mainApp.component('limit-input', {
   `
 })
 
-mainApp.component('language-select', {
-  props: ['modelValue', 'selectedProject'],
+mainApp.component('text-language-select', {
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
+  template: `
+    <label class="suggest-form-label form-label" for="text-language">{{ $t('language_select_text') }}</label>
+    <div class="select-wrapper">
+      <select class="form-control" id="label-language"
+        :value="modelValue"
+        @change="$emit('update:modelValue', $event.target.value)"
+      >
+        <option value="project-language">{{ $t('language_select_detect') }}</option>
+        <option value="fi">{{ $t('language_select_fi') }}</option>
+        <option value="sv">{{ $t('language_select_sv') }}</option>
+        <option value="en">{{ $t('language_select_en') }}</option>
+      </select>
+    </div>
+  `
+})
+
+mainApp.component('suggestions-language-select', {
+  props: ['modelValue', 'selectedProject'], // modelValue: selected language
   emits: ['update:modelValue'],
   computed: {
     vocabularyId() {

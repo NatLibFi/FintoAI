@@ -162,8 +162,9 @@
           <h3>{{ $t('suggestions_label') }}</h3>
 
           <project-select v-model="selected_project" :projects="projects"></project-select>
+          <text-language-select v-model="language"></text-language-select>
           <limit-input v-model="limit"></limit-input><br>
-          <language-select v-model="language" :selected-project="selected_project"></language-select>
+          <suggestions-language-select v-model="language" :selected-project="selected_project"></suggestions-language-select>
 
           <div class="d-grid justify-content-end">
             <button id="get-suggestions" type="button" class="btn btn-primary"
