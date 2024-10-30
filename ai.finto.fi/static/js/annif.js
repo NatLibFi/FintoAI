@@ -436,15 +436,15 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('language-select', {
-  props: ['modelValue', 'selected_project'],
+  props: ['modelValue', 'selectedProject'],
   emits: ['update:modelValue'],
   computed: {
     vocabularyId() {
       // TODO: This is a hack. We should expose the vocabulary id from Annif API.
       // Why project is here the project_id string?
       // Assume vocabulary id is a prefix
-      if (this.selected_project) {
-        return this.selected_project.split("-")[0];
+      if (this.selectedProject) {
+        return this.selectedProject.split("-")[0];
       }
       return '';
     },
