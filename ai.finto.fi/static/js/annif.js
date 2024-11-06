@@ -6,7 +6,8 @@ if (window.location.protocol.startsWith('http')) {
   var textract_base_url = '/textract/';
 } else {
   // local development case - use Finto AI dev API and textract running on localhost via port 8001
-  var annif_base_url = 'https://ai.dev.finto.fi/v1/';
+  // var annif_base_url = 'https://ai.dev.finto.fi/v1/';
+  var annif_base_url = 'http://localhost:5000/v1/';
   var textract_base_url = 'https://ai.dev.finto.fi/textract/'//'http://localhost:8001/textract/';
 }
 
@@ -72,7 +73,8 @@ const mainApp = createApp({
       selected_project: '',
       text: '',
       limit: 10,
-      language: 'project-language',
+      text_language: 'project-language',
+      labels_language: 'detect-language',
       results: [],
       show_results: false,
       loading_results: false,
@@ -104,7 +106,30 @@ const mainApp = createApp({
       this.loading_results = true
       this.show_results = false
 
-      const lang = this.language === 'project-language' ? '' : this.language
+      var lang = this.text_language === 'project-language' ? '' : this._text_language
+
+      // detect language for given text
+      fetch(annif_base_url + 'detect-language', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          "text": "A quick brown fox jumped over the lazy dog.",
+          "languages": [
+            "en"
+          ]
+          }
+        })
+        .then(data => {
+          return data.json()
+        })
+        .then(data => {
+          this.results = data.results
+          console.log(this.results)
+          // this.loading_results = false
+          // this.show_results = true
+        })
 
       // get suggestions for given text
       fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
@@ -438,23 +463,47 @@ mainApp.component('limit-input', {
 mainApp.component('text-language-select', {
   props: ['modelValue'],
   emits: ['update:modelValue'],
+  data() {
+    return {
+      autoDetect: this.modelValue === 'project-language'
+    };
+  },
+  watch: {
+    modelValue(value) {
+      this.autoDetect = value === 'project-language';
+    }
+  },
   template: `
     <label class="suggest-form-label form-label" for="text-language">{{ $t('language_select_text') }}</label>
     <div class="select-wrapper">
+      <input type="checkbox" id="auto-detect-language"
+        :checked="autoDetect"
+        @change="toggleAutoDetect"
+      /> {{ $t('language_select_detect') }}
       <select class="form-control" id="label-language"
         :value="modelValue"
+        :disabled="autoDetect"
         @change="$emit('update:modelValue', $event.target.value)"
       >
-        <option value="project-language">{{ $t('language_select_detect') }}</option>
         <option value="fi">{{ $t('language_select_fi') }}</option>
         <option value="sv">{{ $t('language_select_sv') }}</option>
         <option value="en">{{ $t('language_select_en') }}</option>
       </select>
     </div>
-  `
-})
+  `,
+  methods: {
+    toggleAutoDetect(event) {
+      if (event.target.checked) {
+        this.$emit('update:modelValue', 'project-language');
+      } else {
+        // Reset to the first option as default if needed
+        this.$emit('update:modelValue', 'fi'); // or any other logic to choose default
+      }
+    }
+  }
+});
 
-mainApp.component('suggestions-language-select', {
+mainApp.component('labels-language-select', {
   props: ['modelValue', 'selectedProject'], // modelValue: selected language
   emits: ['update:modelValue'],
   computed: {
@@ -482,9 +531,9 @@ mainApp.component('suggestions-language-select', {
   template: `
     <label class="suggest-form-label form-label" for="label-language">{{ $t('language_select_label') }}</label>
     <div class="select-wrapper">
-      <select class="form-control" id="label-language" :value="modelValue"
+      <select class="form-control" id="labels-language" :value="modelValue"
         @change="$emit('update:modelValue', $event.target.value)">
-        <option value="project-language">{{ $t('language_select_project') }}</option>
+        <option value="detect-language">{{ $t('language_select_project') }}</option>
         <option value="fi">{{ $t('language_select_fi') }}</option>
         <option value="sv">{{ $t('language_select_sv') }}</option>
         <option value="en">{{ $t('language_select_en') }}</option>
