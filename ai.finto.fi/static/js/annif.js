@@ -71,7 +71,7 @@ const mainApp = createApp({
       annif_version: '',
       projects: [],
       selected_project: '',
-      text: '',
+      text: 'koira',
       limit: 10,
       text_language: 'project-language',
       labels_language: 'detect-language',
@@ -114,22 +114,24 @@ const mainApp = createApp({
         headers: {
           'Content-Type': 'application/json'
         },
-        body: {
-          "text": "A quick brown fox jumped over the lazy dog.",
-          "languages": [
-            "en"
-          ]
-          }
+        body: JSON.stringify({
+          text: this.text,
+          languages: ["fi", "sv", "en"]
         })
-        .then(data => {
-          return data.json()
-        })
-        .then(data => {
-          this.results = data.results
-          console.log(this.results)
-          // this.loading_results = false
-          // this.show_results = true
-        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.results = data.results;
+        console.log("this.results: " + this.results[0].language + " " + this.results[0].score);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
 
       // get suggestions for given text
       fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
