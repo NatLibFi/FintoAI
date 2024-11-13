@@ -70,7 +70,7 @@ const mainApp = createApp({
     return {
       annif_version: '',
       projects: [],
-      selected_project: '',
+      selected_project: null,
       text: 'koira',
       limit: 10,
       text_language: 'project-language',
@@ -134,7 +134,7 @@ const mainApp = createApp({
       });
 
       // get suggestions for given text
-      fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
+      fetch(annif_base_url + 'projects/' + this.selected_project.project_id + '/suggest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -281,7 +281,7 @@ const mainApp = createApp({
       })
       .then(data => {
         this.projects = data.projects
-        this.selected_project = this.projects[0].project_id
+        this.selected_project = this.projects[0]
       })
 
     // get annif version number
@@ -417,8 +417,8 @@ mainApp.component('project-select', {
       <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
       <div class="select-wrapper">
         <select class="form-control" id="project"
-          :value="modelValue"
-          @change="$emit('update:modelValue', $event.target.value)"
+          :value="modelValue?.project_id"
+          @change="handleProjectChange($event.target.value)"
         >
           <option v-for="p in projects" :value="p.project_id">{{ $t(p.project_id) }} {{ extractVersionSpecifierInParentheses(p.name) }}</option>
         </select>
@@ -427,12 +427,19 @@ mainApp.component('project-select', {
     </div>
   `,
   methods: {
-    getSelectedProject() {
-      return this.projects.find(p => p.project_id === this.modelValue) || null;
+    handleProjectChange(projectId) {
+      const selectedProject = this.projects.find(p => p.project_id === projectId);
+      this.$emit('update:modelValue', selectedProject);
+    },
+    displayProjectName(project) {
+      return project.project_id + ' ' + this.extractVersionSpecifierInParentheses(project.name);
     },
     extractVersionSpecifierInParentheses(name) {
       const match = name.match(/\(([^)]+)\)$/);
       return match ? match[0] : '';
+    },
+    getSelectedProject() {
+      return this.projects.find(p => p.project_id === this.modelValue.project_id) || null;
     },
   },
 });
@@ -473,9 +480,10 @@ mainApp.component('text-language-select', {
   computed: {
     vocabularyId() {
       // TODO: This is a hack. We should expose the vocabulary id from Annif API.
-      // Assume vocabulary id is a prefix
-      if (this.selectedProject) {
-        return this.selectedProject.split("-")[0];
+      // Assume vocabulary id is a prefix of project id
+      if (this.selectedProject && this.selectedProject.project_id) {
+        // Assume vocabulary id is a prefix of project id
+        return this.selectedProject.project_id.split("-")[0];
       }
       return '';
     },
@@ -531,10 +539,10 @@ mainApp.component('labels-language-select', {
   computed: {
     vocabularyId() {
       // TODO: This is a hack. We should expose the vocabulary id from Annif API.
-      // Why project is here the project_id string?
-      // Assume vocabulary id is a prefix
-      if (this.selectedProject) {
-        return this.selectedProject.split("-")[0];
+      // Assume vocabulary id is a prefix of project id
+      if (this.selectedProject && this.selectedProject.project_id) {
+        // Assume vocabulary id is a prefix of project id
+        return this.selectedProject.project_id.split("-")[0];
       }
       return '';
     },
