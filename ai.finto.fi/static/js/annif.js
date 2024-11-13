@@ -463,16 +463,46 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('text-language-select', {
-  props: ['modelValue'],
+  props: ['modelValue', 'selectedProject'],
   emits: ['update:modelValue'],
   data() {
     return {
       autoDetect: this.modelValue === 'project-language'
     };
   },
+  computed: {
+    vocabularyId() {
+      // TODO: This is a hack. We should expose the vocabulary id from Annif API.
+      // Assume vocabulary id is a prefix
+      if (this.selectedProject) {
+        return this.selectedProject.split("-")[0];
+      }
+      return '';
+    },
+    disabledLanguages() {
+      // Map of languages and their enabling criteria based on vocabularyId
+      return {
+        sv: this.vocabularyId == 'kauno',
+        en: this.vocabularyId == 'kauno',
+      };
+    }
+  },
   watch: {
     modelValue(value) {
       this.autoDetect = value === 'project-language';
+    }
+  },
+  methods: {
+    isLanguageDisabled(language) {
+      return this.disabledLanguages[language] || false; // Default to false if not specified in map
+    },
+    toggleAutoDetect(event) {
+      if (event.target.checked) {
+        this.$emit('update:modelValue', 'project-language');
+      } else {
+        // Reset to the first option as default if needed
+        this.$emit('update:modelValue', 'fi'); // or any other logic to choose default
+      }
     }
   },
   template: `
@@ -487,22 +517,12 @@ mainApp.component('text-language-select', {
         :disabled="autoDetect"
         @change="$emit('update:modelValue', $event.target.value)"
       >
-        <option value="fi">{{ $t('language_select_fi') }}</option>
-        <option value="sv">{{ $t('language_select_sv') }}</option>
-        <option value="en">{{ $t('language_select_en') }}</option>
+        <option :disabled="isLanguageDisabled('fi')" value="fi">{{ $t('language_select_fi') }}</option>
+        <option :disabled="isLanguageDisabled('sv')" value="sv">{{ $t('language_select_sv') }}</option>
+        <option :disabled="isLanguageDisabled('en')" value="en">{{ $t('language_select_en') }}</option>
       </select>
     </div>
-  `,
-  methods: {
-    toggleAutoDetect(event) {
-      if (event.target.checked) {
-        this.$emit('update:modelValue', 'project-language');
-      } else {
-        // Reset to the first option as default if needed
-        this.$emit('update:modelValue', 'fi'); // or any other logic to choose default
-      }
-    }
-  }
+  `
 });
 
 mainApp.component('labels-language-select', {

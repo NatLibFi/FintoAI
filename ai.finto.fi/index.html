@@ -162,7 +162,7 @@
           <h3>{{ $t('suggestions_label') }}</h3>
 
           <project-select v-model="selected_project" :projects="projects"></project-select>
-          <text-language-select v-model="text_language"></text-language-select>
+          <text-language-select v-model="text_language" :selected-project="selected_project"></text-language-select>
           <limit-input v-model="limit"></limit-input><br>
           <labels-language-select v-model="labels_language" :selected-project="selected_project"></labels-language-select>
 
