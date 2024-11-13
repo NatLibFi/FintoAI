@@ -65,6 +65,19 @@ headerApp.component('switch-locale', {
   `
 })
 
+const vocabularyMixin = {
+  computed: {
+    vocabularyId() {
+      // TODO: This is a hack.We should expose the vocabulary id from Annif API.
+      // Assume vocabulary id is a prefix of project id
+      if (this.selectedProject && this.selectedProject.project_id) {
+        return this.selectedProject.project_id.split("-")[0];
+      }
+      return '';
+    }
+  }
+};
+
 const mainApp = createApp({
   data() {
     return {
@@ -90,6 +103,7 @@ const mainApp = createApp({
       supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html']
     }
   },
+  mixins: [vocabularyMixin],
   methods: {
     clear() {
       // clear previous text, suggestions, alerts etc
@@ -381,16 +395,8 @@ mainApp.component('project-select', {
           },
         };
       },
+      mixins: [vocabularyMixin],
       computed: {
-        vocabularyId() {
-          // TODO: This is a hack. We should expose the vocabulary id from Annif API.
-          // Assume vocabulary id is a prefix of project id
-          if (this.selectedProject && this.selectedProject.project_id) {
-            // Assume vocabulary id is a prefix of project id
-            return this.selectedProject.project_id.split("-")[0];
-          }
-          return '';
-        },
         vocabularyName() {
           const vocabularyNamesMap = {
             'yso': this.$t('vocabulary_name_yso'),
@@ -477,6 +483,7 @@ mainApp.component('text-language-select', {
       autoDetect: this.modelValue === 'project-language'
     };
   },
+  mixins: [vocabularyMixin],
   computed: {
     vocabularyId() {
       // TODO: This is a hack. We should expose the vocabulary id from Annif API.
@@ -536,16 +543,8 @@ mainApp.component('text-language-select', {
 mainApp.component('labels-language-select', {
   props: ['modelValue', 'selectedProject'], // modelValue: selected language
   emits: ['update:modelValue'],
+  mixins: [vocabularyMixin],
   computed: {
-    vocabularyId() {
-      // TODO: This is a hack. We should expose the vocabulary id from Annif API.
-      // Assume vocabulary id is a prefix of project id
-      if (this.selectedProject && this.selectedProject.project_id) {
-        // Assume vocabulary id is a prefix of project id
-        return this.selectedProject.project_id.split("-")[0];
-      }
-      return '';
-    },
     disabledLanguages() {
       // Map of languages and their enabling criteria based on vocabularyId
       return {
