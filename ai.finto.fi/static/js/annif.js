@@ -120,7 +120,7 @@ const mainApp = createApp({
       this.loading_results = true
       this.show_results = false
 
-      var lang = this.text_language === 'project-language' ? '' : this._text_language
+      var lang = this.labels_language === 'detect-language' ? '' : this.labels_language;
 
       // detect language for given text
       fetch(annif_base_url + 'detect-language', {
