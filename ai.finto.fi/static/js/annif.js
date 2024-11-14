@@ -83,7 +83,9 @@ const mainApp = createApp({
     return {
       annif_version: '',
       projects: [],
+      vocab_ids: [],
       selected_project: null,
+      selected_vocab_id: '',
       text: 'koira',
       limit: 10,
       text_language: 'project-language',
@@ -148,7 +150,8 @@ const mainApp = createApp({
       });
 
       // get suggestions for given text
-      fetch(annif_base_url + 'projects/' + this.selected_project.project_id + '/suggest', {
+      console.log("Project to call: " + this.selected_vocab_id)
+      fetch(annif_base_url + 'projects/' + this.selected_vocab_id + "-fi" + '/suggest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -295,7 +298,10 @@ const mainApp = createApp({
       })
       .then(data => {
         this.projects = data.projects
-        this.selected_project = this.projects[0]
+        // Assume vocabulary id is a prefix of project id
+        this.vocab_ids = [...new Set(this.projects.map(item => item.project_id.split("-")[0]))];
+        this.selected_vocab_id = this.vocab_ids[0]
+        // console.log("this.vocab_ids: " + this.vocab_ids)
       })
 
     // get annif version number
@@ -379,12 +385,12 @@ mainApp.component('text-input', {
   `
 })
 
-mainApp.component('project-select', {
-  props: ['modelValue', 'projects'], // modelValue: selected project
+mainApp.component('vocab-select', {
+  props: ['modelValue', 'vocab_ids'],
   emits: ['update:modelValue'],
   components: {
     'vocabulary-info': {
-      props: ['selectedProject'],
+      props: ['selected_vocab_id'],
       data() {
         return {
           vocabularyUrlsMap: {
@@ -395,7 +401,6 @@ mainApp.component('project-select', {
           },
         };
       },
-      mixins: [vocabularyMixin],
       computed: {
         vocabularyName() {
           const vocabularyNamesMap = {
@@ -404,51 +409,54 @@ mainApp.component('project-select', {
             'kauno': this.$t('vocabulary_name_kauno'),
             'thema': this.$t('vocabulary_name_thema'),
           }
-          return vocabularyNamesMap[this.vocabularyId] || '';
+          return vocabularyNamesMap[this.selected_vocab_id] || '';
         },
         vocabularyUrl() {
           return this.vocabularyUrlsMap[this.vocabularyId] || '';
+          },
         },
-      },
       template: `
-      <span id="vocabulary-info">
-      {{ $t('vocabulary_info') }}
-      <a :href="vocabularyUrl" target="_blank">{{ vocabularyName }}
-        <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true"></a></span>
+        <span id="vocabulary-info">
+        {{ $t('vocabulary_info') }}
+        <a :href="vocabularyUrl" target="_blank">{{ vocabularyName }}
+          <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true"></a></span>
       `,
     },
   },
   template: `
     <div>
-      <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
+    <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
       <div class="select-wrapper">
         <select class="form-control" id="project"
-          :value="modelValue?.project_id"
-          @change="handleProjectChange($event.target.value)"
-        >
-          <option v-for="p in projects" :value="p.project_id">{{ $t(p.project_id) }} {{ extractVersionSpecifierInParentheses(p.name) }}</option>
+          :value="modelValue"
+          @change="handleVocabChange($event.target.value)"
+          >
+          <option v-for="vid in vocab_ids" :value="vid">{{ $t(vid) }} </option>
         </select>
       </div>
-      <vocabulary-info :selectedProject="getSelectedProject()" />
+    <vocabulary-info :selected_vocab_id="getSelectedVocabId()"/>
     </div>
-  `,
+    `,
+    // {{ extractVersionSpecifierInParentheses(vid) }}
   methods: {
-    handleProjectChange(projectId) {
-      const selectedProject = this.projects.find(p => p.project_id === projectId);
-      this.$emit('update:modelValue', selectedProject);
+      handleVocabChange(vocabId) {
+        const selectedVocab = this.vocab_ids.find(vocab_id => vocab_id === vocabId);
+        this.$emit('update:modelValue', selectedVocab);
     },
-    displayProjectName(project) {
-      return project.project_id + ' ' + this.extractVersionSpecifierInParentheses(project.name);
-    },
-    extractVersionSpecifierInParentheses(name) {
-      const match = name.match(/\(([^)]+)\)$/);
-      return match ? match[0] : '';
-    },
-    getSelectedProject() {
-      return this.projects.find(p => p.project_id === this.modelValue.project_id) || null;
+      getSelectedVocabId() {
+        const selectedVocab = this.vocab_ids.find(vocab_id => vocab_id === this.modelValue);
+        return selectedVocab || null;
     },
   },
 });
+  //   displayProjectName(project) {
+  //     return project.project_id + ' ' + this.extractVersionSpecifierInParentheses(project.name);
+  //   },
+  //   extractVersionSpecifierInParentheses(name) {
+  //     const match = name.match(/\(([^)]+)\)$/);
+  //     return match ? match[0] : '';
+  //   },
+  // },
 
 mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
