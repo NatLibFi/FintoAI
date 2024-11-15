@@ -88,7 +88,8 @@ const mainApp = createApp({
       selected_vocab_id: '',
       text: 'koira',
       limit: 10,
-      text_language: 'project-language',
+      selected_text_language: 'autodetect',
+      detected_text_language: null,
       labels_language: 'detect-language',
       results: [],
       show_results: false,
@@ -118,55 +119,59 @@ const mainApp = createApp({
       this.show_alert_request_failed = false
       this.show_alert_request_failed_url = false
     },
-    suggest() {
-      this.loading_results = true
-      this.show_results = false
+    async suggest() {
+      this.loading_results = true;
+      this.show_results = false;
 
-      var lang = this.labels_language === 'detect-language' ? '' : this.labels_language;
+      let labelsLang = this.labels_language === 'detect-language' ? '' : this.labels_language;
 
-      // detect language for given text
-      fetch(annif_base_url + 'detect-language', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          text: this.text,
-          languages: ["fi", "sv", "en"]
-        })
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+      if (this.selected_text_language === "autodetect") {
+        // Detect language for given text
+        try {
+          const response = await fetch(annif_base_url + 'detect-language', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: this.text, languages: ["fi", "sv", "en"] })
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const data = await response.json();
+          this.results = data.results;
+          textLang = this.results[0].language; // Use the detected language
+        } catch (error) {
+          console.error('Error:', error);
+          return; // Exit if language detection fails
         }
-        return response.json();
-      })
-      .then(data => {
-        this.results = data.results;
-        console.log("this.results: " + this.results[0].language + " " + this.results[0].score);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+      } else {
+        textLang = this.selected_text_language;
+      }
 
-      // get suggestions for given text
-      console.log("Project to call: " + this.selected_vocab_id)
-      fetch(annif_base_url + 'projects/' + this.selected_vocab_id + "-fi" + '/suggest', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + lang
-      })
-        .then(data => {
-          return data.json()
-        })
-        .then(data => {
-          this.results = data.results
-          this.loading_results = false
-          this.show_results = true
-        })
+      const projectId = this.selected_vocab_id + "-" + textLang;
+
+      // Continue to get suggestions for the given text
+      try {
+        const suggest_response = await fetch(annif_base_url + 'projects/' + projectId + '/suggest', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + labelsLang
+        });
+        const suggest_data = await suggest_response.json();
+        this.results = suggest_data.results;
+      } catch (error) {
+        console.error('Error with suggest endpoint:', error);
+      } finally {
+        this.loading_results = false;
+        this.show_results = true;
+      }
     },
+
     drag_over(e) {
       e.stopPropagation()
       e.preventDefault()
@@ -301,7 +306,6 @@ const mainApp = createApp({
         // Assume vocabulary id is a prefix of project id
         this.vocab_ids = [...new Set(this.projects.map(item => item.project_id.split("-")[0]))];
         this.selected_vocab_id = this.vocab_ids[0]
-        // console.log("this.vocab_ids: " + this.vocab_ids)
       })
 
     // get annif version number
@@ -488,7 +492,7 @@ mainApp.component('text-language-select', {
   emits: ['update:modelValue'],
   data() {
     return {
-      autoDetect: this.modelValue === 'project-language'
+      autoDetect: this.modelValue === 'autodetect'
     };
   },
   mixins: [vocabularyMixin],
