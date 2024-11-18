@@ -488,7 +488,7 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('text-language-select', {
-  props: ['modelValue', 'selectedProject'],
+  props: ['modelValue'],
   emits: ['update:modelValue'],
   data() {
     return {
@@ -507,7 +507,7 @@ mainApp.component('text-language-select', {
   },
   watch: {
     modelValue(value) {
-      this.autoDetect = value === 'project-language';
+      this.autoDetect = value === 'autodetect';
     }
   },
   methods: {
@@ -516,10 +516,10 @@ mainApp.component('text-language-select', {
     },
     toggleAutoDetect(event) {
       if (event.target.checked) {
-        this.$emit('update:modelValue', 'project-language');
+        this.$emit('update:modelValue', 'autodetect');
       } else {
         // Reset to the first option as default if needed
-        this.$emit('update:modelValue', 'fi'); // or any other logic to choose default
+        this.$emit('update:modelValue', 'fi'); // TODO Store previous selection?
       }
     }
   },
