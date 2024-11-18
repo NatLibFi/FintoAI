@@ -84,7 +84,6 @@ const mainApp = createApp({
       annif_version: '',
       projects: [],
       vocab_ids: [],
-      selected_project: null,
       selected_vocab_id: '',
       text: 'koira',
       limit: 10,
@@ -544,7 +543,7 @@ mainApp.component('text-language-select', {
 });
 
 mainApp.component('labels-language-select', {
-  props: ['modelValue', 'selectedProject'], // modelValue: selected language
+  props: ['modelValue'], // modelValue: selected language
   emits: ['update:modelValue'],
   mixins: [vocabularyMixin],
   computed: {
@@ -565,7 +564,7 @@ mainApp.component('labels-language-select', {
     <div class="select-wrapper">
       <select class="form-control" id="labels-language" :value="modelValue"
         @change="$emit('update:modelValue', $event.target.value)">
-        <option value="detect-language">{{ $t('language_select_project') }}</option>
+        <option value="detect-language">{{ $t('language_select_same_as_text') }}</option>
         <option value="fi">{{ $t('language_select_fi') }}</option>
         <option value="sv">{{ $t('language_select_sv') }}</option>
         <option value="en">{{ $t('language_select_en') }}</option>
