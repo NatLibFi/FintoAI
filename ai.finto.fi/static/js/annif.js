@@ -497,15 +497,6 @@ mainApp.component('text-language-select', {
   },
   mixins: [vocabularyMixin],
   computed: {
-    vocabularyId() {
-      // TODO: This is a hack. We should expose the vocabulary id from Annif API.
-      // Assume vocabulary id is a prefix of project id
-      if (this.selectedProject && this.selectedProject.project_id) {
-        // Assume vocabulary id is a prefix of project id
-        return this.selectedProject.project_id.split("-")[0];
-      }
-      return '';
-    },
     disabledLanguages() {
       // Map of languages and their enabling criteria based on vocabularyId
       return {
