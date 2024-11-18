@@ -430,27 +430,40 @@ select:valid:focus {
   pointer-events: none;
 }
 
-#limit-buttons label {
+.select-buttons label {
   color: var(--dark-1);
   background-color: var(--medium-2);
   border: none;
   border-radius: 0;
-  max-width: 40px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 1rem;
   margin-left: 0;
   transition: none;
-  padding: 8px 0;
+  /* padding: 8px 0; */
 }
 
-#limit-buttons .btn-check:checked+.btn {
+.select-buttons .btn-check:checked+.btn {
   background-color: var(--dark-1);
   color: var(--white);
 }
-#limit-buttons label:active {
+.select-buttons label:active {
   background-color: var(--dark-1);
   color: var(--white);
+}
+.select-buttons label:disabled {
+  background-color: var(--dark-1);
+  color: var(--white);
+}
+
+#language-buttons label{
+  margin-top: 1rem;
+  /* max-width: 200px; */
+  /* padding: 8px; */
+}
+
+#limit-buttons label{
+  max-width: 40px;
 }
 
 #get-suggestions {

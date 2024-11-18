@@ -451,7 +451,7 @@ mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
   emits: ['update:modelValue'],
   template: `
-    <fieldset id="limit-buttons" class="btn-group">
+    <fieldset id="limit-buttons" class="btn-group select-buttons">
       <legend class="suggest-form-label">{{ $t('limit_input_label') }}</legend>
       <input type="radio" class="btn-check" name="limit" id="l1" checked
         :value="modelValue"
@@ -509,20 +509,28 @@ mainApp.component('text-language-select', {
   },
   template: `
     <label class="suggest-form-label form-label" for="text-language">{{ $t('language_select_text') }}</label>
-    <div class="select-wrapper">
+    <div>
       <input type="checkbox" id="auto-detect-language"
         :checked="autoDetect"
         @change="toggleAutoDetect"
-      /> {{ $t('language_select_detect') }}
-      <select class="form-control" id="label-language"
-        :value="modelValue"
-        :disabled="autoDetect"
-        @change="$emit('update:modelValue', $event.target.value)"
-      >
-        <option :disabled="isLanguageDisabled('fi')" value="fi">{{ $t('language_select_fi') }}</option>
-        <option :disabled="isLanguageDisabled('sv')" value="sv">{{ $t('language_select_sv') }}</option>
-        <option :disabled="isLanguageDisabled('en')" value="en">{{ $t('language_select_en') }}</option>
-      </select>
+        /> {{ $t('language_select_detect') }}
+        <br/>
+        <fieldset :disabled="autoDetect" id="language-buttons" class="btn-group select-buttons">
+          <input type="radio" class="btn-check" name="language" id="fi"
+            @change="$emit('update:modelValue', 'fi')"
+            >
+            <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}</label>
+
+          <input type="radio" class="btn-check" name="language" id="sv"
+            @change="$emit('update:modelValue', 'sv')"
+          >
+          <label class="btn btn-secondary" for="sv">{{ $t('language_select_sv') }}</label>
+
+          <input type="radio" class="btn-check" name="language" id="en"
+            @change="$emit('update:modelValue', 'en')"
+          >
+          <label class="btn btn-secondary" for="en">{{ $t('language_select_en') }}</label>
+      </fieldset>
     </div>
   `
 });
