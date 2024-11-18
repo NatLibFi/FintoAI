@@ -65,19 +65,6 @@ headerApp.component('switch-locale', {
   `
 })
 
-const vocabularyMixin = {
-  computed: {
-    vocabularyId() {
-      // TODO: This is a hack.We should expose the vocabulary id from Annif API.
-      // Assume vocabulary id is a prefix of project id
-      if (this.selectedProject && this.selectedProject.project_id) {
-        return this.selectedProject.project_id.split("-")[0];
-      }
-      return '';
-    }
-  }
-};
-
 const mainApp = createApp({
   data() {
     return {
@@ -105,7 +92,6 @@ const mainApp = createApp({
       supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html']
     }
   },
-  mixins: [vocabularyMixin],
   methods: {
     clear() {
       // clear previous text, suggestions, alerts etc
@@ -487,20 +473,19 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('text-language-select', {
-  props: ['modelValue'],
+  props: ['modelValue', 'selected_vocab_id'],
   emits: ['update:modelValue'],
   data() {
     return {
-      autoDetect: this.modelValue === 'autodetect'
+      autoDetect: this.modelValue === 'autodetect',
     };
   },
-  mixins: [vocabularyMixin],
   computed: {
     disabledLanguages() {
       // Map of languages and their enabling criteria based on vocabularyId
       return {
-        sv: this.vocabularyId == 'kauno',
-        en: this.vocabularyId == 'kauno',
+        sv: this.selected_vocab_id == 'kauno',
+        en: this.selected_vocab_id == 'kauno',
       };
     }
   },
@@ -543,14 +528,13 @@ mainApp.component('text-language-select', {
 });
 
 mainApp.component('labels-language-select', {
-  props: ['modelValue'], // modelValue: selected language
+  props: ['modelValue', 'selected_vocab_id'], // modelValue: selected language
   emits: ['update:modelValue'],
-  mixins: [vocabularyMixin],
   computed: {
     disabledLanguages() {
       // Map of languages and their enabling criteria based on vocabularyId
       return {
-        se: this.vocabularyId !== 'yso', // 'se' enabled only if vocabularyId is 'yso'
+        se: this.selected_vocab_id !== 'yso', // 'se' enabled only if vocabularyId is 'yso'
       };
     }
   },
