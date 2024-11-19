@@ -457,9 +457,12 @@ select:valid:focus {
 }
 
 #language-buttons label{
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   /* max-width: 200px; */
   /* padding: 8px; */
+}
+#badge-autodetect {
+  font-size: x-small;
 }
 
 #limit-buttons label{

@@ -110,7 +110,7 @@ const messages = {
     suggestions_label: "Subject indexing",
     project_select_label: "Vocabulary",
     language_select_text: "Text language",
-    language_select_detect: "detect automatically",
+    language_select_detect: "disable automatic language detection",
     "yso-fi": 'YSO Finnish',
     "yso-sv": 'YSO Swedish',
     "yso-en": 'YSO English',

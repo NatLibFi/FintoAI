@@ -499,40 +499,40 @@ mainApp.component('text-language-select', {
       return this.disabledLanguages[language] || false; // Default to false if not specified in map
     },
     toggleAutoDetect(event) {
-      if (event.target.checked) {
-        this.$emit('update:modelValue', 'autodetect');
-      } else {
-        // Reset to the first option as default if needed
-        this.$emit('update:modelValue', 'fi'); // TODO Store previous selection?
-      }
+      // if (event.target.checked) {
+      //   this.$emit('update:modelValue', 'autodetect');
+      // } else {
+      //   // Reset to the first option as default if needed
+      //   this.$emit('update:modelValue', 'fi'); // TODO Store previous selection?
+      // }
     }
   },
   template: `
     <label class="suggest-form-label form-label" for="text-language">{{ $t('language_select_text') }}</label>
     <div>
-      <input type="checkbox" id="auto-detect-language"
-        :checked="autoDetect"
-        @change="toggleAutoDetect"
-        /> {{ $t('language_select_detect') }}
-        <br/>
-        <fieldset :disabled="autoDetect" id="language-buttons" class="btn-group select-buttons">
-          <input type="radio" class="btn-check" name="language" id="fi"
-            @change="$emit('update:modelValue', 'fi')"
-            >
-            <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}</label>
-
-          <input type="radio" class="btn-check" name="language" id="sv"
-            @change="$emit('update:modelValue', 'sv')"
-          >
-          <label class="btn btn-secondary" for="sv">{{ $t('language_select_sv') }}</label>
-
-          <input type="radio" class="btn-check" name="language" id="en"
-            @change="$emit('update:modelValue', 'en')"
-          >
-          <label class="btn btn-secondary" for="en">{{ $t('language_select_en') }}</label>
+      <fieldset id="language-buttons" class="btn-group select-buttons">
+        <input type="radio" class="btn-check" name="language" id="fi"
+        @change="$emit('update:modelValue', 'fi')"
+        >
+        <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}
+        </label>
+        <input type="radio" class="btn-check" name="language" id="sv"
+        @change="$emit('update:modelValue', 'sv')"
+        >
+        <label class="btn btn-secondary" for="sv">{{ $t('language_select_sv') }}</label>
+        <input type="radio" class="btn-check" name="language" id="en"
+        @change="$emit('update:modelValue', 'en')"
+        >
+        <label class="btn btn-secondary" for="en">{{ $t('language_select_en') }}</label>
       </fieldset>
+      <br/>
+      <input type="checkbox" id="auto-detect-language"
+      :checked=false
+      @change="toggleAutoDetect"
+      /> {{ $t('language_select_detect') }}
     </div>
-  `
+    `
+    // <div class="badge badge-primary" id="badge-autodetect">A</div>
 });
 
 mainApp.component('labels-language-select', {
