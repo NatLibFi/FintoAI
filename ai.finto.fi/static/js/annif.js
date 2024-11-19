@@ -3,7 +3,7 @@ const { createApp } = Vue
 if (window.location.protocol.startsWith('http')) {
   // http or https - use APIs of current Annif and textract instances
   var annif_base_url = '/v1/';
-  var textract_base_url = '/textract/';
+  var textract_base_url = 'https://ai.dev.finto.fi/textract/';  // TODO Switch me back
 } else {
   // local development case - use Finto AI dev API and textract running on localhost via port 8001
   // var annif_base_url = 'https://ai.dev.finto.fi/v1/';
@@ -72,14 +72,15 @@ const mainApp = createApp({
       projects: [],
       vocab_ids: [],
       selected_vocab_id: '',
-      text: 'koira',
+      text: 'koira',  // TODO Switch me back
       limit: 10,
-      selected_text_language: 'autodetect',
-      detected_text_language: null,
+      text_language: 'fi',
+      // autodetect_language = true,
       labels_language: 'detect-language',
       results: [],
       show_results: false,
       loading_results: false,
+      detecting_language: false,
       selected_file: '',
       selected_url: '',
       placeholder_to_show: 'text_box_placeholder_text_input', // i18n translation key of the textbox placeholder
@@ -104,57 +105,58 @@ const mainApp = createApp({
       this.show_alert_request_failed = false
       this.show_alert_request_failed_url = false
     },
-    async suggest() {
+    detectLanguage() {
+      this.text_language = 'none';
+      fetch(annif_base_url + 'detect-language', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          text: this.text,
+          languages: ["fi", "sv", "en"]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.text_language = data.results[0].language;
+        // this.text_language_detection_score = this.results[0].language;  TODO Add to tooltip
+        console.log("Detected language: " + this.text_language);
+        this.detecting_language = false;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        this.detecting_language = false;
+      });
+    },
+    suggest() {
       this.loading_results = true;
       this.show_results = false;
 
       let labelsLang = this.labels_language === 'detect-language' ? '' : this.labels_language;
 
-      if (this.selected_text_language === "autodetect") {
-        // Detect language for given text
-        try {
-          const response = await fetch(annif_base_url + 'detect-language', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ text: this.text, languages: ["fi", "sv", "en"] })
-          });
+      const projectId = this.selected_vocab_id + "-" + this.text_language;
 
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const data = await response.json();
-          this.results = data.results;
-          textLang = this.results[0].language; // Use the detected language
-        } catch (error) {
-          console.error('Error:', error);
-          return; // Exit if language detection fails
-        }
-      } else {
-        textLang = this.selected_text_language;
-      }
-
-      const projectId = this.selected_vocab_id + "-" + textLang;
-
-      // Continue to get suggestions for the given text
-      try {
-        const suggest_response = await fetch(annif_base_url + 'projects/' + projectId + '/suggest', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + labelsLang
-        });
-        const suggest_data = await suggest_response.json();
-        this.results = suggest_data.results;
-      } catch (error) {
-        console.error('Error with suggest endpoint:', error);
-      } finally {
-        this.loading_results = false;
-        this.show_results = true;
-      }
+      // get suggestions for given text
+      console.log("Project to call: " + this.projectId)
+      console.log(this.selected_vocab_id)
+      console.log(this.text_language)
+      console.log(this.projectId)
+      fetch(annif_base_url + 'projects/' + projectId + '/suggest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + labelsLang
+      })
+      .then(data => {
+        return data.json()
+      })
+      .then(data => {
+        this.results = data.results
+        this.loading_results = false
+        this.show_results = true
+      })
     },
 
     drag_over(e) {
@@ -190,6 +192,8 @@ const mainApp = createApp({
     read_file(file) {
       this.clear()
       this.loading_upload = true
+      this.detecting_language = true;
+      this.text_language = 'none';
       this.selected_file = file.name
 
       const extension = this.get_extension(file.name)
@@ -201,6 +205,7 @@ const mainApp = createApp({
         file.text().then(file_text => {
           this.loading_upload = false
           this.text = file_text
+          this.detectLanguage();
         })
       } else {
         let file_form_data = new FormData()
@@ -217,9 +222,11 @@ const mainApp = createApp({
           .then(data => {
             this.loading_upload = false
             this.text = data.text
+            this.detectLanguage();
           })
           .catch(error => {
             this.loading_upload = false
+            this.detecting_language = false
             this.show_alert_request_failed = true
           })
       }
@@ -230,6 +237,8 @@ const mainApp = createApp({
 
       this.clear()
       this.loading_upload = true
+      this.detecting_language = true;
+      this.text_language = 'none';
       this.selected_url = plain_url
 
       const extension = this.get_extension(url_obj.pathname)
@@ -249,10 +258,13 @@ const mainApp = createApp({
         })
         .then(data => {
           this.loading_upload = false
+          this.detecting_language = false
           this.text = data.text
+          this.detectLanguage();
         })
         .catch(error => {
           this.loading_upload = false
+          this.detecting_language = false
           this.show_alert_request_failed_url = true
         })
     },
@@ -473,13 +485,8 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('text-language-select', {
-  props: ['modelValue', 'selected_vocab_id'],
+  props: ['modelValue', 'selected_vocab_id', 'detecting_language'], // modelValue: text_language
   emits: ['update:modelValue'],
-  data() {
-    return {
-      autoDetect: this.modelValue === 'autodetect',
-    };
-  },
   computed: {
     disabledLanguages() {
       // Map of languages and their enabling criteria based on vocabularyId
@@ -489,42 +496,40 @@ mainApp.component('text-language-select', {
       };
     }
   },
-  watch: {
-    modelValue(value) {
-      this.autoDetect = value === 'autodetect';
-    }
-  },
   methods: {
     isLanguageDisabled(language) {
       return this.disabledLanguages[language] || false; // Default to false if not specified in map
     },
-    toggleAutoDetect(event) {
+    // toggleAutoDetect(event) {
       // if (event.target.checked) {
       //   this.$emit('update:modelValue', 'autodetect');
       // } else {
       //   // Reset to the first option as default if needed
       //   this.$emit('update:modelValue', 'fi'); // TODO Store previous selection?
       // }
-    }
+    // }
   },
   template: `
     <label class="suggest-form-label form-label" for="text-language">{{ $t('language_select_text') }}</label>
     <div>
       <fieldset id="language-buttons" class="btn-group select-buttons">
-        <input type="radio" class="btn-check" name="language" id="fi"
-        @change="$emit('update:modelValue', 'fi')"
-        >
-        <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}
-        </label>
-        <input type="radio" class="btn-check" name="language" id="sv"
-        @change="$emit('update:modelValue', 'sv')"
-        >
+        <input type="radio" class="btn-check" name="language" id="fi" :checked="modelValue === 'fi'"
+          @change="$emit('update:modelValue', 'fi')">
+        <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}</label>
+
+        <input type="radio" class="btn-check" name="language" id="sv" :checked="modelValue === 'sv'"
+          @change="$emit('update:modelValue', 'sv')">
         <label class="btn btn-secondary" for="sv">{{ $t('language_select_sv') }}</label>
-        <input type="radio" class="btn-check" name="language" id="en"
-        @change="$emit('update:modelValue', 'en')"
-        >
+
+        <input type="radio" class="btn-check" name="language" id="en" :checked="modelValue === 'en'"
+        @change="$emit('update:modelValue', 'en')">
         <label class="btn btn-secondary" for="en">{{ $t('language_select_en') }}</label>
+
+        <input type="radio" class="btn-check" name="language" id="none" :checked="modelValue === 'none'"
+        style="display: none;">
       </fieldset>
+      <div id="language-detection-spinner" class="spinner-border" role="status" v-cloak
+        v-if="detecting_language"></div>
       <br/>
       <input type="checkbox" id="auto-detect-language"
       :checked=false
@@ -532,7 +537,6 @@ mainApp.component('text-language-select', {
       /> {{ $t('language_select_detect') }}
     </div>
     `
-    // <div class="badge badge-primary" id="badge-autodetect">A</div>
 });
 
 mainApp.component('labels-language-select', {

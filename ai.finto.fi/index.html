@@ -162,7 +162,7 @@
           <h3>{{ $t('suggestions_label') }}</h3>
 
           <vocab-select v-model="selected_vocab_id" :vocab_ids="vocab_ids"></vocab-select>
-          <text-language-select v-model="selected_text_language" :selected_vocab_id="selected_vocab_id"></text-language-select>
+          <text-language-select v-model="text_language" :selected_vocab_id="selected_vocab_id" :detecting_language="detecting_language"></text-language-select>
           <limit-input v-model="limit"></limit-input><br>
           <labels-language-select v-model="labels_language" :selected_vocab_id="selected_vocab_id"></labels-language-select>
 

@@ -461,8 +461,8 @@ select:valid:focus {
   /* max-width: 200px; */
   /* padding: 8px; */
 }
-#badge-autodetect {
-  font-size: x-small;
+#language-detection-spinner {
+  margin-left: 1rem;
 }
 
 #limit-buttons label{
