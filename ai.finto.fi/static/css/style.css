@@ -440,9 +440,11 @@ select:valid:focus {
   margin-bottom: 1rem;
   margin-left: 0;
   transition: none;
-  /* padding: 8px 0; */
 }
 
+.select-buttons .btn-secondary:hover {
+  background-color: var(--dark-2);
+}
 .select-buttons .btn-check:checked+.btn {
   background-color: var(--dark-1);
   color: var(--white);
@@ -451,16 +453,12 @@ select:valid:focus {
   background-color: var(--dark-1);
   color: var(--white);
 }
-.select-buttons label:disabled {
+/* TODO Disable selecting languages unsupported by a project
+ .select-buttons label:disabled {
   background-color: var(--dark-1);
   color: var(--white);
-}
+} */
 
-#language-buttons label{
-  /* margin-top: 1rem; */
-  /* max-width: 200px; */
-  /* padding: 8px; */
-}
 #language-detection-spinner {
   margin-left: 1rem;
 }
@@ -586,8 +584,8 @@ meter::-webkit-meter-optimum-value {
 }
 
 .copy-button:hover {
-  background-color: var(--medium-2);
-  color: var(--dark-1);
+  background-color: var(--dark-2);
+  color: var(--white);
 }
 
 .copy-button:active {
@@ -602,7 +600,7 @@ meter::-webkit-meter-optimum-value {
   background-position: center !important;
   margin-left: 0px;
 }
-#copy-button-label-and-uri:active {
+#copy-button-label-and-uri:hover, #copy-button-label-and-uri:active {
   background-image: url("../img/melinda-active.svg");
 }
 
