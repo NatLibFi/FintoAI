@@ -93,6 +93,11 @@ const mainApp = createApp({
       supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html']
     }
   },
+  provide() {
+    return {
+      detectLanguage: this.detectLanguage
+    };
+  },
   methods: {
     clear() {
       // clear previous text, suggestions, alerts etc
@@ -106,6 +111,7 @@ const mainApp = createApp({
       this.show_alert_request_failed_url = false
     },
     detectLanguage() {
+      this.detecting_language = true;
       this.text_language = 'none';
       fetch(annif_base_url + 'detect-language', {
         method: 'POST',
@@ -372,12 +378,25 @@ mainApp.component('url-input', {
 mainApp.component('text-input', {
   props: ['modelValue', 'show_dragging_effect', 'placeholder_to_show'], // modelValue: text
   emits: ['update:modelValue', 'clear'],
+  inject: ['detectLanguage'],
+  data() {
+    return {
+      timeout: null,
+    };
+  },
+  methods: {
+    updateValue(value) {
+      this.$emit('update:modelValue', value);
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => this.detectLanguage(), 1000);  // Delay for language detection after input typing
+    },
+  },
   template: `
     <label class="visually-hidden" for="text">{{ $t(placeholder_to_show) }}></label>
     <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
       :placeholder="$t(placeholder_to_show)"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="updateValue($event.target.value)"
       :class="{ 'dragging': show_dragging_effect }"
     ></textarea>
     <button id="button-clear" type="button" class="btn btn-danger"
