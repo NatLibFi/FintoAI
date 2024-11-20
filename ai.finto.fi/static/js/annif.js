@@ -197,11 +197,16 @@ const mainApp = createApp({
         this.read_url(url)
       }
     },
+    apply_start_reading_effects() {
+      this.clear();
+      this.loading_upload = true;
+      if (!this.disable_language_detection) {
+        this.detecting_language = true;
+        this.text_language = 'none';
+      }
+    },
     read_file(file) {
-      this.clear()
-      this.loading_upload = true
-      this.detecting_language = true;
-      this.text_language = 'none';
+      this.apply_start_reading_effects()
       this.selected_file = file.name
 
       const extension = this.get_extension(file.name)
@@ -240,13 +245,10 @@ const mainApp = createApp({
       }
     },
     read_url(url) {
+      this.apply_start_reading_effects();
+
       const url_obj = new URL(url)
       const plain_url = url_obj.origin + url_obj.pathname
-
-      this.clear()
-      this.loading_upload = true
-      this.detecting_language = true;
-      this.text_language = 'none';
       this.selected_url = plain_url
 
       const extension = this.get_extension(url_obj.pathname)
