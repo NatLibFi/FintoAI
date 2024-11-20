@@ -75,7 +75,7 @@ const mainApp = createApp({
       text: 'koira',  // TODO Switch me back
       limit: 10,
       text_language: 'fi',
-      // autodetect_language = true,
+      disable_language_detection: false,
       labels_language: 'detect-language',
       results: [],
       show_results: false,
@@ -111,29 +111,31 @@ const mainApp = createApp({
       this.show_alert_request_failed_url = false
     },
     detectLanguage() {
-      this.detecting_language = true;
-      this.text_language = 'none';
-      fetch(annif_base_url + 'detect-language', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          text: this.text,
-          languages: ["fi", "sv", "en"]
+      if (!this.disable_language_detection) {
+        this.detecting_language = true;
+        this.text_language = 'none';
+        fetch(annif_base_url + 'detect-language', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            text: this.text,
+            languages: ["fi", "sv", "en"]
+          })
         })
-      })
-      .then(response => response.json())
-      .then(data => {
-        this.text_language = data.results[0].language;
-        // this.text_language_detection_score = this.results[0].language;  TODO Add to tooltip
-        console.log("Detected language: " + this.text_language);
-        this.detecting_language = false;
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        this.detecting_language = false;
-      });
+        .then(response => response.json())
+        .then(data => {
+          this.text_language = data.results[0].language;
+          // this.text_language_detection_score = this.results[0].language;  TODO Add to tooltip
+          console.log("Detected language: " + this.text_language);
+          this.detecting_language = false;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          this.detecting_language = false;
+        });
+      }
     },
     suggest() {
       this.loading_results = true;
@@ -519,14 +521,6 @@ mainApp.component('text-language-select', {
     isLanguageDisabled(language) {
       return this.disabledLanguages[language] || false; // Default to false if not specified in map
     },
-    // toggleAutoDetect(event) {
-      // if (event.target.checked) {
-      //   this.$emit('update:modelValue', 'autodetect');
-      // } else {
-      //   // Reset to the first option as default if needed
-      //   this.$emit('update:modelValue', 'fi'); // TODO Store previous selection?
-      // }
-    // }
   },
   template: `
     <label class="suggest-form-label form-label" for="text-language">{{ $t('language_select_text') }}</label>
@@ -548,13 +542,8 @@ mainApp.component('text-language-select', {
         style="display: none;">
       </fieldset>
       <div id="language-detection-spinner" class="spinner-border" role="status" v-cloak
-        v-if="detecting_language"></div>
-      <br/>
-      <input type="checkbox" id="auto-detect-language"
-      :checked=false
-      @change="toggleAutoDetect"
-      /> {{ $t('language_select_detect') }}
-    </div>
+        v-if="detecting_language">
+      </div>
     `
 });
 
