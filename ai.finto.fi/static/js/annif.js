@@ -89,6 +89,7 @@ const mainApp = createApp({
       show_alert_file_format: false,
       show_alert_request_failed: false,
       show_alert_request_failed_url: false,
+      show_alert_language_detect_failed: false,
       show_dragging_effect: false,
       supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html']
     }
@@ -97,6 +98,13 @@ const mainApp = createApp({
     return {
       detectLanguage: this.detectLanguage
     };
+  },
+  watch: {
+    text_language(newValue, oldValue) {
+      if (newValue != null) {
+        this.show_alert_language_detect_failed = false;
+      }
+    },
   },
   methods: {
     clear() {
@@ -109,6 +117,7 @@ const mainApp = createApp({
       this.show_alert_file_format = false
       this.show_alert_request_failed = false
       this.show_alert_request_failed_url = false
+      this.show_alert_language_detect_failed = false
     },
     detectLanguage() {
       if (!this.disable_language_detection) {
@@ -130,6 +139,9 @@ const mainApp = createApp({
           // this.text_language_detection_score = this.results[0].language;  TODO Add to tooltip
           console.log("Detected language: " + this.text_language);
           this.detecting_language = false;
+          if (this.text_language == null) {
+            this.show_alert_language_detect_failed = true;
+          };
         })
         .catch(error => {
           console.error('Error:', error);

@@ -101,6 +101,7 @@ const messages = {
     alert_request_failed: "Text extraction failed.",
     alert_request_failed_url: "Text extraction failed. Size of URL-targets max. 6 MB. No redirects. You can try downloading the target and then uploading it as a file.",
     alert_file_size: "File is too large; maximum allowed size is 50 MB.",
+    alert_language_detect_failed: "Automatic text language detection failed. Please select a language with the buttons above.",
     text_box_placeholder_text_input: "Copy or write text here and press the button \"Get subject suggestions\"",
     text_box_placeholder_file_input: "Text from the file is fetched here. Then press the button \"Get subject suggestions\"",
     text_box_placeholder_url_input: "Text from the URL is fetched here. Then press the button \"Get subject suggestions\"",
