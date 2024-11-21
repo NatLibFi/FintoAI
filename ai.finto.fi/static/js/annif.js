@@ -460,29 +460,19 @@ mainApp.component('vocab-select', {
   },
   template: `
     <div>
-    <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
-      <div class="select-wrapper">
-        <select class="form-control" id="project"
-          :value="modelValue"
-          @change="handleVocabChange($event.target.value)"
-          >
-          <option v-for="vid in vocab_ids" :value="vid">{{ $t("project_name_"+vid) }} </option>
-        </select>
-      </div>
-    <vocabulary-display-name :selected_vocab_id="getSelectedVocabId()"/>
+      <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
+        <div class="select-wrapper">
+          <select class="form-control" id="project"
+            :value="modelValue"
+            @change="$emit('update:modelValue', $event.target.value)"
+            >
+            <option v-for="vid in vocab_ids" :value="vid">{{ $t("project_name_"+vid) }} </option>
+          </select>
+        </div>
+      <vocabulary-display-name :selected_vocab_id="modelValue"/>
     </div>
     `,
     // {{ extractVersionSpecifierInParentheses(vid) }}
-  methods: {
-      handleVocabChange(vocabId) {
-        const selectedVocab = this.vocab_ids.find(vocab_id => vocab_id === vocabId);
-        this.$emit('update:modelValue', selectedVocab);
-    },
-      getSelectedVocabId() {
-        const selectedVocab = this.vocab_ids.find(vocab_id => vocab_id === this.modelValue);
-        return selectedVocab || null;
-    },
-  },
 });
   //   displayProjectName(project) {
   //     return project.project_id + ' ' + this.extractVersionSpecifierInParentheses(project.name);
