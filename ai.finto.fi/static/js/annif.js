@@ -120,7 +120,7 @@ const mainApp = createApp({
       this.show_alert_language_detect_failed = false
     },
     detectLanguage() {
-      if (!this.disable_language_detection) {
+      if (!this.disable_language_detection && this.text.length > 9) {
         this.detecting_language = true;
         this.text_language = 'none';
         fetch(annif_base_url + 'detect-language', {
