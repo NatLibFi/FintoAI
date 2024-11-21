@@ -448,7 +448,7 @@ mainApp.component('vocab-select', {
           return vocabularyNamesMap[this.selected_vocab_id] || '';
         },
         vocabularyUrl() {
-          return this.vocabularyUrlsMap[this.vocabularyId] || '';
+          return this.vocabularyUrlsMap[this.selected_vocab_id] || '';
           },
         },
       template: `
