@@ -453,7 +453,6 @@ mainApp.component('vocab-select', {
         },
       template: `
         <span id="vocabulary-info">
-        {{ $t('vocabulary_info') }}
         <a :href="vocabularyUrl" target="_blank">{{ vocabularyName }}
           <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true"></a></span>
       `,
