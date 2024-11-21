@@ -466,7 +466,7 @@ mainApp.component('vocab-select', {
           :value="modelValue"
           @change="handleVocabChange($event.target.value)"
           >
-          <option v-for="vid in vocab_ids" :value="vid">{{ $t(vid) }} </option>
+          <option v-for="vid in vocab_ids" :value="vid">{{ $t("project_name_"+vid) }} </option>
         </select>
       </div>
     <vocabulary-display-name :selected_vocab_id="getSelectedVocabId()"/>
