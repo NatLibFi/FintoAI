@@ -487,24 +487,26 @@ mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
   emits: ['update:modelValue'],
   template: `
-    <fieldset id="limit-buttons" class="btn-group select-buttons">
-      <legend class="suggest-form-label">{{ $t('limit_input_label') }}</legend>
-      <input type="radio" class="btn-check" name="limit" id="l1" checked
-        :value="modelValue"
-        @change="$emit('update:modelValue', 10)"
-      >
-      <label class="btn btn-secondary" for="l1">10</label>
-      <input type="radio" class="btn-check" name="limit" id="l2"
-        :value="modelValue"
-        @change="$emit('update:modelValue', 15)"
-      >
-      <label class="btn btn-secondary" for="l2">15</label>
-      <input type="radio" class="btn-check" name="limit" id="l3"
-        :value="modelValue"
-        @change="$emit('update:modelValue', 20)"
-      >
-      <label class="btn btn-secondary" for="l3">20</label>
-    </fieldset>
+    <div>
+      <fieldset id="limit-buttons" class="btn-group select-buttons">
+        <legend class="suggest-form-label">{{ $t('limit_input_label') }}</legend>
+        <input type="radio" class="btn-check" name="limit" id="l1" checked
+          :value="modelValue"
+          @change="$emit('update:modelValue', 10)"
+        >
+        <label class="btn btn-secondary" for="l1">10</label>
+        <input type="radio" class="btn-check" name="limit" id="l2"
+          :value="modelValue"
+          @change="$emit('update:modelValue', 15)"
+        >
+        <label class="btn btn-secondary" for="l2">15</label>
+        <input type="radio" class="btn-check" name="limit" id="l3"
+          :value="modelValue"
+          @change="$emit('update:modelValue', 20)"
+        >
+        <label class="btn btn-secondary" for="l3">20</label>
+      </fieldset>
+    </div>
   `
 })
 
