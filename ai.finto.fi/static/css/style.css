@@ -453,11 +453,6 @@ select:valid:focus {
   background-color: var(--dark-1);
   color: var(--white);
 }
-/* TODO Disable selecting languages unsupported by a project
- .select-buttons label:disabled {
-  background-color: var(--dark-1);
-  color: var(--white);
-} */
 
 #language-detection-spinner {
   margin-left: 1rem;

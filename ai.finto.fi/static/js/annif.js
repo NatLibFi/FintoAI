@@ -130,7 +130,7 @@ const mainApp = createApp({
           },
           body: JSON.stringify({
             text: this.text,
-            languages: ["fi", "sv", "en"]
+            languages: ["fi", "sv", "en"]  // TODO Here should be only langs that selected project supports
           })
         })
         .then(response => response.json())
@@ -536,11 +536,13 @@ mainApp.component('text-language-select', {
         <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}</label>
 
         <input type="radio" class="btn-check" name="language" id="sv" :checked="modelValue === 'sv'"
+          :disabled="isLanguageDisabled('sv')"
           @change="$emit('update:modelValue', 'sv')">
         <label class="btn btn-secondary" for="sv">{{ $t('language_select_sv') }}</label>
 
         <input type="radio" class="btn-check" name="language" id="en" :checked="modelValue === 'en'"
-        @change="$emit('update:modelValue', 'en')">
+          :disabled="isLanguageDisabled('en')"
+          @change="$emit('update:modelValue', 'en')">
         <label class="btn btn-secondary" for="en">{{ $t('language_select_en') }}</label>
 
         <input type="radio" class="btn-check" name="language" id="none" :checked="modelValue === 'none'"
