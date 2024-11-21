@@ -424,8 +424,8 @@ mainApp.component('text-input', {
 mainApp.component('vocab-select', {
   props: ['modelValue', 'vocab_ids'],
   emits: ['update:modelValue'],
-  components: {
-    'vocabulary-info': {
+  components: {  // Use sub-component to make UI language switching change the vocabulary display name
+    'vocabulary-display-name': {
       props: ['selected_vocab_id'],
       data() {
         return {
@@ -452,7 +452,7 @@ mainApp.component('vocab-select', {
           },
         },
       template: `
-        <span id="vocabulary-info">
+        <span id="vocabulary-display-name">
         <a :href="vocabularyUrl" target="_blank">{{ vocabularyName }}
           <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true"></a></span>
       `,
@@ -469,7 +469,7 @@ mainApp.component('vocab-select', {
           <option v-for="vid in vocab_ids" :value="vid">{{ $t(vid) }} </option>
         </select>
       </div>
-    <vocabulary-info :selected_vocab_id="getSelectedVocabId()"/>
+    <vocabulary-display-name :selected_vocab_id="getSelectedVocabId()"/>
     </div>
     `,
     // {{ extractVersionSpecifierInParentheses(vid) }}
