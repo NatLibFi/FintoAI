@@ -3,12 +3,12 @@ const { createApp } = Vue
 if (window.location.protocol.startsWith('http')) {
   // http or https - use APIs of current Annif and textract instances
   var annif_base_url = '/v1/';
-  var textract_base_url = 'https://ai.dev.finto.fi/textract/';  // TODO Switch me back
+  var textract_base_url = '/textract/';  // For development with VS Code Live server: 'https://ai.dev.finto.fi/textract/'
 } else {
   // local development case - use Finto AI dev API and textract running on localhost via port 8001
   // var annif_base_url = 'https://ai.dev.finto.fi/v1/';
   var annif_base_url = 'http://localhost:5000/v1/';
-  var textract_base_url = 'https://ai.dev.finto.fi/textract/'//'http://localhost:8001/textract/';
+  var textract_base_url = 'https://ai.dev.finto.fi/textract/'  // For development with local textract: 'http://localhost:8001/textract/';
 }
 
 const headerApp = createApp({})
@@ -72,7 +72,7 @@ const mainApp = createApp({
       projects: [],
       vocab_ids: [],
       selected_vocab_id: '',
-      text: 'koira',  // TODO Switch me back
+      text: '',
       limit: 10,
       text_language: 'fi',
       disable_language_detection: false,
@@ -136,8 +136,7 @@ const mainApp = createApp({
         .then(response => response.json())
         .then(data => {
           this.text_language = data.results[0].language;
-          // this.text_language_detection_score = this.results[0].language;  TODO Add to tooltip
-          console.log("Detected language: " + this.text_language);
+          // this.text_language_detection_score = data.results[0].score;  TODO Add to tooltip
           this.detecting_language = false;
           if (this.text_language == null) {
             this.show_alert_language_detection_failed = true;
@@ -158,10 +157,6 @@ const mainApp = createApp({
       const projectId = this.selected_vocab_id + "-" + this.text_language;
 
       // get suggestions for given text
-      console.log("Project to call: " + this.projectId)
-      console.log(this.selected_vocab_id)
-      console.log(this.text_language)
-      console.log(this.projectId)
       fetch(annif_base_url + 'projects/' + projectId + '/suggest', {
         method: 'POST',
         headers: {
