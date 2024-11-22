@@ -76,7 +76,7 @@ const mainApp = createApp({
       limit: 10,
       text_language: 'fi',
       disable_language_detection: false,
-      labels_language: 'detect-language',
+      labels_language: 'same-as-text-language',
       results: [],
       show_results: false,
       loading_results: false,
@@ -153,7 +153,7 @@ const mainApp = createApp({
       this.loading_results = true;
       this.show_results = false;
 
-      let labelsLang = this.labels_language === 'detect-language' ? '' : this.labels_language;
+      let labelsLang = this.labels_language === 'same-as-text-language' ? '' : this.labels_language;
 
       const projectId = this.selected_vocab_id + "-" + this.text_language;
 
@@ -575,7 +575,7 @@ mainApp.component('labels-language-select', {
     <div class="select-wrapper">
       <select class="form-control" id="labels-language" :value="modelValue"
         @change="$emit('update:modelValue', $event.target.value)">
-        <option value="detect-language">{{ $t('language_select_same_as_text') }}</option>
+        <option value="same-as-text-language">{{ $t('language_select_same_as_text') }}</option>
         <option value="fi">{{ $t('language_select_fi') }}</option>
         <option value="sv">{{ $t('language_select_sv') }}</option>
         <option value="en">{{ $t('language_select_en') }}</option>
