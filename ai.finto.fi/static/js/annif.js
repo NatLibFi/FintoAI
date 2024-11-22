@@ -89,7 +89,7 @@ const mainApp = createApp({
       show_alert_file_format: false,
       show_alert_request_failed: false,
       show_alert_request_failed_url: false,
-      show_alert_language_detect_failed: false,
+      show_alert_language_detection_failed: false,
       show_dragging_effect: false,
       supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html']
     }
@@ -102,7 +102,7 @@ const mainApp = createApp({
   watch: {
     text_language(newValue, oldValue) {
       if (newValue != null) {
-        this.show_alert_language_detect_failed = false;
+        this.show_alert_language_detection_failed = false;
       }
     },
   },
@@ -117,7 +117,7 @@ const mainApp = createApp({
       this.show_alert_file_format = false
       this.show_alert_request_failed = false
       this.show_alert_request_failed_url = false
-      this.show_alert_language_detect_failed = false
+      this.show_alert_language_detection_failed = false
     },
     detectLanguage() {
       if (!this.disable_language_detection && this.text.length > 9) {
@@ -140,7 +140,7 @@ const mainApp = createApp({
           console.log("Detected language: " + this.text_language);
           this.detecting_language = false;
           if (this.text_language == null) {
-            this.show_alert_language_detect_failed = true;
+            this.show_alert_language_detection_failed = true;
           };
         })
         .catch(error => {
@@ -460,7 +460,7 @@ mainApp.component('vocab-select', {
   },
   template: `
     <div>
-      <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
+      <label class="suggest-form-label form-label" for="project">{{ $t('vocab_select_label') }}</label>
         <div class="select-wrapper">
           <select class="form-control" id="project"
             :value="modelValue"
@@ -528,7 +528,7 @@ mainApp.component('text-language-select', {
     },
   },
   template: `
-    <label class="suggest-form-label form-label" for="text-language">{{ $t('language_select_text') }}</label>
+    <label class="suggest-form-label form-label" for="text-language">{{ $t('text_language_select_label') }}</label>
     <div>
       <fieldset id="language-buttons" class="btn-group select-buttons">
         <input type="radio" class="btn-check" name="language" id="fi" :checked="modelValue === 'fi'"

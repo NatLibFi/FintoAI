@@ -163,7 +163,7 @@
 
           <vocab-select v-model="selected_vocab_id" :vocab_ids="vocab_ids"></vocab-select>
           <text-language-select v-model="text_language" :selected_vocab_id="selected_vocab_id" :detecting_language="detecting_language"></text-language-select>
-          <div class="alert alert-danger" v-cloak v-if="show_alert_language_detect_failed">{{ $t('alert_language_detect_failed') }}</div>
+          <div class="alert alert-danger" v-cloak v-if="show_alert_language_detection_failed">{{ $t('alert_language_detection_failed') }}</div>
           <input type="checkbox" id="checkbox" v-model="disable_language_detection" /> {{ $t('disable_language_detection') }}
           <limit-input v-model="limit"></limit-input>
           <labels-language-select v-model="labels_language" :selected_vocab_id="selected_vocab_id"></labels-language-select>
