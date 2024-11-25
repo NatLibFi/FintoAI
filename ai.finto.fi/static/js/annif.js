@@ -419,52 +419,35 @@ mainApp.component('text-input', {
 mainApp.component('vocab-select', {
   props: ['modelValue', 'vocab_ids'],
   emits: ['update:modelValue'],
-  components: {  // Use sub-component to make UI language switching change the vocabulary display name
-    'vocabulary-display-name': {
-      props: ['selected_vocab_id'],
-      data() {
-        return {
-          vocabularyUrlsMap: {
-            'yso': 'https://finto.fi/yso/',
-            'ykl': 'https://finto.fi/ykl/',
-            'kauno': 'https://finto.fi/kauno/',
-            'thema': 'https://ns.editeur.org/thema/',
-          },
-        };
+  data() {
+    return {
+      vocabularyUrlsMap: {
+        'yso': 'https://finto.fi/yso/',
+        'ykl': 'https://finto.fi/ykl/',
+        'kauno': 'https://finto.fi/kauno/',
+        'thema': 'https://ns.editeur.org/thema/',
       },
-      computed: {
-        vocabularyName() {
-          const vocabularyNamesMap = {
-            'yso': this.$t('vocabulary_name_yso'),
-            'ykl': this.$t('vocabulary_name_ykl'),
-            'kauno': this.$t('vocabulary_name_kauno'),
-            'thema': this.$t('vocabulary_name_thema'),
-          }
-          return vocabularyNamesMap[this.selected_vocab_id] || '';
-        },
-        vocabularyUrl() {
-          return this.vocabularyUrlsMap[this.selected_vocab_id] || '';
-          },
-        },
-      template: `
-        <span id="vocabulary-display-name">
-        <a :href="vocabularyUrl" target="_blank">{{ vocabularyName }}
-          <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true"></a></span>
-      `,
+    };
+  },
+  computed: {
+    vocabularyUrl() {
+      return this.vocabularyUrlsMap[this.modelValue] || '';
     },
   },
   template: `
     <div>
-      <label class="suggest-form-label form-label" for="project">{{ $t('vocab_select_label') }}</label>
-        <div class="select-wrapper">
-          <select class="form-control" id="project"
+      <label class="suggest-form-label form-label" for="vocab">{{ $t('vocab_select_label') }}</label>
+      <a id="vocab-url" :href="vocabularyUrl" target="_blank">
+        <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true">
+      </a>
+      <div class="select-wrapper">
+        <select class="form-control" id="vocab"
             :value="modelValue"
             @change="$emit('update:modelValue', $event.target.value)"
-            >
-            <option v-for="vid in vocab_ids" :value="vid">{{ $t("project_name_"+vid) }} </option>
-          </select>
-        </div>
-      <vocabulary-display-name :selected_vocab_id="modelValue"/>
+          >
+          <option v-for="vid in vocab_ids" :value="vid">{{ $t("vocabulary_name_"+vid) }} </option>
+        </select>
+      </div>
     </div>
     `,
     // {{ extractVersionSpecifierInParentheses(vid) }}
