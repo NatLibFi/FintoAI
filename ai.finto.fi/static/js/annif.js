@@ -429,6 +429,18 @@ mainApp.component('vocab-select', {
       },
     };
   },
+  methods: {
+    versionSpecifierInParentheses(vid) {
+      // TODO: Get version from project name
+      return vid === "yso" ? "(2024.2.Ikhwan-al-Safa)" : ""
+      // const match = name.match(/\(([^)]+)\)$/);
+      // return match ? match[0] : '';
+      //   extractVersionSpecifierInParentheses(name) {
+      //     const match = name.match(/\(([^)]+)\)$/);
+      //     return match ? match[0] : '';
+
+    },
+  },
   computed: {
     vocabularyUrl() {
       return this.vocabularyUrlsMap[this.modelValue] || '';
@@ -445,21 +457,12 @@ mainApp.component('vocab-select', {
             :value="modelValue"
             @change="$emit('update:modelValue', $event.target.value)"
           >
-          <option v-for="vid in vocab_ids" :value="vid">{{ $t("vocabulary_name_"+vid) }} </option>
+          <option v-for="vid in vocab_ids" :value="vid">{{ $t("vocabulary_name_"+vid) }} {{ this.versionSpecifierInParentheses(vid) }} </option>
         </select>
       </div>
     </div>
     `,
-    // {{ extractVersionSpecifierInParentheses(vid) }}
 });
-  //   displayProjectName(project) {
-  //     return project.project_id + ' ' + this.extractVersionSpecifierInParentheses(project.name);
-  //   },
-  //   extractVersionSpecifierInParentheses(name) {
-  //     const match = name.match(/\(([^)]+)\)$/);
-  //     return match ? match[0] : '';
-  //   },
-  // },
 
 mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
