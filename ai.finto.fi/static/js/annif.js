@@ -567,7 +567,7 @@ mainApp.component('labels-language-select', {
 });
 
 mainApp.component('result-list', {
-  props: ['results', 'language', 'selected_project', 'projects'],
+  props: ['results', 'selected_vocab_id', 'labels_language', 'text_language'],
   methods: {
     copy_class_to_clipboard(term) {
       navigator.clipboard.writeText(term.notation)
@@ -584,14 +584,14 @@ mainApp.component('result-list', {
         sv: 'swe',
         en: 'eng'
       }
-      const vocab = this.selected_project.split('-')[0];  // Get vocabulary id for Melinda format from project id
+      const vocab = this.selected_vocab_id;
       if (vocab === 'ykl') {
         var alephString = term.notation + '$$2' + vocab + '\n';
       } else {
         const term_language =
-          this.language === 'project-language'
-            ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language]
-            : languageCodes[this.language]
+          this.labels_language === 'same-as-text-language'
+            ? languageCodes[this.text_language]
+            : languageCodes[this.labels_language]
         var alephString = term.label + '$$2' + vocab + '/' + term_language + '$$0' + term.uri + '\n';
       }
       navigator.clipboard.writeText(alephString);
