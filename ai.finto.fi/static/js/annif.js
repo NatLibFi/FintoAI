@@ -582,7 +582,8 @@ mainApp.component('result-list', {
       const languageCodes = {
         fi: 'fin',
         sv: 'swe',
-        en: 'eng'
+        en: 'eng',
+        se: 'sme',
       }
       const vocab = this.selected_vocab_id;
       if (vocab === 'ykl') {
