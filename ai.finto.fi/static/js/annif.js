@@ -75,6 +75,7 @@ const mainApp = createApp({
       text: '',
       limit: 10,
       text_language: 'fi',
+      is_language_detected: false,
       disable_language_detection: false,
       labels_language: 'same-as-text-language',
       results: [],
@@ -113,6 +114,7 @@ const mainApp = createApp({
       this.show_results = false
       this.selected_file = ''
       this.selected_url = ''
+      this.is_language_detected = false;
       this.show_alert_file_size = false
       this.show_alert_file_format = false
       this.show_alert_request_failed = false
@@ -138,13 +140,17 @@ const mainApp = createApp({
           this.text_language = data.results[0].language;
           // this.text_language_detection_score = data.results[0].score;  TODO Add to tooltip
           this.detecting_language = false;
+          this.is_language_detected = true;
           if (this.text_language == null) {
             this.show_alert_language_detection_failed = true;
+            this.is_language_detected = false;
           };
         })
         .catch(error => {
           console.error('Error:', error);
           this.detecting_language = false;
+          this.show_alert_language_detection_failed = true;
+          this.is_language_detected = false;
         });
       }
     },
@@ -492,8 +498,8 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('text-language-select', {
-  props: ['modelValue', 'selected_vocab_id', 'detecting_language'], // modelValue: text_language
-  emits: ['update:modelValue'],
+  props: ['textLanguage', 'isLanguageDetected', 'selected_vocab_id', 'detecting_language'],
+  emits: ['update:text-language', 'update:is-language-detected'],
   computed: {
     disabledLanguages() {
       // Map of languages and their enabling criteria based on vocabularyId
@@ -504,31 +510,43 @@ mainApp.component('text-language-select', {
     }
   },
   methods: {
+    updateValue(value) {
+      this.$emit('update:text-language', value);
+      this.$emit('update:is-language-detected', false);
+    },
     isLanguageDisabled(language) {
       return this.disabledLanguages[language] || false; // Default to false if not specified in map
+    },
+    isThisLanguageDetected(language) {
+      return (this.isLanguageDetected & this.textLanguage == language) || false;
     },
   },
   template: `
     <label class="suggest-form-label form-label" for="text-language">{{ $t('text_language_select_label') }}</label>
     <div>
       <fieldset id="language-buttons" class="btn-group select-buttons">
-        <input type="radio" class="btn-check" name="language" id="fi" :checked="modelValue === 'fi'"
-          @change="$emit('update:modelValue', 'fi')">
-        <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}</label>
+        <input type="radio" class="btn-check" name="language" id="fi" :checked="textLanguage === 'fi'"
+          @change="updateValue('fi')"
+        >
+        <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}{{ isThisLanguageDetected('fi') ? '*' : '' }}</label>
 
-        <input type="radio" class="btn-check" name="language" id="sv" :checked="modelValue === 'sv'"
+        <input type="radio" class="btn-check" name="language" id="sv" :checked="textLanguage === 'sv'"
           :disabled="isLanguageDisabled('sv')"
-          @change="$emit('update:modelValue', 'sv')">
-        <label class="btn btn-secondary" for="sv">{{ $t('language_select_sv') }}</label>
+          @change="updateValue('sv')"
+        >
+        <label class="btn btn-secondary" for="sv">{{ $t('language_select_sv') }}{{ isThisLanguageDetected('sv') ? '*' : '' }}</label>
 
-        <input type="radio" class="btn-check" name="language" id="en" :checked="modelValue === 'en'"
+        <input type="radio" class="btn-check" name="language" id="en" :checked="textLanguage === 'en'"
           :disabled="isLanguageDisabled('en')"
-          @change="$emit('update:modelValue', 'en')">
-        <label class="btn btn-secondary" for="en">{{ $t('language_select_en') }}</label>
+          @change="updateValue('en')"
+        >
+        <label class="btn btn-secondary" for="en">{{ $t('language_select_en') }}{{ isThisLanguageDetected('en') ? '*' : '' }}</label>
 
-        <input type="radio" class="btn-check" name="language" id="none" :checked="modelValue === 'none'"
-        style="display: none;">
+        <input type="radio" class="btn-check" name="language" id="none" :checked="textLanguage === 'none'"
+          style="display: none;"
+        >
       </fieldset>
+      </div>
       <div id="language-detection-spinner" class="spinner-border" role="status" v-cloak
         v-if="detecting_language">
       </div>
