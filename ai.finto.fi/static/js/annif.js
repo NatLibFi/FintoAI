@@ -76,7 +76,6 @@ const mainApp = createApp({
       limit: 10,
       text_language: 'fi',
       is_language_detected: false,
-      disable_language_detection: false,
       labels_language: 'same-as-text-language',
       results: [],
       show_results: false,
@@ -122,7 +121,7 @@ const mainApp = createApp({
       this.show_alert_language_detection_failed = false
     },
     detectLanguage() {
-      if (!this.disable_language_detection && this.text.length > 9) {
+      if (this.text.length > 9) {
         this.detecting_language = true;
         this.text_language = 'none';
         fetch(annif_base_url + 'detect-language', {
@@ -213,10 +212,8 @@ const mainApp = createApp({
     apply_start_reading_effects() {
       this.clear();
       this.loading_upload = true;
-      if (!this.disable_language_detection) {
-        this.detecting_language = true;
-        this.text_language = 'none';
-      }
+      this.detecting_language = true;
+      this.text_language = 'none';
     },
     read_file(file) {
       this.apply_start_reading_effects()

@@ -459,18 +459,6 @@ select:valid:focus {
   margin-left: 1rem;
 }
 
-/* To vertically align the checkbox and label on both FF and Chrome */
-/* #disable-language-detection input[type=checkbox] {
-  vertical-align: middle;
-  position: relative;
-  bottom: 1.5px;
-  margin-right: 0.25rem;
-} */
-/* TODO Make the below margin height the same in both FF and Chrome */
-#disable-language-detection {
-  margin-bottom: 0.75rem;
-}
-
 #limit-buttons label{
   max-width: 40px;
 }
