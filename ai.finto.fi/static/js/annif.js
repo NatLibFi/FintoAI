@@ -495,7 +495,7 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('text-language-select', {
-  props: ['textLanguage', 'isLanguageDetected', 'selected_vocab_id', 'detecting_language'],
+  props: ['textLanguage', 'isLanguageDetected', 'selected_vocab_id', 'detecting_language', 'show_alert_language_detection_failed'],
   emits: ['update:text-language', 'update:is-language-detected'],
   computed: {
     disabledLanguages() {
@@ -543,10 +543,10 @@ mainApp.component('text-language-select', {
           style="display: none;"
         >
       </fieldset>
-      </div>
-      <div id="language-detection-spinner" class="spinner-border" role="status" v-cloak
-        v-if="detecting_language">
-      </div>
+    </div>
+    <div v-if="detecting_language" v-cloak class="spinner-border spinner-border-sm" role="status" v-cloak></div>
+    <div v-if="isLanguageDetected" v-cloak>{{ $t('language_detected_info') }}</div>
+    <div v-if="show_alert_language_detection_failed" v-cloak class="alert alert-danger">{{ $t('alert_language_detection_failed') }}</div>
     `
 });
 

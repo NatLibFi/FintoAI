@@ -455,10 +455,6 @@ select:valid:focus {
   color: var(--white);
 }
 
-#language-detection-spinner {
-  margin-left: 1rem;
-}
-
 #limit-buttons label{
   max-width: 40px;
 }

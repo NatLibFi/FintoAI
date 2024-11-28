@@ -162,8 +162,7 @@
           <h3>{{ $t('suggestions_label') }}</h3>
 
           <vocab-select v-model="selected_vocab_id" :vocab_ids="vocab_ids"></vocab-select>
-          <text-language-select v-model:text-language="text_language" v-model:is-language-detected="is_language_detected" :selected_vocab_id="selected_vocab_id" :detecting_language="detecting_language"></text-language-select>
-          <div class="alert alert-danger" v-cloak v-if="show_alert_language_detection_failed">{{ $t('alert_language_detection_failed') }}</div>
+          <text-language-select v-model:text-language="text_language" v-model:is-language-detected="is_language_detected" :selected_vocab_id="selected_vocab_id" :detecting_language="detecting_language" :show_alert_language_detection_failed="show_alert_language_detection_failed"></text-language-select>
           <limit-input v-model="limit"></limit-input>
           <labels-language-select v-model="labels_language" :selected_vocab_id="selected_vocab_id"></labels-language-select>
 
