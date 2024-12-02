@@ -420,18 +420,17 @@ mainApp.component('text-input', {
 })
 
 mainApp.component('vocab-select', {
-  props: ['modelValue', 'vocab_ids'],
+  props: ['modelValue', 'vocab_ids', 'projects'],  // modelValue: selected_project_id
   emits: ['update:modelValue'],
   methods: {
-    versionSpecifierInParentheses(vid) {
-      // TODO: Get version from project name
-      return vid === "yso" ? "(2024.2.Ikhwan-al-Safa)" : ""
-      // const match = name.match(/\(([^)]+)\)$/);
-      // return match ? match[0] : '';
-      //   extractVersionSpecifierInParentheses(name) {
-      //     const match = name.match(/\(([^)]+)\)$/);
-      //     return match ? match[0] : '';
-
+    versionSpecifierInParentheses(vocabId) {
+      if (vocabId == "yso") {
+        const ysoProjName = this.projects[0].name;  // Get the YSO version specifier from the first project
+        const match = ysoProjName.match(/\(([^)]+)\)$/);
+        return match ? match[0] : '';
+      } else {
+        return "";
+      }
     },
   },
   template: `
