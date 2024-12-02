@@ -381,11 +381,19 @@ header a:hover, footer a:hover {
   font-size: 1.25rem;
 }
 
-#vocab-url {
-  margin-left: 6px;
+#vocabulary-info {
+  margin-left: 5px;
+  margin-bottom: 0.5rem;
 }
-#vocab-url img {
-  width: 13px;
+#vocabulary-info a:hover {
+  color: var(--accent-4);
+}
+#vocabulary-info a:hover img {
+  content: url("../img/arrow-up-right-from-square-solid-2.svg");
+}
+#vocabulary-info img {
+  height: 12px;
+  margin-bottom: 4px;
 }
 
 .suggest-form-label {

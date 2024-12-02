@@ -422,16 +422,6 @@ mainApp.component('text-input', {
 mainApp.component('vocab-select', {
   props: ['modelValue', 'vocab_ids'],
   emits: ['update:modelValue'],
-  data() {
-    return {
-      vocabularyUrlsMap: {
-        'yso': 'https://finto.fi/yso/',
-        'ykl': 'https://finto.fi/ykl/',
-        'kauno': 'https://finto.fi/kauno/',
-        'thema': 'https://ns.editeur.org/thema/',
-      },
-    };
-  },
   methods: {
     versionSpecifierInParentheses(vid) {
       // TODO: Get version from project name
@@ -444,17 +434,9 @@ mainApp.component('vocab-select', {
 
     },
   },
-  computed: {
-    vocabularyUrl() {
-      return this.vocabularyUrlsMap[this.modelValue] || '';
-    },
-  },
   template: `
     <div>
       <label class="suggest-form-label form-label" for="vocab">{{ $t('vocab_select_label') }}</label>
-      <a id="vocab-url" :href="vocabularyUrl" target="_blank">
-        <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true">
-      </a>
       <div class="select-wrapper">
         <select class="form-control" id="vocab"
             :value="modelValue"
@@ -463,6 +445,43 @@ mainApp.component('vocab-select', {
           <option v-for="vid in vocab_ids" :value="vid">{{ $t("vocabulary_name_"+vid) }} {{ this.versionSpecifierInParentheses(vid) }} </option>
         </select>
       </div>
+    </div>
+    `,
+});
+
+mainApp.component('vocabulary-info', {
+  props: ['selected_vocab_id'],
+  data() {
+    return {
+      vocabularyUrlsMap: {
+        'yso': 'https://finto.fi/yso/',
+        'ykl': 'https://finto.fi/ykl/',
+        'kauno': 'https://finto.fi/kauno/',
+        'thema': 'https://ns.editeur.org/thema/',
+      },
+    };
+  },
+  computed: {
+    vocabularyName() {
+      const vocabularyNamesMap = {
+        'yso': this.$t('vocabulary_name_yso'),
+        'ykl': this.$t('vocabulary_name_ykl'),
+        'kauno': this.$t('vocabulary_name_kauno'),
+        'thema': this.$t('vocabulary_name_thema'),
+      }
+      return vocabularyNamesMap[this.selected_vocab_id] || '';
+    },
+    vocabularyUrl() {
+      return this.vocabularyUrlsMap[this.selected_vocab_id] || '';
+    },
+  },
+  template: `
+    <div id="vocabulary-info">
+      {{ $t('vocabulary_info') }}
+      <a :href="vocabularyUrl" target="_blank">
+        {{ vocabularyName }}
+        <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true">
+      </a>
     </div>
     `,
 });
