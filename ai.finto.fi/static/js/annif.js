@@ -456,6 +456,7 @@ mainApp.component('vocabulary-info', {
         'yso': 'https://finto.fi/yso/',
         'ykl': 'https://finto.fi/ykl/',
         'kauno': 'https://finto.fi/kauno/',
+        'koko': 'https://finto.fi/koko/',
         'thema': 'https://ns.editeur.org/thema/',
       },
     };
@@ -466,6 +467,7 @@ mainApp.component('vocabulary-info', {
         'yso': this.$t('vocabulary_name_yso'),
         'ykl': this.$t('vocabulary_name_ykl'),
         'kauno': this.$t('vocabulary_name_kauno'),
+        'koko': this.$t('vocabulary_name_koko'),
         'thema': this.$t('vocabulary_name_thema'),
       }
       return vocabularyNamesMap[this.selected_vocab_id] || '';
