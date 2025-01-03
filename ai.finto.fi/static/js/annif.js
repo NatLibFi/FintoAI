@@ -523,6 +523,8 @@ mainApp.component('text-language-select', {
       return {
         sv: this.selected_vocab_id == 'kauno',
         en: this.selected_vocab_id == 'kauno',
+        sv: this.selected_vocab_id == 'koko',
+        en: this.selected_vocab_id == 'koko',
       };
     }
   },
