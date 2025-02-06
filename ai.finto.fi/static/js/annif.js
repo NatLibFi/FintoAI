@@ -3,12 +3,15 @@ const { createApp } = Vue
 if (window.location.protocol.startsWith('http')) {
   // http or https - use APIs of current Annif and textract instances
   var annif_base_url = '/v1/';
-  var textract_base_url = '/textract/';  // For development with VS Code Live server: 'https://ai.dev.finto.fi/textract/'
+  var textract_base_url = '/textract/';
+} else if (window.location.protocol.startsWith('file')) {
+  // local development with browser - use Finto AI dev API
+  var annif_base_url = 'https://ai.dev.finto.fi/v1/';
+  var textract_base_url = 'https://ai.dev.finto.fi/textract/'
 } else {
-  // local development case - use Finto AI dev API and textract running on localhost via port 8001
-  // var annif_base_url = 'https://ai.dev.finto.fi/v1/';
+  // local development with VS Code Live Server extension - use APIs of Annif on localhost via Live Server proxy (overcomes CORS error by /v1/detect-language)
   var annif_base_url = 'http://localhost:5000/v1/';
-  var textract_base_url = 'https://ai.dev.finto.fi/textract/'  // For development with local textract: 'http://localhost:8001/textract/';
+  // var textract_base_url = Null  // Textract does not work with simple Live Server proxy(?)
 }
 
 const headerApp = createApp({})
