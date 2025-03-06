@@ -116,7 +116,7 @@ const messages = {
     vocabulary_info: "Vocabulary: ",
     language_detected_info: "* automatically detected",
     limit_input_label: "Maximum # of suggestions",
-    language_select_label: "Labels language",
+    language_select_label: "Term language",
     language_select_same_as_text: "Same as text language",
     language_select_fi: "Finnish",
     language_select_sv: "Swedish",
