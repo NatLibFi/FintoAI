@@ -524,10 +524,8 @@ mainApp.component('text-language-select', {
     disabledLanguages() {
       // Map of languages and their enabling criteria based on vocabularyId
       return {
-        sv: this.selected_vocab_id == 'kauno',
-        en: this.selected_vocab_id == 'kauno',
-        sv: this.selected_vocab_id == 'koko',
-        en: this.selected_vocab_id == 'koko',
+        sv: this.selected_vocab_id == 'kauno' || this.selected_vocab_id == 'koko',
+        en: this.selected_vocab_id == 'kauno' || this.selected_vocab_id == 'koko',
       };
     }
   },
