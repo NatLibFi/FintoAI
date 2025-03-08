@@ -79,6 +79,7 @@ const mainApp = createApp({
       limit: 10,
       text_language: 'fi',
       is_language_detected: false,
+      text_language_detection_results: {},
       labels_language: 'same-as-text-language',
       results: [],
       show_results: false,
@@ -117,6 +118,7 @@ const mainApp = createApp({
       this.selected_file = ''
       this.selected_url = ''
       this.is_language_detected = false;
+      this.text_language_detection_results = {};
       this.show_alert_file_size = false
       this.show_alert_file_format = false
       this.show_alert_request_failed = false
@@ -127,6 +129,7 @@ const mainApp = createApp({
       if (this.text.length > 9) {
         this.detecting_language = true;
         this.text_language = 'none';
+        this.text_language_detection_results = {};
         fetch(annif_base_url + 'detect-language', {
           method: 'POST',
           headers: {
@@ -140,7 +143,12 @@ const mainApp = createApp({
         .then(response => response.json())
         .then(data => {
           this.text_language = data.results[0].language;
-          // this.text_language_detection_score = data.results[0].score;  TODO Add to tooltip
+          this.text_language_detection_results = data.results.reduce((acc, obj) => {
+            if (obj.language !== null) {
+              acc[obj.language] = obj.score;
+            }
+            return acc;
+          }, { });
           this.detecting_language = false;
           this.is_language_detected = true;
           if (this.text_language == null) {
@@ -518,7 +526,7 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('text-language-select', {
-  props: ['textLanguage', 'isLanguageDetected', 'selected_vocab_id', 'detecting_language', 'show_alert_language_detection_failed'],
+  props: ['textLanguage', 'isLanguageDetected', 'text_language_detection_results', 'selected_vocab_id', 'detecting_language', 'show_alert_language_detection_failed'],
   emits: ['update:text-language', 'update:is-language-detected'],
   computed: {
     disabledLanguages() {
@@ -527,7 +535,7 @@ mainApp.component('text-language-select', {
         sv: this.selected_vocab_id == 'kauno' || this.selected_vocab_id == 'koko',
         en: this.selected_vocab_id == 'kauno' || this.selected_vocab_id == 'koko',
       };
-    }
+    },
   },
   methods: {
     updateValue(value) {
@@ -548,19 +556,25 @@ mainApp.component('text-language-select', {
         <input type="radio" class="btn-check" name="language" id="fi" :checked="textLanguage === 'fi'"
           @change="updateValue('fi')"
         >
-        <label class="btn btn-secondary" for="fi">{{ $t('language_select_fi') }}{{ isThisLanguageDetected('fi') ? '*' : '' }}</label>
+        <label class="btn btn-secondary" for="fi" :title="text_language_detection_results['fi']">
+          {{ $t('language_select_fi') }}{{ isThisLanguageDetected('fi') ? '*' : '' }}
+        </label>
 
         <input type="radio" class="btn-check" name="language" id="sv" :checked="textLanguage === 'sv'"
           :disabled="isLanguageDisabled('sv')"
           @change="updateValue('sv')"
         >
-        <label class="btn btn-secondary" for="sv">{{ $t('language_select_sv') }}{{ isThisLanguageDetected('sv') ? '*' : '' }}</label>
+        <label class="btn btn-secondary" for="sv" :title="text_language_detection_results['sv']">
+          {{ $t('language_select_sv') }}{{ isThisLanguageDetected('sv') ? '*' : '' }}
+        </label>
 
         <input type="radio" class="btn-check" name="language" id="en" :checked="textLanguage === 'en'"
           :disabled="isLanguageDisabled('en')"
           @change="updateValue('en')"
         >
-        <label class="btn btn-secondary" for="en">{{ $t('language_select_en') }}{{ isThisLanguageDetected('en') ? '*' : '' }}</label>
+        <label class="btn btn-secondary" for="en" :title="text_language_detection_results['en']">
+          {{ $t('language_select_en') }}{{ isThisLanguageDetected('en') ? '*' : '' }}
+        </label>
 
         <input type="radio" class="btn-check" name="language" id="none" :checked="textLanguage === 'none'"
           style="display: none;"
