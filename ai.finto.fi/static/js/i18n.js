@@ -195,7 +195,7 @@ const messages = {
     vocabulary_info: "Vokabulär: ",
     language_detected_info: "* identifieras automatiskt",
     limit_input_label: "Maximalt antal förslag",
-    language_select_label: "Termers språk",
+    language_select_label: "Termernas språk",
     language_select_same_as_text: "Samma som textens språk",
     language_select_fi: "finska",
     language_select_sv: "svenska",
