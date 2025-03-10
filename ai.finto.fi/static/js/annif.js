@@ -126,43 +126,42 @@ const mainApp = createApp({
       this.show_alert_language_detection_failed = false
     },
     detectLanguage() {
-      if (this.text.length > 9) {
-        this.detecting_language = true;
-        this.text_language = 'none';
-        this.text_language_detection_results = {};
-        fetch(annif_base_url + 'detect-language', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            text: this.text,
-            languages: ["fi", "sv", "en"]  // TODO Here should be only langs that selected project supports
-          })
+      this.detecting_language = true;
+      this.text_language = 'none';
+      this.text_language_detection_results = {};
+      fetch(annif_base_url + 'detect-language', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          text: this.text,
+          languages: ["fi", "sv", "en"]  // TODO Here should be only langs that selected project supports
         })
-        .then(response => response.json())
-        .then(data => {
-          this.text_language = data.results[0].language;
-          this.text_language_detection_results = data.results.reduce((acc, obj) => {
-            if (obj.language !== null) {
-              acc[obj.language] = obj.score;
-            }
-            return acc;
-          }, { });
-          this.detecting_language = false;
-          this.is_language_detected = true;
-          if (this.text_language == null) {
-            this.show_alert_language_detection_failed = true;
-            this.is_language_detected = false;
-          };
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          this.detecting_language = false;
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.text_language = data.results[0].language;
+        // Make a dictionary of languages and their scores
+        this.text_language_detection_results = data.results.reduce((acc, obj) => {
+          if (obj.language !== null) {
+            acc[obj.language] = obj.score;
+          }
+          return acc;
+        }, { });
+        this.detecting_language = false;
+        this.is_language_detected = true;
+        if (this.text_language == null) {
           this.show_alert_language_detection_failed = true;
           this.is_language_detected = false;
-        });
-      }
+        };
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        this.detecting_language = false;
+        this.show_alert_language_detection_failed = true;
+        this.is_language_detected = false;
+      });
     },
     suggest() {
       this.loading_results = true;
@@ -411,10 +410,12 @@ mainApp.component('text-input', {
   },
   methods: {
     updateValue(value) {
-      this.$emit('update:modelValue', value);
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => this.detectLanguage(), 1000);  // Delay for language detection after input typing
-    },
+      if (value.length > 9) {  // Require at least 10 characters to attempt language detection
+        this.$emit('update:modelValue', value);
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => this.detectLanguage(), 1000);  // Delay for language detection after input typing
+      }
+    }
   },
   template: `
     <label class="visually-hidden" for="text">{{ $t(placeholder_to_show) }}></label>
