@@ -410,8 +410,8 @@ mainApp.component('text-input', {
   },
   methods: {
     updateValue(value) {
-      if (value.length > 9) {  // Require at least 10 characters to attempt language detection
-        this.$emit('update:modelValue', value);
+      this.$emit('update:modelValue', value);
+      if (value.length >= 10) {  // Require at least 10 characters to attempt language detection
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => this.detectLanguage(), 1000);  // Delay for language detection after input typing
       }
