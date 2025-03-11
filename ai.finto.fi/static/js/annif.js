@@ -80,6 +80,12 @@ const mainApp = createApp({
       text_language: 'fi',
       is_language_detected: false,
       text_language_detection_results: {},
+      unsupported_langs_for_vocabs: {
+        'fi': [],
+        'sv': ['kauno', 'koko'],
+        'en': ['kauno', 'koko'],
+        'null': [],
+      },
       labels_language: 'same-as-text-language',
       results: [],
       show_results: false,
@@ -127,7 +133,7 @@ const mainApp = createApp({
     },
     detectLanguage() {
       this.detecting_language = true;
-      this.text_language = 'none';
+      this.text_language = null;
       this.text_language_detection_results = {};
       fetch(annif_base_url + 'detect-language', {
         method: 'POST',
@@ -136,7 +142,7 @@ const mainApp = createApp({
         },
         body: JSON.stringify({
           text: this.text,
-          languages: ["fi", "sv", "en"]  // TODO Here should be only langs that selected project supports
+          languages: ["fi", "sv", "en"]
         })
       })
       .then(response => response.json())
@@ -223,7 +229,7 @@ const mainApp = createApp({
       this.clear();
       this.loading_upload = true;
       this.detecting_language = true;
-      this.text_language = 'none';
+      this.text_language = null;
     },
     read_file(file) {
       this.apply_start_reading_effects()
@@ -527,14 +533,14 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('text-language-select', {
-  props: ['textLanguage', 'isLanguageDetected', 'text_language_detection_results', 'selected_vocab_id', 'detecting_language', 'show_alert_language_detection_failed'],
+  props: ['textLanguage', 'isLanguageDetected', 'text_language_detection_results', 'unsupported_langs_for_vocabs', 'selected_vocab_id', 'detecting_language', 'show_alert_language_detection_failed'],
   emits: ['update:text-language', 'update:is-language-detected'],
   computed: {
     disabledLanguages() {
-      // Map of languages and their enabling criteria based on vocabularyId
       return {
-        sv: this.selected_vocab_id == 'kauno' || this.selected_vocab_id == 'koko',
-        en: this.selected_vocab_id == 'kauno' || this.selected_vocab_id == 'koko',
+        fi: this.unsupported_langs_for_vocabs.fi.includes(this.selected_vocab_id),
+        sv: this.unsupported_langs_for_vocabs.sv.includes(this.selected_vocab_id),
+        en: this.unsupported_langs_for_vocabs.en.includes(this.selected_vocab_id),
       };
     },
   },
