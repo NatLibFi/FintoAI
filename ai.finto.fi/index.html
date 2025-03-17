@@ -160,7 +160,7 @@
 
           <project-select v-model="selected_project" :projects="projects"></project-select>
           <limit-input v-model="limit"></limit-input><br>
-          <language-select v-model="language"></language-select>
+          <language-select v-model="language" :selected-project="selected_project"></language-select>
 
           <div class="d-grid justify-content-end">
             <button id="get-suggestions" type="button" class="btn btn-primary"

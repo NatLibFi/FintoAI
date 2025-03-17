@@ -356,6 +356,7 @@ mainApp.component('project-select', {
       },
       computed: {
         vocabularyId() {
+          // TODO: This is a hack. We should expose the vocabulary id from Annif API.
           // Assume vocabulary id is a prefix of project id
           if (this.selectedProject && this.selectedProject.project_id) {
             // Assume vocabulary id is a prefix of project id
@@ -435,23 +436,44 @@ mainApp.component('limit-input', {
 })
 
 mainApp.component('language-select', {
-  props: ['modelValue'], // modelValue: selected language
+  props: ['modelValue', 'selectedProject'],
   emits: ['update:modelValue'],
+  computed: {
+    vocabularyId() {
+      // TODO: This is a hack. We should expose the vocabulary id from Annif API.
+      // Why project is here the project_id string?
+      // Assume vocabulary id is a prefix
+      if (this.selectedProject) {
+        return this.selectedProject.split("-")[0];
+      }
+      return '';
+    },
+    disabledLanguages() {
+      // Map of languages and their enabling criteria based on vocabularyId
+      return {
+        se: this.vocabularyId !== 'yso', // 'se' enabled only if vocabularyId is 'yso'
+      };
+    }
+  },
+  methods: {
+    isOptionDisabled(language) {
+      return this.disabledLanguages[language] || false; // Default to false if not specified in map
+    }
+  },
   template: `
     <label class="suggest-form-label form-label" for="label-language">{{ $t('language_select_label') }}</label>
     <div class="select-wrapper">
-      <select class="form-control" id="label-language"
-        :value="modelValue"
-        @change="$emit('update:modelValue', $event.target.value)"
-      >
+      <select class="form-control" id="label-language" :value="modelValue"
+        @change="$emit('update:modelValue', $event.target.value)">
         <option value="project-language">{{ $t('language_select_project') }}</option>
         <option value="fi">{{ $t('language_select_fi') }}</option>
         <option value="sv">{{ $t('language_select_sv') }}</option>
         <option value="en">{{ $t('language_select_en') }}</option>
+        <option :disabled="isOptionDisabled('se')" value="se">{{ $t('language_select_sm') }}</option>
       </select>
     </div>
   `
-})
+});
 
 mainApp.component('result-list', {
   props: ['results', 'language', 'selected_project', 'projects'],
