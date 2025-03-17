@@ -4,10 +4,14 @@ if (window.location.protocol.startsWith('http')) {
   // http or https - use APIs of current Annif and textract instances
   var annif_base_url = '/v1/';
   var textract_base_url = '/textract/';
-} else {
-  // local development case - use Finto AI dev API and textract running on localhost via port 8001
+} else if (window.location.protocol.startsWith('file')) {
+  // local development with browser - use Finto AI dev API
   var annif_base_url = 'https://ai.dev.finto.fi/v1/';
-  var textract_base_url = 'https://ai.dev.finto.fi/textract/'//'http://localhost:8001/textract/';
+  var textract_base_url = 'https://ai.dev.finto.fi/textract/'
+} else {
+  // local development with VS Code Live Server extension - use APIs of Annif on localhost via Live Server proxy (overcomes CORS error by /v1/detect-language)
+  var annif_base_url = 'http://localhost:5000/v1/';
+  // var textract_base_url = Null  // Textract does not work with simple Live Server proxy(?)
 }
 
 const headerApp = createApp({})
@@ -69,13 +73,24 @@ const mainApp = createApp({
     return {
       annif_version: '',
       projects: [],
-      selected_project: '',
+      vocab_ids: [],
+      selected_vocab_id: '',
       text: '',
       limit: 10,
-      language: 'project-language',
+      text_language: 'fi',
+      is_language_detected: false,
+      text_language_detection_results: {},
+      unsupported_langs_for_vocabs: {
+        'fi': [],
+        'sv': ['kauno', 'koko'],
+        'en': ['kauno', 'koko'],
+        'null': [],
+      },
+      labels_language: 'same-as-text-language',
       results: [],
       show_results: false,
       loading_results: false,
+      detecting_language: false,
       selected_file: '',
       selected_url: '',
       placeholder_to_show: 'text_box_placeholder_text_input', // i18n translation key of the textbox placeholder
@@ -84,9 +99,22 @@ const mainApp = createApp({
       show_alert_file_format: false,
       show_alert_request_failed: false,
       show_alert_request_failed_url: false,
+      show_alert_language_detection_failed: false,
       show_dragging_effect: false,
       supported_formats: ['txt', 'pdf', 'doc', 'docx', 'odt', 'rtf', 'pptx', 'epub', 'html']
     }
+  },
+  provide() {
+    return {
+      detectLanguage: this.detectLanguage
+    };
+  },
+  watch: {
+    text_language(newValue, oldValue) {
+      if (newValue != null) {
+        this.show_alert_language_detection_failed = false;
+      }
+    },
   },
   methods: {
     clear() {
@@ -95,34 +123,78 @@ const mainApp = createApp({
       this.show_results = false
       this.selected_file = ''
       this.selected_url = ''
+      this.is_language_detected = false;
+      this.text_language_detection_results = {};
       this.show_alert_file_size = false
       this.show_alert_file_format = false
       this.show_alert_request_failed = false
       this.show_alert_request_failed_url = false
+      this.show_alert_language_detection_failed = false
+    },
+    detectLanguage() {
+      this.detecting_language = true;
+      this.text_language = null;
+      this.text_language_detection_results = {};
+      fetch(annif_base_url + 'detect-language', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          text: this.text,
+          languages: ["fi", "sv", "en"]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.text_language = data.results[0].language;
+        // Make a dictionary of languages and their scores
+        this.text_language_detection_results = data.results.reduce((acc, obj) => {
+          if (obj.language !== null) {
+            acc[obj.language] = obj.score;
+          }
+          return acc;
+        }, { });
+        this.detecting_language = false;
+        this.is_language_detected = true;
+        if (this.text_language == null) {
+          this.show_alert_language_detection_failed = true;
+          this.is_language_detected = false;
+        };
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        this.detecting_language = false;
+        this.show_alert_language_detection_failed = true;
+        this.is_language_detected = false;
+      });
     },
     suggest() {
-      this.loading_results = true
-      this.show_results = false
+      this.loading_results = true;
+      this.show_results = false;
 
-      const lang = this.language === 'project-language' ? '' : this.language
+      let labelsLang = this.labels_language === 'same-as-text-language' ? '' : this.labels_language;
+
+      const projectId = this.selected_vocab_id + "-" + this.text_language;
 
       // get suggestions for given text
-      fetch(annif_base_url + 'projects/' + this.selected_project + '/suggest', {
+      fetch(annif_base_url + 'projects/' + projectId + '/suggest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + lang
+        body: 'text=' + this.text + '&limit=' + this.limit + '&language=' + labelsLang
       })
-        .then(data => {
-          return data.json()
-        })
-        .then(data => {
-          this.results = data.results
-          this.loading_results = false
-          this.show_results = true
-        })
+      .then(data => {
+        return data.json()
+      })
+      .then(data => {
+        this.results = data.results
+        this.loading_results = false
+        this.show_results = true
+      })
     },
+
     drag_over(e) {
       e.stopPropagation()
       e.preventDefault()
@@ -153,9 +225,14 @@ const mainApp = createApp({
         this.read_url(url)
       }
     },
+    apply_start_reading_effects() {
+      this.clear();
+      this.loading_upload = true;
+      this.detecting_language = true;
+      this.text_language = null;
+    },
     read_file(file) {
-      this.clear()
-      this.loading_upload = true
+      this.apply_start_reading_effects()
       this.selected_file = file.name
 
       const extension = this.get_extension(file.name)
@@ -167,6 +244,7 @@ const mainApp = createApp({
         file.text().then(file_text => {
           this.loading_upload = false
           this.text = file_text
+          this.detectLanguage();
         })
       } else {
         let file_form_data = new FormData()
@@ -183,19 +261,20 @@ const mainApp = createApp({
           .then(data => {
             this.loading_upload = false
             this.text = data.text
+            this.detectLanguage();
           })
           .catch(error => {
             this.loading_upload = false
+            this.detecting_language = false
             this.show_alert_request_failed = true
           })
       }
     },
     read_url(url) {
+      this.apply_start_reading_effects();
+
       const url_obj = new URL(url)
       const plain_url = url_obj.origin + url_obj.pathname
-
-      this.clear()
-      this.loading_upload = true
       this.selected_url = plain_url
 
       const extension = this.get_extension(url_obj.pathname)
@@ -215,10 +294,13 @@ const mainApp = createApp({
         })
         .then(data => {
           this.loading_upload = false
+          this.detecting_language = false
           this.text = data.text
+          this.detectLanguage();
         })
         .catch(error => {
           this.loading_upload = false
+          this.detecting_language = false
           this.show_alert_request_failed_url = true
         })
     },
@@ -254,7 +336,9 @@ const mainApp = createApp({
       })
       .then(data => {
         this.projects = data.projects
-        this.selected_project = this.projects[0].project_id
+        // Assume vocabulary id is a prefix of project id
+        this.vocab_ids = [...new Set(this.projects.map(item => item.project_id.split("-")[0]))];
+        this.selected_vocab_id = this.vocab_ids[0]
       })
 
     // get annif version number
@@ -324,12 +408,27 @@ mainApp.component('url-input', {
 mainApp.component('text-input', {
   props: ['modelValue', 'show_dragging_effect', 'placeholder_to_show'], // modelValue: text
   emits: ['update:modelValue', 'clear'],
+  inject: ['detectLanguage'],
+  data() {
+    return {
+      timeout: null,
+    };
+  },
+  methods: {
+    updateValue(value) {
+      this.$emit('update:modelValue', value);
+      if (value.length >= 10) {  // Require at least 10 characters to attempt language detection
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => this.detectLanguage(), 1000);  // Delay for language detection after input typing
+      }
+    }
+  },
   template: `
     <label class="visually-hidden" for="text">{{ $t(placeholder_to_show) }}></label>
     <textarea class="form-control dropzone dropzone-border" id="text" rows="20"
       :placeholder="$t(placeholder_to_show)"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="updateValue($event.target.value)"
       :class="{ 'dragging': show_dragging_effect }"
     ></textarea>
     <button id="button-clear" type="button" class="btn btn-danger"
@@ -338,120 +437,171 @@ mainApp.component('text-input', {
   `
 })
 
-mainApp.component('project-select', {
-  props: ['modelValue', 'projects'], // modelValue: selected project
+mainApp.component('vocab-select', {
+  props: ['modelValue', 'vocab_ids', 'projects'],  // modelValue: selected_project_id
   emits: ['update:modelValue'],
-  components: {
-    'vocabulary-info': {
-      props: ['selectedProject'],
-      data() {
-        return {
-          vocabularyUrlsMap: {
-            'yso': 'https://finto.fi/yso/',
-            'ykl': 'https://finto.fi/ykl/',
-            'kauno': 'https://finto.fi/kauno/',
-            'thema': 'https://ns.editeur.org/thema/',
-          },
-        };
-      },
-      computed: {
-        vocabularyId() {
-          // TODO: This is a hack. We should expose the vocabulary id from Annif API.
-          // Assume vocabulary id is a prefix of project id
-          if (this.selectedProject && this.selectedProject.project_id) {
-            // Assume vocabulary id is a prefix of project id
-            return this.selectedProject.project_id.split("-")[0];
-          }
-          return '';
-        },
-        vocabularyName() {
-          const vocabularyNamesMap = {
-            'yso': this.$t('vocabulary_name_yso'),
-            'ykl': this.$t('vocabulary_name_ykl'),
-            'kauno': this.$t('vocabulary_name_kauno'),
-            'thema': this.$t('vocabulary_name_thema'),
-          }
-          return vocabularyNamesMap[this.vocabularyId] || '';
-        },
-        vocabularyUrl() {
-          return this.vocabularyUrlsMap[this.vocabularyId] || '';
-        },
-      },
-      template: `
-      <span id="vocabulary-info">
-      {{ $t('vocabulary_info') }}
-      <a :href="vocabularyUrl" target="_blank">{{ vocabularyName }}
-        <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true"></a></span>
-      `,
+  methods: {
+    versionSpecifierInParentheses(vocabId) {
+      if (vocabId == "yso") {
+        const ysoProjName = this.projects[0].name;  // Get the YSO version specifier from the first project
+        const match = ysoProjName.match(/\(([^)]+)\)$/);
+        return match ? match[0] : '';
+      } else {
+        return "";
+      }
     },
   },
   template: `
     <div>
-      <label class="suggest-form-label form-label" for="project">{{ $t('project_select_label') }}</label>
+      <label class="suggest-form-label form-label" for="vocab">{{ $t('vocab_select_label') }}</label>
       <div class="select-wrapper">
-        <select class="form-control" id="project"
-          :value="modelValue"
-          @change="$emit('update:modelValue', $event.target.value)"
-        >
-          <option v-for="p in projects" :value="p.project_id">{{ $t(p.project_id) }} {{ extractVersionSpecifierInParentheses(p.name) }}</option>
+        <select class="form-control" id="vocab"
+            :value="modelValue"
+            @change="$emit('update:modelValue', $event.target.value)"
+          >
+          <option v-for="vid in vocab_ids" :value="vid">{{ $t("vocabulary_name_"+vid) }} {{ this.versionSpecifierInParentheses(vid) }} </option>
         </select>
       </div>
-      <vocabulary-info :selectedProject="getSelectedProject()" />
     </div>
-  `,
-  methods: {
-    getSelectedProject() {
-      return this.projects.find(p => p.project_id === this.modelValue) || null;
+    `,
+});
+
+mainApp.component('vocabulary-info', {
+  props: ['selected_vocab_id'],
+  data() {
+    return {
+      vocabularyUrlsMap: {
+        'yso': 'https://finto.fi/yso/',
+        'ykl': 'https://finto.fi/ykl/',
+        'kauno': 'https://finto.fi/kauno/',
+        'koko': 'https://finto.fi/koko/',
+        'thema': 'https://ns.editeur.org/thema/',
+      },
+    };
+  },
+  computed: {
+    vocabularyName() {
+      const vocabularyNamesMap = {
+        'yso': this.$t('vocabulary_name_yso'),
+        'ykl': this.$t('vocabulary_name_ykl'),
+        'kauno': this.$t('vocabulary_name_kauno'),
+        'koko': this.$t('vocabulary_name_koko'),
+        'thema': this.$t('vocabulary_name_thema'),
+      }
+      return vocabularyNamesMap[this.selected_vocab_id] || '';
     },
-    extractVersionSpecifierInParentheses(name) {
-      const match = name.match(/\(([^)]+)\)$/);
-      return match ? match[0] : '';
+    vocabularyUrl() {
+      return this.vocabularyUrlsMap[this.selected_vocab_id] || '';
     },
   },
+  template: `
+    <div id="vocabulary-info">
+      {{ $t('vocabulary_info') }}
+      <a :href="vocabularyUrl" target="_blank">
+        {{ vocabularyName }}
+        <img src="static/img/arrow-up-right-from-square-solid-dark.svg" alt="" aria-hidden="true">
+      </a>
+    </div>
+    `,
 });
 
 mainApp.component('limit-input', {
   props: ['modelValue'], // modelValue: limit
   emits: ['update:modelValue'],
   template: `
-    <fieldset id="limit-buttons" class="btn-group">
-      <legend class="suggest-form-label">{{ $t('limit_input_label') }}</legend>
-      <input type="radio" class="btn-check" name="limit" id="l1" checked
-        :value="modelValue"
-        @change="$emit('update:modelValue', 10)"
-      >
-      <label class="btn btn-secondary" for="l1">10</label>
-      <input type="radio" class="btn-check" name="limit" id="l2"
-        :value="modelValue"
-        @change="$emit('update:modelValue', 15)"
-      >
-      <label class="btn btn-secondary" for="l2">15</label>
-      <input type="radio" class="btn-check" name="limit" id="l3"
-        :value="modelValue"
-        @change="$emit('update:modelValue', 20)"
-      >
-      <label class="btn btn-secondary" for="l3">20</label>
-    </fieldset>
+    <div>
+      <fieldset id="limit-buttons" class="btn-group select-buttons">
+        <legend class="suggest-form-label">{{ $t('limit_input_label') }}</legend>
+        <input type="radio" class="btn-check" name="limit" id="l1" checked
+          :value="modelValue"
+          @change="$emit('update:modelValue', 10)"
+        >
+        <label class="btn btn-secondary" for="l1">10</label>
+        <input type="radio" class="btn-check" name="limit" id="l2"
+          :value="modelValue"
+          @change="$emit('update:modelValue', 15)"
+        >
+        <label class="btn btn-secondary" for="l2">15</label>
+        <input type="radio" class="btn-check" name="limit" id="l3"
+          :value="modelValue"
+          @change="$emit('update:modelValue', 20)"
+        >
+        <label class="btn btn-secondary" for="l3">20</label>
+      </fieldset>
+    </div>
   `
 })
 
-mainApp.component('language-select', {
-  props: ['modelValue', 'selectedProject'],
+mainApp.component('text-language-select', {
+  props: ['textLanguage', 'isLanguageDetected', 'text_language_detection_results', 'unsupported_langs_for_vocabs', 'selected_vocab_id', 'detecting_language', 'show_alert_language_detection_failed'],
+  emits: ['update:text-language', 'update:is-language-detected'],
+  computed: {
+    disabledLanguages() {
+      return {
+        fi: this.unsupported_langs_for_vocabs.fi.includes(this.selected_vocab_id),
+        sv: this.unsupported_langs_for_vocabs.sv.includes(this.selected_vocab_id),
+        en: this.unsupported_langs_for_vocabs.en.includes(this.selected_vocab_id),
+      };
+    },
+  },
+  methods: {
+    updateValue(value) {
+      this.$emit('update:text-language', value);
+      this.$emit('update:is-language-detected', false);
+    },
+    isLanguageDisabled(language) {
+      return this.disabledLanguages[language] || false; // Default to false if not specified in map
+    },
+    isThisLanguageDetected(language) {
+      return (this.isLanguageDetected & this.textLanguage == language) || false;
+    },
+  },
+  template: `
+    <label class="suggest-form-label form-label" for="text-language">{{ $t('text_language_select_label') }}</label>
+    <div>
+      <fieldset id="language-buttons" class="btn-group select-buttons">
+        <input type="radio" class="btn-check" name="language" id="fi" :checked="textLanguage === 'fi'"
+          @change="updateValue('fi')"
+        >
+        <label class="btn btn-secondary" for="fi" :title="text_language_detection_results['fi']">
+          {{ $t('language_select_fi') }}{{ isThisLanguageDetected('fi') ? '*' : '' }}
+        </label>
+
+        <input type="radio" class="btn-check" name="language" id="sv" :checked="textLanguage === 'sv'"
+          :disabled="isLanguageDisabled('sv')"
+          @change="updateValue('sv')"
+        >
+        <label class="btn btn-secondary" for="sv" :title="text_language_detection_results['sv']">
+          {{ $t('language_select_sv') }}{{ isThisLanguageDetected('sv') ? '*' : '' }}
+        </label>
+
+        <input type="radio" class="btn-check" name="language" id="en" :checked="textLanguage === 'en'"
+          :disabled="isLanguageDisabled('en')"
+          @change="updateValue('en')"
+        >
+        <label class="btn btn-secondary" for="en" :title="text_language_detection_results['en']">
+          {{ $t('language_select_en') }}{{ isThisLanguageDetected('en') ? '*' : '' }}
+        </label>
+
+        <input type="radio" class="btn-check" name="language" id="none" :checked="textLanguage === 'none'"
+          style="display: none;"
+        >
+      </fieldset>
+    </div>
+    <div v-if="detecting_language" v-cloak class="spinner-border spinner-border-sm" role="status" v-cloak></div>
+    <div v-if="isLanguageDetected" v-cloak>{{ $t('language_detected_info') }}</div>
+    <div v-if="show_alert_language_detection_failed" v-cloak class="alert alert-danger">{{ $t('alert_language_detection_failed') }}</div>
+    `
+});
+
+mainApp.component('labels-language-select', {
+  props: ['modelValue', 'selected_vocab_id'], // modelValue: selected language
   emits: ['update:modelValue'],
   computed: {
-    vocabularyId() {
-      // TODO: This is a hack. We should expose the vocabulary id from Annif API.
-      // Why project is here the project_id string?
-      // Assume vocabulary id is a prefix
-      if (this.selectedProject) {
-        return this.selectedProject.split("-")[0];
-      }
-      return '';
-    },
     disabledLanguages() {
       // Map of languages and their enabling criteria based on vocabularyId
       return {
-        se: this.vocabularyId !== 'yso', // 'se' enabled only if vocabularyId is 'yso'
+        se: this.selected_vocab_id !== 'yso', // 'se' enabled only if vocabularyId is 'yso'
       };
     }
   },
@@ -463,9 +613,9 @@ mainApp.component('language-select', {
   template: `
     <label class="suggest-form-label form-label" for="label-language">{{ $t('language_select_label') }}</label>
     <div class="select-wrapper">
-      <select class="form-control" id="label-language" :value="modelValue"
+      <select class="form-control" id="labels-language" :value="modelValue"
         @change="$emit('update:modelValue', $event.target.value)">
-        <option value="project-language">{{ $t('language_select_project') }}</option>
+        <option value="same-as-text-language">{{ $t('language_select_same_as_text') }}</option>
         <option value="fi">{{ $t('language_select_fi') }}</option>
         <option value="sv">{{ $t('language_select_sv') }}</option>
         <option value="en">{{ $t('language_select_en') }}</option>
@@ -476,7 +626,7 @@ mainApp.component('language-select', {
 });
 
 mainApp.component('result-list', {
-  props: ['results', 'language', 'selected_project', 'projects'],
+  props: ['results', 'selected_vocab_id', 'labels_language', 'text_language'],
   methods: {
     copy_class_to_clipboard(term) {
       navigator.clipboard.writeText(term.notation)
@@ -491,16 +641,17 @@ mainApp.component('result-list', {
       const languageCodes = {
         fi: 'fin',
         sv: 'swe',
-        en: 'eng'
+        en: 'eng',
+        se: 'sme',
       }
-      const vocab = this.selected_project.split('-')[0];  // Get vocabulary id for Melinda format from project id
+      const vocab = this.selected_vocab_id;
       if (vocab === 'ykl') {
         var alephString = term.notation + '$$2' + vocab + '\n';
       } else {
         const term_language =
-          this.language === 'project-language'
-            ? languageCodes[this.projects.find(p => p.project_id === this.selected_project).language]
-            : languageCodes[this.language]
+          this.labels_language === 'same-as-text-language'
+            ? languageCodes[this.text_language]
+            : languageCodes[this.labels_language]
         var alephString = term.label + '$$2' + vocab + '/' + term_language + '$$0' + term.uri + '\n';
       }
       navigator.clipboard.writeText(alephString);

@@ -381,10 +381,19 @@ header a:hover, footer a:hover {
   font-size: 1.25rem;
 }
 
+#vocabulary-info {
+  margin-left: 5px;
+  margin-bottom: 0.5rem;
+}
+#vocabulary-info a:hover {
+  color: var(--accent-4);
+}
+#vocabulary-info a:hover img {
+  content: url("../img/arrow-up-right-from-square-solid-2.svg");
+}
 #vocabulary-info img {
-  height: 11px;
-  margin-bottom: 10px;
-  margin-left: 2px;
+  height: 12px;
+  margin-bottom: 4px;
 }
 
 .suggest-form-label {
@@ -430,27 +439,32 @@ select:valid:focus {
   pointer-events: none;
 }
 
-#limit-buttons label {
+.select-buttons label {
   color: var(--dark-1);
   background-color: var(--medium-2);
   border: none;
   border-radius: 0;
-  max-width: 40px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 1rem;
   margin-left: 0;
   transition: none;
-  padding: 8px 0;
 }
 
-#limit-buttons .btn-check:checked+.btn {
+.select-buttons .btn-secondary:hover {
+  background-color: var(--dark-2);
+}
+.select-buttons .btn-check:checked+.btn {
   background-color: var(--dark-1);
   color: var(--white);
 }
-#limit-buttons label:active {
+.select-buttons label:active {
   background-color: var(--dark-1);
   color: var(--white);
+}
+
+#limit-buttons label{
+  max-width: 40px;
 }
 
 #get-suggestions {
@@ -570,8 +584,8 @@ meter::-webkit-meter-optimum-value {
 }
 
 .copy-button:hover {
-  background-color: var(--medium-2);
-  color: var(--dark-1);
+  background-color: var(--dark-2);
+  color: var(--white);
 }
 
 .copy-button:active {
@@ -586,7 +600,7 @@ meter::-webkit-meter-optimum-value {
   background-position: center !important;
   margin-left: 0px;
 }
-#copy-button-label-and-uri:active {
+#copy-button-label-and-uri:hover, #copy-button-label-and-uri:active {
   background-image: url("../img/melinda-active.svg");
 }
 

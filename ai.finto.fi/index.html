@@ -158,16 +158,26 @@
 
           <h3>{{ $t('suggestions_label') }}</h3>
 
-          <project-select v-model="selected_project" :projects="projects"></project-select>
-          <limit-input v-model="limit"></limit-input><br>
-          <language-select v-model="language" :selected-project="selected_project"></language-select>
+          <vocab-select v-model="selected_vocab_id" :vocab_ids="vocab_ids" :projects="projects"></vocab-select>
+          <vocabulary-info :selected_vocab_id="selected_vocab_id"></vocabulary-info>
+          <text-language-select
+            v-model:text-language="text_language"
+            v-model:is-language-detected="is_language_detected"
+            :text_language_detection_results="text_language_detection_results"
+            :unsupported_langs_for_vocabs=unsupported_langs_for_vocabs
+            :selected_vocab_id="selected_vocab_id"
+            :detecting_language="detecting_language"
+            :show_alert_language_detection_failed="show_alert_language_detection_failed"
+          ></text-language-select>
+          <limit-input v-model="limit"></limit-input>
+          <labels-language-select v-model="labels_language" :selected_vocab_id="selected_vocab_id"></labels-language-select>
 
           <div class="d-grid justify-content-end">
             <button id="get-suggestions" type="button" class="btn btn-primary"
               @click="suggest()"
-              :disabled="text===''"
-            >{{ $t('get_suggestions') }}</button>
-          </div>
+              :disabled="text==='' || unsupported_langs_for_vocabs[text_language].includes(selected_vocab_id)"
+              >{{ $t('get_suggestions') }}</button>
+            </div>
 
           <div class="d-flex justify-content-center" id="results-spinner" v-cloak
             v-if="loading_results"
@@ -185,9 +195,9 @@
 
             <result-list
               :results="results"
-              :language="language"
-              :selected_project="selected_project"
-              :projects="projects"
+              :selected_vocab_id="selected_vocab_id"
+              :text_language="text_language"
+              :labels_language="labels_language"
             ></result-list>
           </div>
 
